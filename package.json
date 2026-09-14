@@ -6,7 +6,9 @@
   "scripts": {
     "test": "npm run validate:deterministic && npm run test:chaos",
     "validate:deterministic": "node tools/validate-site.mjs",
-    "test:chaos": "node tools/chaos-test.mjs"
+    "test:chaos": "npm run test:chaos:heuristic && npm run test:chaos:browser",
+    "test:chaos:heuristic": "node tools/chaos-test.mjs",
+    "test:chaos:browser": "playwright test"
   },
   "repository": {
     "type": "git",
@@ -14,5 +16,8 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.63.0"
+  }
 }

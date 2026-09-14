@@ -24,8 +24,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
       - name: Run deterministic validation
         run: npm run validate:deterministic
 
-      - name: Run chaos checks
-        run: npm run test:chaos
+      - name: Run heuristic chaos checks
+        run: npm run test:chaos:heuristic
+
+      - name: Run browser chaos checks
+        run: npm run test:chaos:browser

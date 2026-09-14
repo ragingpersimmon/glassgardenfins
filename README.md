@@ -4,7 +4,7 @@ Static site for Little Fin Swim.
 
 ## Robustness checks
 
-This repository now includes deterministic and heuristic robustness testing.
+This repository includes deterministic validation plus heuristic and browser-level chaos tests.
 
 ### Deterministic validation
 
@@ -15,19 +15,28 @@ npm run validate:deterministic
 Checks:
 - Canonical/OG/Twitter URL consistency with `CNAME`
 - Required metadata and semantic structure
+- Landmark/heading continuity and duplicate ID detection
 - Internal link and asset existence
-- `script.js` and `script.txt` synchronization
-- Reduced-motion and IntersectionObserver fallback presence
+- Navigation `aria-current` correctness
+- Reduced-motion and `IntersectionObserver` fallback presence
 
-### Chaos checks (deterministic + heuristic)
+### Chaos checks
 
 ```bash
 npm run test:chaos
 ```
 
-Checks:
-- Deterministic fault scenarios (script/CSS/font load failure, animation behavior mutation)
-- Heuristic resilience signals (navigation diversity, content density, heading continuity)
+Includes:
+- `npm run test:chaos:heuristic` (static deterministic + heuristic resilience checks)
+- `npm run test:chaos:browser` (Playwright fault-injection tests)
+
+Browser chaos scenarios:
+- Script load failure
+- Stylesheet load failure
+- Font load failure under throttled requests
+- Reduced-motion environment
+- `IntersectionObserver` unavailable
+- 404 behavior
 
 ### Full local verification
 
@@ -35,4 +44,4 @@ Checks:
 npm test
 ```
 
-CI runs both checks via `.github/workflows/robustness.yml`.
+CI runs deterministic and both chaos suites via `.github/workflows/robustness.yml`.
