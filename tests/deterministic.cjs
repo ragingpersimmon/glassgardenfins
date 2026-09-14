@@ -37,6 +37,12 @@ async function run() {
       'Little Fin Swim — a planted tank journal',
       'https://littlefinswim.net/'
     );
+    const homeTheme = await page.locator('body').evaluate((element) => {
+      const style = window.getComputedStyle(element);
+      return { fontFamily: style.fontFamily, textTransform: style.textTransform };
+    });
+    assert.match(homeTheme.fontFamily, /^Arial/i, 'site theme should use Arial');
+    assert.strictEqual(homeTheme.textTransform, 'lowercase', 'site theme should render lowercase');
 
     await checkPageMeta(
       page,
@@ -71,6 +77,20 @@ async function run() {
       new URL(page.url()).pathname,
       '/journal/10-aquarium-questions/',
       'journal card should open the full entry'
+    );
+    const articleTypography = await page.locator('.entry').evaluate((element) => {
+      const style = window.getComputedStyle(element);
+      return { fontFamily: style.fontFamily, textTransform: style.textTransform };
+    });
+    assert.match(
+      articleTypography.fontFamily,
+      /Literata/i,
+      'journal entry should retain its editorial typeface'
+    );
+    assert.strictEqual(
+      articleTypography.textTransform,
+      'none',
+      'journal entry should retain its original capitalization'
     );
 
     await page.waitForTimeout(250);
