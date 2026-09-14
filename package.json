@@ -4,8 +4,11 @@
   "private": true,
   "description": "Little Fin Swim static site validation and backtesting",
   "main": "script.js",
+  "type": "module",
   "scripts": {
-    "test": "npm run test:setup && npm run test:deterministic && npm run test:chaos",
+    "test": "npm run test:setup && npm run validate:site && npm run test:mutations && npm run test:deterministic && npm run test:chaos",
+    "validate:site": "node ./tools/validate-site.mjs",
+    "test:mutations": "node ./tools/chaos-test.mjs",
     "test:deterministic": "node tests/deterministic.cjs",
     "test:chaos": "node tests/chaos.cjs",
     "test:setup": "playwright install chromium"

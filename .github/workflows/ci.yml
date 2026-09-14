@@ -4,6 +4,9 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -14,7 +17,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '20'
           cache: npm
 
       - name: Install dependencies
@@ -23,8 +26,14 @@ jobs:
       - name: Install Playwright browser
         run: npx playwright install --with-deps chromium
 
-      - name: Run deterministic tests
+      - name: Run static invariant validation
+        run: npm run validate:site
+
+      - name: Run static mutation tests
+        run: npm run test:mutations
+
+      - name: Run deterministic browser tests
         run: npm run test:deterministic
 
-      - name: Run chaos backtests
+      - name: Run chaos browser backtests
         run: npm run test:chaos

@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Little Fin Swim — a planted tank journal</title>
 <meta name="description" content="Notes from a 70L planted freshwater aquarium. Water chemistry, plants, and a slow stocking plan.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests">
 <link rel="canonical" href="https://littlefinswim.net/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://littlefinswim.net/">
@@ -20,11 +21,12 @@
 <link rel="stylesheet" href="/style.css">
 </head>
 <body>
+<a class="skip-link" href="#top">Skip to content</a>
 
 <header class="site-header">
   <div class="wrap site-header__inner">
     <a href="/" class="wordmark">Little Fin Swim</a>
-    <nav class="site-nav">
+    <nav class="site-nav" aria-label="Primary">
       <a href="/tank/">The Tank</a>
       <a href="/journal/">Journal</a>
     </nav>
@@ -104,6 +106,17 @@
       </ul>
     </div>
   </nav>
+
+  <section class="home-update">
+    <div class="wrap">
+      <div class="content-card">
+        <p class="eyebrow">Latest update</p>
+        <h2 class="section-title section-title--compact">Amano shrimp added, corydoras next</h2>
+        <p class="home-update__text">The system has stabilized with GH 8, KH 6, pH 7.2 at 26.2&deg;C. Current focus is plant growth, cleanup crew behavior, and flow tuning before the next stocking step.</p>
+        <a class="inline-link" href="/journal/">Read full journal entries</a>
+      </div>
+    </div>
+  </section>
 
 </main>
 

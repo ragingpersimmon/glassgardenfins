@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Journal — Little Fin Swim</title>
 <meta name="description" content="Field notes from a 70L planted freshwater aquarium — stocking, water chemistry, and troubleshooting as the tank changes.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests">
 <link rel="canonical" href="https://littlefinswim.net/journal/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://littlefinswim.net/journal/">
@@ -20,24 +21,30 @@
 <link rel="stylesheet" href="/style.css">
 </head>
 <body>
+<a class="skip-link" href="#top">Skip to content</a>
 
 <header class="site-header">
   <div class="wrap site-header__inner">
     <a href="/" class="wordmark">Little Fin Swim</a>
-    <nav class="site-nav">
+    <nav class="site-nav" aria-label="Primary">
       <a href="/tank/">The Tank</a>
       <a href="/journal/" aria-current="page">Journal</a>
     </nav>
   </div>
 </header>
 
-<main id="top">
+<main id="top" class="page-main">
+
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="eyebrow">Field notes</p>
+      <h1 class="section-title section-title--compact">Journal</h1>
+      <p class="page-hero__lead">Chronological notes on stocking progress, water chemistry stability, and corrective actions that kept the system healthy.</p>
+    </div>
+  </section>
 
   <section class="journal">
     <div class="wrap">
-      <p class="eyebrow">Field notes</p>
-      <h2 class="section-title">Journal</h2>
-
       <div class="entries">
 
         <article class="entry">
@@ -70,6 +77,25 @@
       </div>
     </div>
   </section>
+
+  <nav class="page-nav page-nav--subpage" aria-label="Explore more">
+    <div class="wrap">
+      <ul class="page-nav__list">
+        <li>
+          <a class="page-nav__link" href="/tank/">
+            <span class="page-nav__title">The Tank</span>
+            <span class="page-nav__desc">Review the current equipment, plants, and staging plan behind the journal notes.</span>
+          </a>
+        </li>
+        <li>
+          <a class="page-nav__link" href="/">
+            <span class="page-nav__title">Home</span>
+            <span class="page-nav__desc">Return to the main overview and latest parameters.</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
 </main>
 
