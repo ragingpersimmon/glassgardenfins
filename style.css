@@ -71,6 +71,24 @@ a:hover { text-decoration-color: currentColor; }
   border-radius: 2px;
 }
 
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(-120%);
+  background: var(--color-surface);
+  color: var(--color-bg);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  padding: 0.6rem 0.9rem;
+  text-decoration: none;
+  z-index: 999;
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
 .wrap {
   max-width: var(--wrap-width);
   margin-inline: auto;
@@ -92,6 +110,10 @@ a:hover { text-decoration-color: currentColor; }
   font-size: clamp(1.9rem, 3.2vw, 2.6rem);
   margin: 0 0 var(--space-4);
   letter-spacing: -0.01em;
+}
+
+.section-title--compact {
+  margin-bottom: var(--space-2);
 }
 
 .note {
@@ -141,6 +163,11 @@ a:hover { text-decoration-color: currentColor; }
 .site-nav a { text-decoration: none; color: var(--color-text-muted); }
 .site-nav a:hover { color: var(--color-surface); }
 .site-nav a:not(:last-child) { margin-right: var(--space-3); }
+.site-nav a[aria-current="page"] {
+  color: var(--color-surface);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+}
 
 /* ===================================================================
    Hero
@@ -418,6 +445,21 @@ a:hover { text-decoration-color: currentColor; }
   margin: 0;
 }
 
+.page-main {
+  min-height: calc(100vh - 120px);
+}
+
+.page-hero {
+  padding-top: var(--space-5);
+  padding-bottom: var(--space-2);
+}
+
+.page-hero__lead {
+  margin: 0;
+  color: var(--color-text-muted);
+  max-width: 64ch;
+}
+
 /* section dividers - smaller echo of the surface motif */
 .divider {
   line-height: 0;
@@ -652,6 +694,35 @@ a:hover { text-decoration-color: currentColor; }
   display: block;
   font-size: 0.9rem;
   color: var(--color-text-muted);
+}
+
+.page-nav--subpage {
+  padding-top: 0;
+}
+
+.home-update {
+  padding-bottom: var(--space-5);
+}
+
+.content-card {
+  background: var(--color-bg-panel);
+  border: 1px solid var(--color-border-soft);
+  border-radius: 6px;
+  padding: var(--space-3);
+}
+
+.home-update__text {
+  margin-top: 0;
+  margin-bottom: var(--space-2);
+  max-width: 65ch;
+  color: var(--color-text-muted);
+}
+
+.inline-link {
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
 /* ===================================================================

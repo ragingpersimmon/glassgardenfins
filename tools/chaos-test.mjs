@@ -36,7 +36,7 @@ function lcg(seed) {
 
 const heuristicMutators = [
   {
-    mutate: (html) => html.replace(/<main\s+id="top">/i, '<main>'),
+    mutate: (html) => html.replace(/<main[^>]*\sid="top"[^>]*>/i, '<main>'),
     expect: /main landmark/
   },
   {

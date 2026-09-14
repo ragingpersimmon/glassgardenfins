@@ -21,24 +21,30 @@
 <link rel="stylesheet" href="/style.css">
 </head>
 <body>
+<a class="skip-link" href="#top">Skip to content</a>
 
 <header class="site-header">
   <div class="wrap site-header__inner">
     <a href="/" class="wordmark">Little Fin Swim</a>
-    <nav class="site-nav">
+    <nav class="site-nav" aria-label="Primary">
       <a href="/tank/" aria-current="page">The Tank</a>
       <a href="/journal/">Journal</a>
     </nav>
   </div>
 </header>
 
-<main id="top">
+<main id="top" class="page-main">
+
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="eyebrow">Current setup</p>
+      <h1 class="section-title section-title--compact">The Tank</h1>
+      <p class="page-hero__lead">A stable 70L planted freshwater setup focused on resilient growth, clean flow, and staged livestock introduction.</p>
+    </div>
+  </section>
 
   <section class="tank">
     <div class="wrap">
-      <p class="eyebrow">Current setup</p>
-      <h2 class="section-title">The Tank</h2>
-
       <div class="tank__grid">
 
         <div class="spec-card">
@@ -84,6 +90,25 @@
       </div>
     </div>
   </section>
+
+  <nav class="page-nav page-nav--subpage" aria-label="Explore more">
+    <div class="wrap">
+      <ul class="page-nav__list">
+        <li>
+          <a class="page-nav__link" href="/journal/">
+            <span class="page-nav__title">Journal</span>
+            <span class="page-nav__desc">See water chemistry logs, troubleshooting notes, and stocking updates over time.</span>
+          </a>
+        </li>
+        <li>
+          <a class="page-nav__link" href="/">
+            <span class="page-nav__title">Home</span>
+            <span class="page-nav__desc">Return to the overview and latest status snapshot.</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
 </main>
 

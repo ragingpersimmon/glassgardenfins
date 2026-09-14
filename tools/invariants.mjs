@@ -55,7 +55,7 @@ export function checkPage(html, { route, current }) {
     errors.push(`twitter:url mismatch: expected ${canonical}, got ${twitterUrl}`);
   }
 
-  if (!has(html, /<main\s+id="top">/i)) {
+  if (!has(html, /<main[^>]*\sid="top"[^>]*>/i)) {
     errors.push('missing #top main landmark');
   }
 
