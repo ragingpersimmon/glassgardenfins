@@ -205,6 +205,11 @@ a:hover { text-decoration-color: currentColor; }
   border-color: var(--color-surface);
 }
 
+.button-link:focus-visible {
+  outline-color: var(--color-surface);
+  box-shadow: 0 0 0 4px rgba(220, 238, 232, 0.18);
+}
+
 .button-link--ghost {
   background: transparent;
   color: var(--color-surface);
@@ -620,10 +625,15 @@ a:hover { text-decoration-color: currentColor; }
 .shop-list__link {
   font-family: var(--font-display);
   font-size: 1.15rem;
-  text-decoration: none;
+  text-decoration-thickness: 1px;
 }
 
 .shop-list__link:hover { color: var(--color-surface); }
+
+.shop-list__link:focus-visible {
+  outline-color: var(--color-surface);
+  text-decoration-color: var(--color-surface);
+}
 
 /* ===================================================================
    Journal section
