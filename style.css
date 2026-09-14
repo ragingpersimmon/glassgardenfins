@@ -62,6 +62,10 @@ body *:not(.entry):not(.entry *) {
   text-transform: lowercase;
 }
 
+.preserve-case {
+  text-transform: none !important;
+}
+
 img, svg { display: block; max-width: 100%; }
 
 a {

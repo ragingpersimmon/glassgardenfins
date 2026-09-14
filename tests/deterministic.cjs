@@ -69,8 +69,20 @@ async function run() {
     );
 
     await page.goto(`${server.baseUrl}/journal/`, { waitUntil: 'domcontentloaded' });
-    const journalEntryLink = page.locator('.journal-card__link');
+    const journalEntryLink = page.locator(
+      '.journal-card__link[href="/journal/10-aquarium-questions/"]'
+    );
     assert.strictEqual(await journalEntryLink.count(), 1, 'journal index should list the full entry');
+    assert.match(
+      await journalEntryLink.locator('.journal-card__title').innerText(),
+      /questions I keep/,
+      'journal card should preserve uppercase standalone I'
+    );
+    assert.doesNotMatch(
+      await journalEntryLink.locator('.journal-card__excerpt').innerText(),
+      /^straight answers/i,
+      'journal summary should not use the removed wording'
+    );
     await journalEntryLink.click();
     await page.waitForLoadState('domcontentloaded');
     assert.strictEqual(
