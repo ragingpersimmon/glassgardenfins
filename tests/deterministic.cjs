@@ -55,6 +55,7 @@ async function run() {
     assert.match(tankDetails, /Hikari Aquarium Solutions Bacto-Surge/i);
     assert.doesNotMatch(tankDetails, /Fluval 207/i);
     assert.match(tankDetails, /CO₂\s+none currently/i);
+    assert.match(tankDetails, /Dimensions\s+1 ft × 1 ft × 2\.5 ft/i);
     const purchaseDates = await page.locator('.purchase-day > time').evaluateAll((times) =>
       times.map((time) => time.getAttribute('datetime'))
     );
@@ -87,8 +88,47 @@ async function run() {
       '10 Aquarium Questions I Keep Coming Back To — Little Fin Swim',
       'https://littlefinswim.net/journal/10-aquarium-questions/'
     );
+    await checkPageMeta(
+      page,
+      server.baseUrl,
+      '/journal/first-residents-amano-shrimp/',
+      'First Residents: Amano Shrimp Are In — Little Fin Swim',
+      'https://littlefinswim.net/journal/first-residents-amano-shrimp/'
+    );
+    await checkPageMeta(
+      page,
+      server.baseUrl,
+      '/journal/detritus-worms/',
+      'Detritus Worms, and What They Were Actually Telling Me — Little Fin Swim',
+      'https://littlefinswim.net/journal/detritus-worms/'
+    );
+    await checkPageMeta(
+      page,
+      server.baseUrl,
+      '/journal/dialing-in-before-stocking/',
+      'Dialing In Before Anything Goes In — Little Fin Swim',
+      'https://littlefinswim.net/journal/dialing-in-before-stocking/'
+    );
 
     await page.goto(`${server.baseUrl}/journal/`, { waitUntil: 'domcontentloaded' });
+    const journalDates = await page.locator('.journal-card time').evaluateAll((times) =>
+      times.map((time) => time.getAttribute('datetime'))
+    );
+    assert.deepStrictEqual(
+      journalDates,
+      ['2026-08-21', '2026-08-09', '2026-07-14', '2026-06-06'],
+      'journal index should list every entry newest first'
+    );
+    assert.strictEqual(
+      await page.locator('.journal-card__link').count(),
+      4,
+      'journal index should expose four dedicated entry links'
+    );
+    assert.strictEqual(
+      await page.locator('.entry__section').count(),
+      0,
+      'journal index should not embed full article content'
+    );
     const journalEntryLink = page.locator(
       '.journal-card__link[href="/journal/10-aquarium-questions/"]'
     );
