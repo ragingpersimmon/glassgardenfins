@@ -215,6 +215,14 @@ a:hover { text-decoration-color: currentColor; }
   color: var(--color-surface);
 }
 
+.lead {
+  margin: 0 0 var(--space-3);
+  max-width: 62ch;
+  color: var(--color-text-muted);
+}
+
+.lead--narrow { max-width: 54ch; }
+
 .tank-scene {
   position: relative;
   width: min(100%, 680px);
@@ -643,6 +651,67 @@ a:hover { text-decoration-color: currentColor; }
 }
 
 /* ===================================================================
+   Guide / policy pages
+   =================================================================== */
+
+.guide { padding-block: var(--space-5); }
+
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.guide-card {
+  padding: var(--space-3);
+  border: 1px solid var(--color-border-soft);
+  border-radius: 6px;
+  background: var(--color-bg-panel);
+}
+
+.guide-card--wide {
+  margin-top: var(--space-3);
+  background: linear-gradient(180deg, rgba(22, 17, 12, 0.96), rgba(15, 35, 32, 0.96));
+}
+
+.guide-card__eyebrow {
+  margin: 0 0 var(--space-1);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-amber);
+}
+
+.guide-card__title {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.guide-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.guide-section { margin-top: var(--space-4); }
+
+.legal-list {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--color-text-muted);
+}
+
+.legal-list li + li { margin-top: 0.45rem; }
+
+.policy .guide-card + .guide-card { margin-top: var(--space-3); }
+
+/* ===================================================================
    Journal section
    =================================================================== */
 
@@ -707,7 +776,7 @@ a:hover { text-decoration-color: currentColor; }
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-4);
 }
 
@@ -766,6 +835,15 @@ a:hover { text-decoration-color: currentColor; }
   color: var(--color-text-faint);
 }
 
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.footer-links a { text-decoration: none; }
+
 .back-to-top { text-decoration: none; }
 .back-to-top:hover { color: var(--color-surface); }
 
@@ -774,7 +852,11 @@ a:hover { text-decoration-color: currentColor; }
    =================================================================== */
 
 @media (max-width: 980px) {
+  .page-nav__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
   .shop-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .guide-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 760px) {
@@ -785,6 +867,8 @@ a:hover { text-decoration-color: currentColor; }
   .page-nav__list { grid-template-columns: 1fr; }
 
   .shop-list { grid-template-columns: 1fr; }
+
+  .guide-grid { grid-template-columns: 1fr; }
 
   .site-nav { gap: var(--space-2); }
 

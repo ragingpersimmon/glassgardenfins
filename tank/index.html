@@ -27,6 +27,7 @@
     <nav class="site-nav">
       <a href="/tank/" aria-current="page">The Tank</a>
       <a href="/journal/">Journal</a>
+      <a href="/gear/">Gear</a>
     </nav>
   </div>
 </header>
@@ -81,19 +82,20 @@
         <p class="shop-card__intro">These are the exact products already mentioned across the site, surfaced here so visitors can jump straight to the gear.</p>
         <ul class="shop-list">
           <li class="shop-list__item" id="fluval-207">
-            <a class="shop-list__link" href="https://fluvalaquatics.com/us/shop/product/207-canister-filter-20-45-us-gal-60-220-l/" target="_blank" rel="noopener noreferrer">Fluval 207 Canister Filter</a>
+            <a class="shop-list__link" href="https://fluvalaquatics.com/us/shop/product/207-canister-filter-20-45-us-gal-60-220-l/" data-product-link="fluval-207" target="_blank" rel="noopener noreferrer">Fluval 207 Canister Filter</a>
             <p>The canister filter currently running on the tank.</p>
           </li>
           <li class="shop-list__item" id="prime">
-            <a class="shop-list__link" href="https://www.seachem.com/prime.php" target="_blank" rel="noopener noreferrer">Seachem Prime</a>
+            <a class="shop-list__link" href="https://www.seachem.com/prime.php" data-product-link="prime" target="_blank" rel="noopener noreferrer">Seachem Prime</a>
             <p>The conditioner used for water changes.</p>
           </li>
           <li class="shop-list__item" id="fluval-407">
-            <a class="shop-list__link" href="https://fluvalaquatics.com/us/shop/product/407-canister-filter-50-100-us-gal-150-500-l" target="_blank" rel="noopener noreferrer">Fluval 407 Canister Filter</a>
+            <a class="shop-list__link" href="https://fluvalaquatics.com/us/shop/product/407-canister-filter-50-100-us-gal-150-500-l" data-product-link="fluval-407" target="_blank" rel="noopener noreferrer">Fluval 407 Canister Filter</a>
             <p>The planned upgrade once the bioload grows.</p>
           </li>
         </ul>
-        <p class="note">Product links point to the exact gear already referenced on Little Fin Swim. They are direct product links, not affiliate links.</p>
+        <p class="note" data-disclosure-copy>Product links currently go straight to the manufacturer product pages. No affiliate links are live yet.</p>
+        <p class="note"><a href="/gear/">Read the full gear guide</a> for buyer-intent notes and future product additions.</p>
       </section>
     </div>
   </section>
@@ -103,10 +105,15 @@
 <footer class="site-footer">
   <div class="wrap site-footer__inner">
     <p>Little Fin Swim — a planted tank log, updated as the tank changes.</p>
-    <a href="#top" class="back-to-top">Back to top ↑</a>
+    <div class="footer-links">
+      <a href="/gear/">Gear</a>
+      <a href="/privacy/">Privacy &amp; disclosure</a>
+      <a href="#top" class="back-to-top">Back to top ↑</a>
+    </div>
   </div>
 </footer>
 
+<script src="/site-config.js"></script>
 <script src="/script.js"></script>
 </body>
 </html>

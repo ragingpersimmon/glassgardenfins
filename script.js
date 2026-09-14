@@ -3,6 +3,96 @@
 // if the visitor has requested reduced motion.
 
 (function () {
+  var siteConfig =
+    window.LITTLE_FIN_SWIM && window.LITTLE_FIN_SWIM.config
+      ? window.LITTLE_FIN_SWIM.config
+      : null;
+
+  function injectSearchConsoleVerification() {
+    if (
+      !siteConfig ||
+      !siteConfig.analytics ||
+      !siteConfig.analytics.searchConsoleVerification
+    ) {
+      return;
+    }
+
+    if (
+      document.querySelector('meta[name="google-site-verification"]')
+    ) {
+      return;
+    }
+
+    var verification = document.createElement('meta');
+    verification.name = 'google-site-verification';
+    verification.content = siteConfig.analytics.searchConsoleVerification;
+    document.head.appendChild(verification);
+  }
+
+  function loadAnalytics() {
+    if (!siteConfig || !siteConfig.analytics) return;
+
+    if (siteConfig.analytics.googleAnalyticsId) {
+      var gtagScript = document.createElement('script');
+      gtagScript.async = true;
+      gtagScript.src =
+        'https://www.googletagmanager.com/gtag/js?id=' +
+        encodeURIComponent(siteConfig.analytics.googleAnalyticsId);
+      document.head.appendChild(gtagScript);
+
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () {
+        window.dataLayer.push(arguments);
+      };
+      window.gtag('js', new Date());
+      window.gtag('config', siteConfig.analytics.googleAnalyticsId);
+    }
+
+    if (siteConfig.analytics.plausibleDomain) {
+      var plausibleScript = document.createElement('script');
+      plausibleScript.defer = true;
+      plausibleScript.src = 'https://plausible.io/js/script.js';
+      plausibleScript.setAttribute(
+        'data-domain',
+        siteConfig.analytics.plausibleDomain
+      );
+      document.head.appendChild(plausibleScript);
+    }
+  }
+
+  function hydrateProductLinks() {
+    if (!siteConfig || !siteConfig.products) return;
+
+    var links = document.querySelectorAll('[data-product-link]');
+    links.forEach(function (link) {
+      var key = link.getAttribute('data-product-link');
+      var product = siteConfig.products[key];
+      if (!product) return;
+
+      var href = product.affiliateUrl || product.url;
+      if (!href) return;
+
+      link.href = href;
+
+      if (product.affiliateUrl) {
+        link.rel = 'noopener noreferrer sponsored';
+      }
+    });
+  }
+
+  function hydrateDisclosureCopy() {
+    if (!siteConfig || !siteConfig.monetization) return;
+
+    var text = siteConfig.monetization.affiliateLinksActive
+      ? siteConfig.monetization.affiliateDisclosure
+      : siteConfig.monetization.directDisclosure;
+
+    var targets = document.querySelectorAll('[data-disclosure-copy]');
+    targets.forEach(function (target) {
+      target.textContent = text;
+    });
+  }
+
   function focusHashTarget() {
     if (!window.location.hash) return;
 
@@ -28,6 +118,11 @@
     focusHashTarget();
     window.addEventListener('hashchange', focusHashTarget);
   }
+
+  injectSearchConsoleVerification();
+  loadAnalytics();
+  hydrateProductLinks();
+  hydrateDisclosureCopy();
 
   var prefersReducedMotion = window.matchMedia(
     '(prefers-reduced-motion: reduce)'
