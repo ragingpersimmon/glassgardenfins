@@ -9,11 +9,15 @@ npm install
 npm test
 ```
 
+The ten aquarium-question articles are generated from the editorial source in
+`tools/build-question-series.mjs`. After changing that series, run
+`npm run build:questions` and commit both the source and generated pages.
+
 ## Test suites
 
 - `npm run validate:site`: static checks for canonical, Open Graph, and Twitter URL consistency, navigation integrity, `aria-current`, required scripts and landmarks, and baseline CSP directives.
 - `npm run test:mutations`: verifies fault detection under deterministic and seeded randomized mutations.
-- `npm run test:deterministic`: browser checks for page metadata, canonical URLs, navigation, and reduced-motion/runtime fallbacks.
+- `npm run test:deterministic`: browser checks for page metadata, canonical URLs, navigation, reduced-motion/runtime fallbacks, comparable question-entry lengths, and at least two contextual product links per question.
 - `npm run test:chaos`: seeded (`1337`) browser backtests across random routes, viewports, reduced-motion modes, and resource fault injection (font blocking, script delay/block).
 
 ## CI

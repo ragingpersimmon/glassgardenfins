@@ -2,6 +2,19 @@ const assert = require('assert');
 const { chromium } = require('playwright');
 const { startServer } = require('./helpers.cjs');
 
+const QUESTION_ENTRIES = [
+  ['/journal/how-much-fish-food/', 'How Much Fish Food Is the Right Amount? — Little Fin Swim'],
+  ['/journal/how-much-sun-do-fish-need/', 'How Much Sun Do Fish Need? — Little Fin Swim'],
+  ['/journal/what-happened-to-my-shrimps-skin/', 'What Happened to My Shrimp’s Skin? — Little Fin Swim'],
+  ['/journal/why-is-my-fish-staying-at-the-bottom/', 'Why Is My Fish Staying at the Bottom of the Tank? — Little Fin Swim'],
+  ['/journal/why-is-my-fish-swimming-at-the-top/', 'Why Is My Fish Swimming at the Top of the Tank? — Little Fin Swim'],
+  ['/journal/how-often-should-you-change-aquarium-water/', 'How Often Should You Change Aquarium Water? — Little Fin Swim'],
+  ['/journal/why-is-my-aquarium-water-cloudy/', 'Why Is My Aquarium Water Cloudy? — Little Fin Swim'],
+  ['/journal/is-my-aquarium-filter-big-enough/', 'How Do I Know If My Aquarium Filter Is Big Enough? — Little Fin Swim'],
+  ['/journal/how-many-fish-can-i-put-in-my-aquarium/', 'How Many Fish Can I Put in My Aquarium? — Little Fin Swim'],
+  ['/journal/why-are-my-aquarium-plants-turning-brown/', 'Why Are My Aquarium Plants Turning Brown? — Little Fin Swim']
+];
+
 async function checkPageMeta(page, baseUrl, path, expectedTitle, expectedCanonical) {
   const res = await page.goto(`${baseUrl}${path}`, { waitUntil: 'domcontentloaded' });
   assert.strictEqual(res && res.status(), 200, `${path}: expected HTTP 200`);
@@ -85,8 +98,13 @@ async function run() {
       page,
       server.baseUrl,
       '/journal/10-aquarium-questions/',
-      '10 Aquarium Questions I Keep Coming Back To — Little Fin Swim',
+      '10 Aquarium Questions — Little Fin Swim',
       'https://littlefinswim.net/journal/10-aquarium-questions/'
+    );
+    assert.strictEqual(
+      await page.locator('.journal-card__link').count(),
+      10,
+      'question-series landing page should link ten standalone entries'
     );
     await checkPageMeta(
       page,
@@ -116,13 +134,27 @@ async function run() {
     );
     assert.deepStrictEqual(
       journalDates,
-      ['2026-08-21', '2026-08-09', '2026-07-14', '2026-06-06'],
+      [
+        '2026-08-21',
+        '2026-08-20',
+        '2026-08-19',
+        '2026-08-18',
+        '2026-08-17',
+        '2026-08-16',
+        '2026-08-15',
+        '2026-08-14',
+        '2026-08-13',
+        '2026-08-12',
+        '2026-08-09',
+        '2026-07-14',
+        '2026-06-06'
+      ],
       'journal index should list every entry newest first'
     );
     assert.strictEqual(
       await page.locator('.journal-card__link').count(),
-      4,
-      'journal index should expose four dedicated entry links'
+      13,
+      'journal index should expose all thirteen dedicated entry links'
     );
     assert.strictEqual(
       await page.locator('.entry__section').count(),
@@ -134,20 +166,13 @@ async function run() {
       0,
       'journal index should remain a compact headline archive'
     );
-    const journalEntryLink = page.locator(
-      '.journal-card__link[href="/journal/10-aquarium-questions/"]'
-    );
-    assert.strictEqual(await journalEntryLink.count(), 1, 'journal index should list the full entry');
-    assert.match(
-      await journalEntryLink.locator('.journal-card__title').innerText(),
-      /questions I keep/,
-      'journal card should preserve uppercase standalone I'
-    );
+    const journalEntryLink = page.locator('.journal-card__link[href="/journal/how-much-fish-food/"]');
+    assert.strictEqual(await journalEntryLink.count(), 1, 'journal index should list the latest question');
     await journalEntryLink.click();
     await page.waitForLoadState('domcontentloaded');
     assert.strictEqual(
       new URL(page.url()).pathname,
-      '/journal/10-aquarium-questions/',
+      '/journal/how-much-fish-food/',
       'journal card should open the full entry'
     );
     const articleTypography = await page.locator('.entry').evaluate((element) => {
@@ -184,7 +209,33 @@ async function run() {
       'affiliate disclosure should remain hidden while monetization is disabled'
     );
 
-    await page.route(`${server.baseUrl}/journal/10-aquarium-questions/`, async (route) => {
+    const articleWordCounts = [];
+    for (const [route, title] of QUESTION_ENTRIES) {
+      await checkPageMeta(
+        page,
+        server.baseUrl,
+        route,
+        title,
+        `https://littlefinswim.net${route}`
+      );
+      assert.ok(
+        await page.locator('a[data-amazon-link]').count() >= 2,
+        `${route}: expected at least two contextual Amazon links`
+      );
+      const articleText = await page.locator('.entry > p:not([data-affiliate-disclosure])').allInnerTexts();
+      articleWordCounts.push(articleText.join(' ').trim().split(/\s+/).length);
+    }
+    assert.ok(
+      Math.min(...articleWordCounts) >= 300,
+      `question entries should each contain at least 300 words: ${articleWordCounts.join(', ')}`
+    );
+    assert.ok(
+      Math.max(...articleWordCounts) / Math.min(...articleWordCounts) <= 1.35,
+      `question entry lengths should remain comparable: ${articleWordCounts.join(', ')}`
+    );
+
+    const latestQuestionUrl = `${server.baseUrl}/journal/how-much-fish-food/`;
+    await page.route(latestQuestionUrl, async (route) => {
       const response = await route.fetch();
       const body = (await response.text()).replace(
         'name="amazon-associate-tag" content=""',
@@ -192,7 +243,7 @@ async function run() {
       );
       await route.fulfill({ response, body });
     });
-    await page.goto(`${server.baseUrl}/journal/10-aquarium-questions/`, { waitUntil: 'domcontentloaded' });
+    await page.goto(latestQuestionUrl, { waitUntil: 'domcontentloaded' });
     const taggedLinks = await page.locator('a[data-amazon-link]').evaluateAll((links) =>
       links.map((link) => ({
         tag: new URL(link.href).searchParams.get('tag'),
@@ -207,7 +258,7 @@ async function run() {
       await page.locator('[data-affiliate-disclosure]').isVisible(),
       'affiliate disclosure should be visible when monetization is enabled'
     );
-    await page.unroute(`${server.baseUrl}/journal/10-aquarium-questions/`);
+    await page.unroute(latestQuestionUrl);
 
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
     await page.waitForTimeout(700);
@@ -223,7 +274,7 @@ async function run() {
 
     const reducedContext = await browser.newContext({ reducedMotion: 'reduce' });
     const reducedPage = await reducedContext.newPage();
-    await reducedPage.goto(`${server.baseUrl}/journal/10-aquarium-questions/`, { waitUntil: 'domcontentloaded' });
+    await reducedPage.goto(`${server.baseUrl}/journal/how-much-fish-food/`, { waitUntil: 'domcontentloaded' });
     await reducedPage.waitForTimeout(200);
 
     const reducedMotionVisible = await reducedPage.evaluate(() =>
@@ -244,7 +295,7 @@ async function run() {
       });
     });
     const noObserverPage = await noObserverContext.newPage();
-    await noObserverPage.goto(`${server.baseUrl}/journal/10-aquarium-questions/`, { waitUntil: 'domcontentloaded' });
+    await noObserverPage.goto(`${server.baseUrl}/journal/how-much-fish-food/`, { waitUntil: 'domcontentloaded' });
     await noObserverPage.waitForTimeout(200);
 
     const noObserverVisible = await noObserverPage.evaluate(() =>

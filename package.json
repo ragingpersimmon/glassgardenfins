@@ -6,6 +6,7 @@
   "main": "script.js",
   "type": "module",
   "scripts": {
+    "build:questions": "node ./tools/build-question-series.mjs",
     "test": "npm run test:setup && npm run validate:site && npm run test:scheduled && npm run test:mutations && npm run test:deterministic && npm run test:chaos",
     "validate:site": "node ./tools/validate-site.mjs",
     "test:scheduled": "node ./tools/publish-scheduled-entry.test.mjs",

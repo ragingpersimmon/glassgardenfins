@@ -13,6 +13,56 @@ export const PAGE_DEFS = [
     current: '/journal/'
   },
   {
+    file: 'journal/how-much-fish-food/index.html',
+    route: '/journal/how-much-fish-food/',
+    current: '/journal/'
+  },
+  {
+    file: 'journal/how-much-sun-do-fish-need/index.html',
+    route: '/journal/how-much-sun-do-fish-need/',
+    current: '/journal/'
+  },
+  {
+    file: 'journal/what-happened-to-my-shrimps-skin/index.html',
+    route: '/journal/what-happened-to-my-shrimps-skin/',
+    current: '/journal/'
+  },
+  {
+    file: 'journal/why-is-my-fish-staying-at-the-bottom/index.html',
+    route: '/journal/why-is-my-fish-staying-at-the-bottom/',
+    current: '/journal/'
+  },
+  {
+    file: 'journal/why-is-my-fish-swimming-at-the-top/index.html',
+    route: '/journal/why-is-my-fish-swimming-at-the-top/',
+    current: '/journal/'
+  },
+  {
+    file: 'journal/how-often-should-you-change-aquarium-water/index.html',
+    route: '/journal/how-often-should-you-change-aquarium-water/',
+    current: '/journal/'
+  },
+  {
+    file: 'journal/why-is-my-aquarium-water-cloudy/index.html',
+    route: '/journal/why-is-my-aquarium-water-cloudy/',
+    current: '/journal/'
+  },
+  {
+    file: 'journal/is-my-aquarium-filter-big-enough/index.html',
+    route: '/journal/is-my-aquarium-filter-big-enough/',
+    current: '/journal/'
+  },
+  {
+    file: 'journal/how-many-fish-can-i-put-in-my-aquarium/index.html',
+    route: '/journal/how-many-fish-can-i-put-in-my-aquarium/',
+    current: '/journal/'
+  },
+  {
+    file: 'journal/why-are-my-aquarium-plants-turning-brown/index.html',
+    route: '/journal/why-are-my-aquarium-plants-turning-brown/',
+    current: '/journal/'
+  },
+  {
     file: 'journal/first-residents-amano-shrimp/index.html',
     route: '/journal/first-residents-amano-shrimp/',
     current: '/journal/'
