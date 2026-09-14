@@ -19,3 +19,7 @@ npm test
 ## CI
 
 GitHub Actions runs all validation and test suites on each push and pull request.
+
+## Amazon Associates links
+
+Journal product links remain ordinary Amazon links until a valid Associates tracking ID is configured. To enable tracked links and the on-page affiliate disclosure, set the `content` value of the `amazon-associate-tag` meta element on each full entry page, such as `journal/10-aquarium-questions/index.html`. The shared script adds the tag only to allowlisted Amazon hosts.

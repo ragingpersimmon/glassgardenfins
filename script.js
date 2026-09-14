@@ -1,6 +1,29 @@
 // Little Fin Swim - minimal, restrained interaction only.
-// Fades journal entries in as they enter view. No-ops entirely
-// if the visitor has requested reduced motion.
+
+(function () {
+  var tagMeta = document.querySelector('meta[name="amazon-associate-tag"]');
+  var tag = tagMeta ? (tagMeta.getAttribute('content') || '').trim() : '';
+
+  if (!/^[a-z0-9-]{1,64}$/i.test(tag)) return;
+
+  var links = document.querySelectorAll('a[data-amazon-link]');
+  Array.prototype.forEach.call(links, function (link) {
+    try {
+      var url = new URL(link.href);
+      var allowedHosts = ['www.amazon.com', 'amazon.com', 'www.amazon.ca', 'amazon.ca'];
+      if (allowedHosts.indexOf(url.hostname) === -1) return;
+
+      url.searchParams.set('tag', tag);
+      link.href = url.toString();
+      link.relList.add('sponsored');
+    } catch (error) {
+      return;
+    }
+  });
+
+  var disclosure = document.querySelector('[data-affiliate-disclosure]');
+  if (disclosure) disclosure.hidden = false;
+})();
 
 (function () {
   var canMatchMedia = typeof window.matchMedia === 'function';
@@ -38,7 +61,7 @@
         }
       });
     },
-    { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+    { threshold: 0, rootMargin: '0px 0px -40px 0px' }
   );
 
   forEach.call(entries, function (el) {
