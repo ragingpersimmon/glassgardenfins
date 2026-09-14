@@ -5,7 +5,7 @@
   "description": "Little Fin Swim static site validation and backtesting",
   "main": "script.js",
   "scripts": {
-    "test": "npm run test:deterministic && npm run test:chaos",
+    "test": "npm run test:setup && npm run test:deterministic && npm run test:chaos",
     "test:deterministic": "node tests/deterministic.cjs",
     "test:chaos": "node tests/chaos.cjs",
     "test:setup": "playwright install chromium"
