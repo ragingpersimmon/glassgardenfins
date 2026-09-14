@@ -129,6 +129,11 @@ async function run() {
       0,
       'journal index should not embed full article content'
     );
+    assert.strictEqual(
+      await page.locator('.journal-card__excerpt, .journal-card__cta').count(),
+      0,
+      'journal index should remain a compact headline archive'
+    );
     const journalEntryLink = page.locator(
       '.journal-card__link[href="/journal/10-aquarium-questions/"]'
     );
@@ -137,11 +142,6 @@ async function run() {
       await journalEntryLink.locator('.journal-card__title').innerText(),
       /questions I keep/,
       'journal card should preserve uppercase standalone I'
-    );
-    assert.doesNotMatch(
-      await journalEntryLink.locator('.journal-card__excerpt').innerText(),
-      /^straight answers/i,
-      'journal summary should not use the removed wording'
     );
     await journalEntryLink.click();
     await page.waitForLoadState('domcontentloaded');
