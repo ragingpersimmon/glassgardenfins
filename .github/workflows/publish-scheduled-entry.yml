@@ -52,7 +52,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html journal/index.html journal/september-15-stocking-update/index.html
+          git add index.html journal/index.html journal/september-15-stocking-update/index.html tank/index.html
           git commit -m "Publish September 15 stocking update"
           git push
 

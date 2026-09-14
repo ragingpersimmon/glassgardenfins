@@ -51,6 +51,26 @@ async function run() {
       'The Tank — Little Fin Swim',
       'https://littlefinswim.net/tank/'
     );
+    const tankDetails = await page.locator('.spec-list').innerText();
+    assert.match(tankDetails, /Hikari Aquarium Solutions Bacto-Surge/i);
+    assert.doesNotMatch(tankDetails, /Fluval 207/i);
+    assert.match(tankDetails, /CO₂\s+none currently/i);
+    const purchaseDates = await page.locator('.purchase-day > time').evaluateAll((times) =>
+      times.map((time) => time.getAttribute('datetime'))
+    );
+    assert.deepStrictEqual(purchaseDates, [
+      '2026-08-15',
+      '2026-07-12',
+      '2026-07-11',
+      '2026-07-10',
+      '2026-07-08',
+      '2026-07-07'
+    ]);
+    assert.strictEqual(
+      await page.locator('.purchase-list a[data-amazon-link]').count(),
+      16,
+      'tank purchase timeline should link all 16 supplied products'
+    );
 
     await checkPageMeta(
       page,

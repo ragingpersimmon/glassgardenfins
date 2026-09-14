@@ -35,6 +35,7 @@ try {
     '<article data-entry-slug="september-15-stocking-update">card</article>'
   );
   fs.writeFileSync(path.join(sourceDir, 'home-update.html'), '<p>new latest entry</p>');
+  fs.writeFileSync(path.join(sourceDir, 'tank-stocking.html'), '<p>5 Thai micro spider crabs</p>');
   fs.writeFileSync(
     path.join(fixtureRoot, 'journal', 'index.html'),
     '<div><!-- scheduled-entry:2026-09-15 --><article>existing entry</article></div>'
@@ -42,6 +43,11 @@ try {
   fs.writeFileSync(
     path.join(fixtureRoot, 'index.html'),
     '<div><!-- latest-entry:start --><p>old</p><!-- latest-entry:end --></div>'
+  );
+  fs.mkdirSync(path.join(fixtureRoot, 'tank'), { recursive: true });
+  fs.writeFileSync(
+    path.join(fixtureRoot, 'tank', 'index.html'),
+    '<div><!-- stocking:start --><p>old plan</p><!-- stocking:end --></div>'
   );
 
   const early = publishScheduledEntry(fixtureRoot, '2026-09-14');
@@ -59,6 +65,10 @@ try {
     /data-entry-slug="september-15-stocking-update"/
   );
   assert.match(fs.readFileSync(path.join(fixtureRoot, 'index.html'), 'utf8'), /new latest entry/);
+  assert.match(
+    fs.readFileSync(path.join(fixtureRoot, 'tank', 'index.html'), 'utf8'),
+    /5 Thai micro spider crabs/
+  );
 
   publishScheduledEntry(fixtureRoot, '2026-09-16');
   const journal = fs.readFileSync(path.join(fixtureRoot, 'journal', 'index.html'), 'utf8');
@@ -66,6 +76,12 @@ try {
     (journal.match(/data-entry-slug="september-15-stocking-update"/g) || []).length,
     1,
     'publishing must be idempotent'
+  );
+  const tank = fs.readFileSync(path.join(fixtureRoot, 'tank', 'index.html'), 'utf8');
+  assert.strictEqual(
+    (tank.match(/5 Thai micro spider crabs/g) || []).length,
+    1,
+    'stocking update must be idempotent'
   );
 
   console.log('Scheduled-entry publication tests passed.');

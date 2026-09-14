@@ -602,6 +602,64 @@ a:hover { text-decoration-color: currentColor; }
   color: var(--color-text-faint);
 }
 
+.stocking-plan--current li::after {
+  display: none;
+}
+
+.equipment-link,
+.purchase-list a {
+  color: var(--color-surface);
+  text-decoration-color: var(--color-amber);
+}
+
+.equipment-link:hover,
+.purchase-list a:hover {
+  color: var(--color-amber);
+}
+
+.purchase-history {
+  margin-top: var(--space-5);
+}
+
+.purchase-timeline {
+  display: grid;
+  gap: var(--space-3);
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.purchase-day {
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  gap: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.purchase-day time {
+  color: var(--color-amber);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.purchase-list {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.purchase-list li {
+  color: var(--color-text-muted);
+}
+
+.purchase-note {
+  color: var(--color-text-faint);
+  font-size: 0.82rem;
+}
+
 /* ===================================================================
    Journal section
    =================================================================== */
@@ -933,6 +991,8 @@ a:hover { text-decoration-color: currentColor; }
   .page-nav__list { grid-template-columns: 1fr; }
 
   .product-box__list { grid-template-columns: 1fr; }
+
+  .purchase-day { grid-template-columns: 1fr; gap: var(--space-1); }
 
   .site-nav { gap: var(--space-2); }
 
