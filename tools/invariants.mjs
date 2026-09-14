@@ -11,6 +11,21 @@ export const PAGE_DEFS = [
     file: 'journal/10-aquarium-questions/index.html',
     route: '/journal/10-aquarium-questions/',
     current: '/journal/'
+  },
+  {
+    file: 'journal/first-residents-amano-shrimp/index.html',
+    route: '/journal/first-residents-amano-shrimp/',
+    current: '/journal/'
+  },
+  {
+    file: 'journal/detritus-worms/index.html',
+    route: '/journal/detritus-worms/',
+    current: '/journal/'
+  },
+  {
+    file: 'journal/dialing-in-before-stocking/index.html',
+    route: '/journal/dialing-in-before-stocking/',
+    current: '/journal/'
   }
 ];
 
