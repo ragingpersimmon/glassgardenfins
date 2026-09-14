@@ -618,7 +618,8 @@ a:hover { text-decoration-color: currentColor; }
 }
 
 .shop-card:focus,
-.shop-list__item:focus {
+.shop-list__item:focus,
+.shop-list__item:focus-within {
   outline: 2px solid var(--color-surface);
   outline-offset: 4px;
 }
