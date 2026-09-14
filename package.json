@@ -1,0 +1,18 @@
+{
+  "name": "littlefinswim",
+  "version": "1.0.0",
+  "description": "Static site for Little Fin Swim with robustness validation tooling",
+  "main": "script.js",
+  "scripts": {
+    "test": "npm run validate:deterministic && npm run test:chaos",
+    "validate:deterministic": "node tools/validate-site.mjs",
+    "test:chaos": "node tools/chaos-test.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://localhost:26831/ragingpersimmon/littlefinswim"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
