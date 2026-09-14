@@ -14,7 +14,11 @@
     }
 
     window.requestAnimationFrame(function () {
-      target.focus({ preventScroll: true });
+      try {
+        target.focus({ preventScroll: true });
+      } catch (error) {
+        target.focus();
+      }
     });
   }
 
