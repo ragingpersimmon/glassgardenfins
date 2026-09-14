@@ -10,7 +10,8 @@
   Array.prototype.forEach.call(links, function (link) {
     try {
       var url = new URL(link.href);
-      if (url.hostname !== 'www.amazon.com' && url.hostname !== 'amazon.com') return;
+      var allowedHosts = ['www.amazon.com', 'amazon.com', 'www.amazon.ca', 'amazon.ca'];
+      if (allowedHosts.indexOf(url.hostname) === -1) return;
 
       url.searchParams.set('tag', tag);
       link.href = url.toString();

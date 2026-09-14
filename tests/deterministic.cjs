@@ -66,7 +66,7 @@ async function run() {
       }))
     );
     assert.ok(
-      untaggedLinks.every(({ host, tag }) => host === 'www.amazon.com' && tag === null),
+      untaggedLinks.every(({ host, tag }) => host === 'www.amazon.ca' && tag === null),
       'Amazon links should remain untagged until a real Associates ID is configured'
     );
     assert.ok(
