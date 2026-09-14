@@ -766,6 +766,10 @@ a:hover { text-decoration-color: currentColor; }
    Responsive
    =================================================================== */
 
+@media (max-width: 980px) {
+  .shop-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
 @media (max-width: 760px) {
   :root { --wrap-width: 100%; }
 
