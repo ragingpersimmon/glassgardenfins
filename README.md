@@ -1,17 +1,21 @@
 # littlefinswim
 
-Static GitHub Pages site for https://littlefinswim.net.
+Static GitHub Pages site for https://littlefinswim.net, with static validation and deterministic and chaos-style browser backtests.
 
-## Local checks
+## Local validation
 
-- Deterministic invariants: `node ./tools/validate-site.mjs`
-- Chaos tests (deterministic + seeded heuristic): `node ./tools/chaos-test.mjs`
-- Run both: `npm test`
+```bash
+npm install
+npm test
+```
 
-## What is validated
+## Test suites
 
-- Canonical, Open Graph, and Twitter URL consistency per page
-- Navigation integrity and `aria-current` correctness
-- Required script include and page landmarks
-- Baseline CSP presence and required directives
-- Fault-detection behavior under injected deterministic and randomized mutations
+- `npm run validate:site`: static checks for canonical, Open Graph, and Twitter URL consistency, navigation integrity, `aria-current`, required scripts and landmarks, and baseline CSP directives.
+- `npm run test:mutations`: verifies fault detection under deterministic and seeded randomized mutations.
+- `npm run test:deterministic`: browser checks for page metadata, canonical URLs, navigation, and reduced-motion/runtime fallbacks.
+- `npm run test:chaos`: seeded (`1337`) browser backtests across random routes, viewports, reduced-motion modes, and resource fault injection (font blocking, script delay/block).
+
+## CI
+
+GitHub Actions runs all validation and test suites on each push and pull request.

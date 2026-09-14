@@ -11,11 +11,29 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Deterministic validation
-        run: node ./tools/validate-site.mjs
-      - name: Chaos validation
-        run: node ./tools/chaos-test.mjs
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Run static invariant validation
+        run: npm run validate:site
+
+      - name: Run static mutation tests
+        run: npm run test:mutations
+
+      - name: Run deterministic browser tests
+        run: npm run test:deterministic
+
+      - name: Run chaos browser backtests
+        run: npm run test:chaos

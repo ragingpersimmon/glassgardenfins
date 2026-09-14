@@ -3,21 +3,26 @@
 // if the visitor has requested reduced motion.
 
 (function () {
-  var prefersReducedMotion = window.matchMedia(
-    '(prefers-reduced-motion: reduce)'
-  ).matches;
+  var canMatchMedia = typeof window.matchMedia === 'function';
+  var prefersReducedMotion = canMatchMedia
+    ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    : false;
 
   var entries = document.querySelectorAll('.entry');
-  if (!entries.length) return;
+  if (!entries || !entries.length) return;
 
-  if (prefersReducedMotion || !('IntersectionObserver' in window)) {
-    entries.forEach(function (el) {
+  var forEach = Array.prototype.forEach;
+
+  if (prefersReducedMotion || typeof window.IntersectionObserver !== 'function') {
+    forEach.call(entries, function (el) {
       el.style.opacity = '1';
+      el.style.transform = 'none';
+      el.style.transition = 'none';
     });
     return;
   }
 
-  entries.forEach(function (el) {
+  forEach.call(entries, function (el) {
     el.style.opacity = '0';
     el.style.transform = 'translateY(14px)';
     el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
@@ -25,8 +30,8 @@
 
   var observer = new IntersectionObserver(
     function (records) {
-      records.forEach(function (record) {
-        if (record.isIntersecting) {
+      forEach.call(records, function (record) {
+        if (record && record.isIntersecting && record.target) {
           record.target.style.opacity = '1';
           record.target.style.transform = 'translateY(0)';
           observer.unobserve(record.target);
@@ -36,7 +41,7 @@
     { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
   );
 
-  entries.forEach(function (el) {
+  forEach.call(entries, function (el) {
     observer.observe(el);
   });
 })();
