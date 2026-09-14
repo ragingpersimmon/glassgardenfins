@@ -51,9 +51,15 @@ body {
   margin: 0;
   background: var(--color-bg);
   color: var(--color-text);
-  font-family: var(--font-body);
+  font-family: Arial, Helvetica, sans-serif;
   line-height: 1.65;
   text-rendering: optimizeLegibility;
+  text-transform: lowercase;
+}
+
+body *:not(.entry):not(.entry *) {
+  font-family: Arial, Helvetica, sans-serif;
+  text-transform: lowercase;
 }
 
 img, svg { display: block; max-width: 100%; }
@@ -665,6 +671,8 @@ a:hover { text-decoration-color: currentColor; }
 .entry {
   padding-top: var(--space-4);
   border-top: 1px solid var(--color-border);
+  font-family: var(--font-body);
+  text-transform: none;
 }
 
 .entry:first-child { border-top: none; padding-top: 0; }
