@@ -175,6 +175,41 @@ a:hover { text-decoration-color: currentColor; }
   margin-inline: auto;
 }
 
+.hero__actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-top: var(--space-3);
+}
+
+.button-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 11rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-green);
+  border-radius: 999px;
+  background: var(--color-green);
+  color: var(--color-bg);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.button-link:hover {
+  background: var(--color-surface);
+  border-color: var(--color-surface);
+}
+
+.button-link--ghost {
+  background: transparent;
+  color: var(--color-surface);
+}
+
 .tank-scene {
   position: relative;
   width: min(100%, 680px);
@@ -550,6 +585,46 @@ a:hover { text-decoration-color: currentColor; }
   color: var(--color-text-faint);
 }
 
+.shop-card {
+  margin-top: var(--space-4);
+  background: linear-gradient(180deg, rgba(22, 17, 12, 0.96), rgba(15, 35, 32, 0.96));
+}
+
+.shop-card__intro {
+  margin: 0 0 var(--space-3);
+  max-width: 58ch;
+  color: var(--color-text-muted);
+}
+
+.shop-list {
+  list-style: none;
+  margin: 0 0 var(--space-3);
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.shop-list__item {
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: rgba(10, 22, 20, 0.5);
+}
+
+.shop-list__item p {
+  margin: var(--space-1) 0 0;
+  color: var(--color-text-muted);
+}
+
+.shop-list__link {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  text-decoration: none;
+}
+
+.shop-list__link:hover { color: var(--color-surface); }
+
 /* ===================================================================
    Journal section
    =================================================================== */
@@ -687,6 +762,8 @@ a:hover { text-decoration-color: currentColor; }
   .tank__grid { grid-template-columns: 1fr; }
 
   .page-nav__list { grid-template-columns: 1fr; }
+
+  .shop-list { grid-template-columns: 1fr; }
 
   .site-nav { gap: var(--space-2); }
 
