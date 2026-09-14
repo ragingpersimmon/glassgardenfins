@@ -617,6 +617,12 @@ a:hover { text-decoration-color: currentColor; }
   background: rgba(10, 22, 20, 0.5);
 }
 
+.shop-card:focus,
+.shop-list__item:focus {
+  outline: 2px solid var(--color-surface);
+  outline-offset: 4px;
+}
+
 .shop-list__item p {
   margin: var(--space-1) 0 0;
   color: var(--color-text-muted);

@@ -3,6 +3,24 @@
 // if the visitor has requested reduced motion.
 
 (function () {
+  function focusHashTarget() {
+    if (!window.location.hash) return;
+
+    var target = document.getElementById(window.location.hash.slice(1));
+    if (!target) return;
+
+    if (!target.hasAttribute('tabindex')) {
+      target.setAttribute('tabindex', '-1');
+    }
+
+    window.requestAnimationFrame(function () {
+      target.focus({ preventScroll: true });
+    });
+  }
+
+  focusHashTarget();
+  window.addEventListener('hashchange', focusHashTarget);
+
   var prefersReducedMotion = window.matchMedia(
     '(prefers-reduced-motion: reduce)'
   ).matches;
