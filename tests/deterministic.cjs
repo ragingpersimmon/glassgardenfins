@@ -56,6 +56,49 @@ async function run() {
 
     await page.goto(`${server.baseUrl}/journal/`, { waitUntil: 'domcontentloaded' });
     await page.waitForTimeout(250);
+
+    const productLinks = page.locator('a[data-amazon-link]');
+    assert.ok(await productLinks.count(), 'journal should include relevant Amazon product links');
+    const untaggedLinks = await productLinks.evaluateAll((links) =>
+      links.map((link) => ({
+        host: new URL(link.href).hostname,
+        tag: new URL(link.href).searchParams.get('tag')
+      }))
+    );
+    assert.ok(
+      untaggedLinks.every(({ host, tag }) => host === 'www.amazon.com' && tag === null),
+      'Amazon links should remain untagged until a real Associates ID is configured'
+    );
+    assert.ok(
+      await page.locator('[data-affiliate-disclosure]').isHidden(),
+      'affiliate disclosure should remain hidden while monetization is disabled'
+    );
+
+    await page.route(`${server.baseUrl}/journal/`, async (route) => {
+      const response = await route.fetch();
+      const body = (await response.text()).replace(
+        'name="amazon-associate-tag" content=""',
+        'name="amazon-associate-tag" content="littlefinswim-20"'
+      );
+      await route.fulfill({ response, body });
+    });
+    await page.goto(`${server.baseUrl}/journal/`, { waitUntil: 'domcontentloaded' });
+    const taggedLinks = await page.locator('a[data-amazon-link]').evaluateAll((links) =>
+      links.map((link) => ({
+        tag: new URL(link.href).searchParams.get('tag'),
+        sponsored: link.relList.contains('sponsored')
+      }))
+    );
+    assert.ok(
+      taggedLinks.every(({ tag, sponsored }) => tag === 'littlefinswim-20' && sponsored),
+      'configured Amazon links should include the Associates ID and sponsored relationship'
+    );
+    assert.ok(
+      await page.locator('[data-affiliate-disclosure]').isVisible(),
+      'affiliate disclosure should be visible when monetization is enabled'
+    );
+    await page.unroute(`${server.baseUrl}/journal/`);
+
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
     await page.waitForTimeout(700);
     const allVisibleAfterScroll = await page.evaluate(() =>
