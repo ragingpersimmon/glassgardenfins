@@ -22,8 +22,15 @@
     });
   }
 
-  focusHashTarget();
-  window.addEventListener('hashchange', focusHashTarget);
+  var hasProductTargets =
+    document.getElementById('shop') ||
+    document.getElementById('fluval-207') ||
+    document.getElementById('fluval-407');
+
+  if (hasProductTargets) {
+    focusHashTarget();
+    window.addEventListener('hashchange', focusHashTarget);
+  }
 
   var prefersReducedMotion = window.matchMedia(
     '(prefers-reduced-motion: reduce)'
