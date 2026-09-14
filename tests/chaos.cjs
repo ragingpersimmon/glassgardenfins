@@ -2,7 +2,7 @@ const assert = require('assert');
 const { chromium } = require('playwright');
 const { startServer, createSeededRandom } = require('./helpers.cjs');
 
-const ROUTES = ['/', '/tank/', '/journal/'];
+const ROUTES = ['/', '/tank/', '/journal/', '/journal/10-aquarium-questions/'];
 const VIEWPORTS = [
   { width: 320, height: 640 },
   { width: 390, height: 844 },

@@ -54,7 +54,25 @@ async function run() {
       'https://littlefinswim.net/journal/'
     );
 
+    await checkPageMeta(
+      page,
+      server.baseUrl,
+      '/journal/10-aquarium-questions/',
+      '10 Aquarium Questions I Keep Coming Back To — Little Fin Swim',
+      'https://littlefinswim.net/journal/10-aquarium-questions/'
+    );
+
     await page.goto(`${server.baseUrl}/journal/`, { waitUntil: 'domcontentloaded' });
+    const journalEntryLink = page.locator('.journal-card__link');
+    assert.strictEqual(await journalEntryLink.count(), 1, 'journal index should list the full entry');
+    await journalEntryLink.click();
+    await page.waitForLoadState('domcontentloaded');
+    assert.strictEqual(
+      new URL(page.url()).pathname,
+      '/journal/10-aquarium-questions/',
+      'journal card should open the full entry'
+    );
+
     await page.waitForTimeout(250);
 
     const productLinks = page.locator('a[data-amazon-link]');
@@ -74,7 +92,7 @@ async function run() {
       'affiliate disclosure should remain hidden while monetization is disabled'
     );
 
-    await page.route(`${server.baseUrl}/journal/`, async (route) => {
+    await page.route(`${server.baseUrl}/journal/10-aquarium-questions/`, async (route) => {
       const response = await route.fetch();
       const body = (await response.text()).replace(
         'name="amazon-associate-tag" content=""',
@@ -82,7 +100,7 @@ async function run() {
       );
       await route.fulfill({ response, body });
     });
-    await page.goto(`${server.baseUrl}/journal/`, { waitUntil: 'domcontentloaded' });
+    await page.goto(`${server.baseUrl}/journal/10-aquarium-questions/`, { waitUntil: 'domcontentloaded' });
     const taggedLinks = await page.locator('a[data-amazon-link]').evaluateAll((links) =>
       links.map((link) => ({
         tag: new URL(link.href).searchParams.get('tag'),
@@ -97,7 +115,7 @@ async function run() {
       await page.locator('[data-affiliate-disclosure]').isVisible(),
       'affiliate disclosure should be visible when monetization is enabled'
     );
-    await page.unroute(`${server.baseUrl}/journal/`);
+    await page.unroute(`${server.baseUrl}/journal/10-aquarium-questions/`);
 
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
     await page.waitForTimeout(700);
@@ -113,7 +131,7 @@ async function run() {
 
     const reducedContext = await browser.newContext({ reducedMotion: 'reduce' });
     const reducedPage = await reducedContext.newPage();
-    await reducedPage.goto(`${server.baseUrl}/journal/`, { waitUntil: 'domcontentloaded' });
+    await reducedPage.goto(`${server.baseUrl}/journal/10-aquarium-questions/`, { waitUntil: 'domcontentloaded' });
     await reducedPage.waitForTimeout(200);
 
     const reducedMotionVisible = await reducedPage.evaluate(() =>
@@ -134,7 +152,7 @@ async function run() {
       });
     });
     const noObserverPage = await noObserverContext.newPage();
-    await noObserverPage.goto(`${server.baseUrl}/journal/`, { waitUntil: 'domcontentloaded' });
+    await noObserverPage.goto(`${server.baseUrl}/journal/10-aquarium-questions/`, { waitUntil: 'domcontentloaded' });
     await noObserverPage.waitForTimeout(200);
 
     const noObserverVisible = await noObserverPage.evaluate(() =>

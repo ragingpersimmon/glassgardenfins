@@ -6,7 +6,12 @@ export const SITE_ORIGIN = 'https://littlefinswim.net';
 export const PAGE_DEFS = [
   { file: 'index.html', route: '/', current: null },
   { file: 'tank/index.html', route: '/tank/', current: '/tank/' },
-  { file: 'journal/index.html', route: '/journal/', current: '/journal/' }
+  { file: 'journal/index.html', route: '/journal/', current: '/journal/' },
+  {
+    file: 'journal/10-aquarium-questions/index.html',
+    route: '/journal/10-aquarium-questions/',
+    current: '/journal/'
+  }
 ];
 
 function firstMatch(source, regex) {
