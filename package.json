@@ -1,0 +1,10 @@
+{
+  "name": "littlefinswim",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "validate:site": "node ./tools/validate-site.mjs",
+    "test:chaos": "node ./tools/chaos-test.mjs",
+    "test": "npm run validate:site && npm run test:chaos"
+  }
+}
