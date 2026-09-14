@@ -1,0 +1,23 @@
+{
+  "name": "littlefinswim",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Little Fin Swim static site validation and backtesting",
+  "main": "script.js",
+  "scripts": {
+    "test": "npm run test:deterministic && npm run test:chaos",
+    "test:deterministic": "node tests/deterministic.cjs",
+    "test:chaos": "node tests/chaos.cjs",
+    "test:setup": "playwright install chromium"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://localhost:26831/ragingpersimmon/littlefinswim"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "playwright": "^1.63.0"
+  }
+}
