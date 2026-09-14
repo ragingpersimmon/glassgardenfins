@@ -25,6 +25,7 @@
   var hasProductTargets =
     document.getElementById('shop') ||
     document.getElementById('fluval-207') ||
+    document.getElementById('prime') ||
     document.getElementById('fluval-407');
 
   if (hasProductTargets) {
