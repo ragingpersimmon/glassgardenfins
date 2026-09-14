@@ -89,8 +89,12 @@ export function checkPage(html, { route, current }) {
   } else {
     if (!csp.includes("default-src 'self'")) errors.push('CSP missing default-src self');
     if (!csp.includes("script-src 'self'")) errors.push('CSP missing script-src self');
-    if (!csp.includes('https://fonts.googleapis.com')) errors.push('CSP missing Google Fonts stylesheet source');
-    if (!csp.includes('https://fonts.gstatic.com')) errors.push('CSP missing Google Fonts font source');
+    if (!/style-src[^;]*https:\/\/fonts\.googleapis\.com(?=\s|;|$)/i.test(csp)) {
+      errors.push('CSP missing Google Fonts stylesheet source');
+    }
+    if (!/font-src[^;]*https:\/\/fonts\.gstatic\.com(?=\s|;|$)/i.test(csp)) {
+      errors.push('CSP missing Google Fonts font source');
+    }
   }
 
   return errors;

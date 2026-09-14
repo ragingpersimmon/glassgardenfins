@@ -16,7 +16,7 @@ const deterministicFaults = [
   },
   {
     name: 'remove script include',
-    mutate: (html) => html.replace(/<script\s+src="\/script\.js"><\/script>\n?/i, ''),
+    mutate: (html) => html.replace(/src="\/script\.js"/i, 'src="/broken-script.js"'),
     expect: /script\.js/
   },
   {
@@ -48,7 +48,7 @@ const heuristicMutators = [
     expect: /script-src self/
   },
   {
-    mutate: (html) => html.replace(/<script\s+src="\/script\.js"><\/script>\n?/i, ''),
+    mutate: (html) => html.replace(/src="\/script\.js"/i, 'src="/broken-script.js"'),
     expect: /script\.js/
   },
   {
