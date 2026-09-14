@@ -830,6 +830,7 @@ a:hover { text-decoration-color: currentColor; }
   background: var(--color-bg-panel);
 }
 
+.product-box h2,
 .product-box h4 {
   margin: 0 0 var(--space-1);
   color: var(--color-surface);
