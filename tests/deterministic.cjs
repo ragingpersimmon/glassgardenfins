@@ -205,8 +205,8 @@ async function run() {
       Math.abs(desktopJournalLayout.firstWidth - desktopJournalLayout.standardWidth) < 2,
       'every journal card should occupy one desktop grid column'
     );
-    assert.ok(desktopJournalLayout.maxCardHeight <= 160, 'desktop journal cards should remain compact');
-    assert.ok(desktopJournalLayout.maxTitleLines <= 2.1, 'journal headlines should use at most two lines');
+    assert.ok(desktopJournalLayout.maxCardHeight <= 130, 'desktop journal cards should remain compact');
+    assert.ok(desktopJournalLayout.maxTitleLines <= 1.1, 'desktop journal headlines should use one line');
     const journalEntryLink = page.locator('.journal-card__link[href="/journal/how-much-fish-food/"]');
     assert.strictEqual(await journalEntryLink.count(), 1, 'journal index should list the latest question');
     await journalEntryLink.click();
