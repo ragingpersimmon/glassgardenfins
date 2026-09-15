@@ -1,6 +1,16 @@
 // Little Fin Swim - minimal, restrained interaction only.
 
 (function () {
+  if (window.top === window.self) return;
+
+  try {
+    window.top.location = window.self.location;
+  } catch (error) {
+    document.documentElement.style.display = 'none';
+  }
+})();
+
+(function () {
   var tagMeta = document.querySelector('meta[name="amazon-associate-tag"]');
   var tag = tagMeta ? (tagMeta.getAttribute('content') || '').trim() : '';
 

@@ -69,6 +69,10 @@ try {
     fs.readFileSync(path.join(fixtureRoot, 'tank', 'index.html'), 'utf8'),
     /5 Thai micro spider crabs/
   );
+  assert.match(
+    fs.readFileSync(path.join(fixtureRoot, 'sitemap.xml'), 'utf8'),
+    /https:\/\/littlefinswim\.net\/journal\/september-15-stocking-update\//
+  );
 
   publishScheduledEntry(fixtureRoot, '2026-09-16');
   const journal = fs.readFileSync(path.join(fixtureRoot, 'journal', 'index.html'), 'utf8');

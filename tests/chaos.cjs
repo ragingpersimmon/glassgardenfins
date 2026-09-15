@@ -4,7 +4,9 @@ const { startServer, createSeededRandom } = require('./helpers.cjs');
 
 const ROUTES = [
   '/',
+  '/404.html',
   '/tank/',
+  '/privacy/',
   '/journal/',
   '/journal/10-aquarium-questions/',
   '/journal/how-much-fish-food/',

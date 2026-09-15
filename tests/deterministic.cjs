@@ -89,6 +89,19 @@ async function run() {
     await checkPageMeta(
       page,
       server.baseUrl,
+      '/privacy/',
+      'Privacy & Disclosure — Little Fin Swim',
+      'https://littlefinswim.net/privacy/'
+    );
+    assert.match(
+      await page.locator('[data-affiliate-status]').innerText(),
+      /does not currently earn a commission/i,
+      'privacy page should describe the current untagged affiliate state'
+    );
+
+    await checkPageMeta(
+      page,
+      server.baseUrl,
       '/journal/',
       'Journal — Little Fin Swim',
       'https://littlefinswim.net/journal/'
@@ -208,6 +221,58 @@ async function run() {
       await page.locator('[data-affiliate-disclosure]').isHidden(),
       'affiliate disclosure should remain hidden while monetization is disabled'
     );
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(`${server.baseUrl}/journal/`, { waitUntil: 'domcontentloaded' });
+    const undersizedNavigationTargets = await page.locator(
+      '.wordmark, .site-nav a, .journal-card__link, .site-footer a'
+    ).evaluateAll((links) => links
+      .map((link) => {
+        const rect = link.getBoundingClientRect();
+        return { text: link.textContent.trim(), width: rect.width, height: rect.height };
+      })
+      .filter(({ width, height }) => width < 44 || height < 44));
+    assert.deepStrictEqual(
+      undersizedNavigationTargets,
+      [],
+      `mobile navigation targets should be at least 44×44: ${JSON.stringify(undersizedNavigationTargets)}`
+    );
+    const hasHorizontalOverflow = await page.evaluate(
+      () => document.documentElement.scrollWidth > document.documentElement.clientWidth
+    );
+    assert.strictEqual(hasHorizontalOverflow, false, 'journal should not overflow horizontally at 390px');
+
+    await page.setViewportSize({ width: 320, height: 640 });
+    for (const route of [
+      '/',
+      '/tank/',
+      '/privacy/',
+      '/journal/',
+      '/journal/how-much-fish-food/'
+    ]) {
+      await page.goto(`${server.baseUrl}${route}`, { waitUntil: 'domcontentloaded' });
+      const mobileLayout = await page.evaluate(() => {
+        const heading = document.querySelector('h1');
+        const targets = Array.from(document.querySelectorAll(
+          '.wordmark, .site-nav a, .journal-card__link, .site-footer a'
+        )).map((link) => {
+          const rect = link.getBoundingClientRect();
+          return { text: link.textContent.trim(), width: rect.width, height: rect.height };
+        });
+        return {
+          headingTop: heading ? heading.getBoundingClientRect().top : Number.POSITIVE_INFINITY,
+          overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
+          undersizedTargets: targets.filter(({ width, height }) => width < 44 || height < 44)
+        };
+      });
+      assert.strictEqual(mobileLayout.overflow, false, `${route}: must not overflow at 320px`);
+      assert.ok(mobileLayout.headingTop < 260, `${route}: heading should remain above the fold`);
+      assert.deepStrictEqual(
+        mobileLayout.undersizedTargets,
+        [],
+        `${route}: mobile navigation targets should be at least 44×44`
+      );
+    }
 
     const articleWordCounts = [];
     for (const [route, title] of QUESTION_ENTRIES) {
