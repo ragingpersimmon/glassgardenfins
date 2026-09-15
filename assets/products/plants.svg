@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img" aria-labelledby="title">
+  <title id="title">Planted aquarium supplies illustration</title>
+  <rect width="320" height="180" fill="#081d19"/>
+  <path d="M50 151c3-45 17-81 42-106-10 43-7 78 9 106m23 0c1-35 15-62 42-82-12 34-10 61 4 82m28 0c5-50 25-84 59-104-20 42-23 77-8 104" fill="none" stroke="#6e9f89" stroke-width="8" stroke-linecap="round"/>
+  <path d="M217 67h38v75h-38z" fill="#d9e7dc" opacity=".9"/>
+  <path d="M223 116h26v20h-26z" fill="#69a9a3"/>
+  <circle cx="236" cy="106" r="5" fill="#69a9a3"/><circle cx="236" cy="93" r="4" fill="#69a9a3"/><circle cx="236" cy="82" r="3" fill="#69a9a3"/>
+  <text x="24" y="28" fill="#d59a57" font-family="Arial,sans-serif" font-size="12" letter-spacing="2">PLANTED TANK</text>
+</svg>

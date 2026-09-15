@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img" aria-labelledby="title">
+  <title id="title">Aquarium maintenance illustration</title>
+  <rect width="320" height="180" fill="#081d19"/>
+  <circle cx="65" cy="150" r="80" fill="#12362f"/>
+  <path d="M118 48h60v18l10 14v69h-80V80l10-14z" fill="#d9e7dc"/>
+  <rect x="117" y="91" width="62" height="42" fill="#6e9f89"/>
+  <path d="M206 126c0-31 22-55 51-62-3 30-21 54-51 62z" fill="#7b9f65"/>
+  <path d="M205 128c13-23 28-40 47-54" fill="none" stroke="#d9e7dc" stroke-width="3"/>
+  <text x="24" y="28" fill="#d59a57" font-family="Arial,sans-serif" font-size="12" letter-spacing="2">MAINTENANCE</text>
+</svg>

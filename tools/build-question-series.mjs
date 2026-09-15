@@ -248,9 +248,22 @@ const questions = [
 const fonts = 'https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,500&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;1,7..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap';
 const csp = "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests";
 
+function productImage(name) {
+  const normalized = name.toLowerCase();
+  if (/wafer|bug bites|food/.test(normalized)) return 'food';
+  if (/power center|grow light/.test(normalized)) return 'lighting';
+  if (/test kit/.test(normalized)) return 'water-test';
+  if (/stratum|almond|cholla/.test(normalized)) return 'habitat';
+  if (/filter/.test(normalized)) return 'filtration';
+  if (/air pump|check valve|tubing/.test(normalized)) return 'aeration';
+  if (/stability/.test(normalized)) return 'maintenance';
+  if (/drop checker|flourish/.test(normalized)) return 'plants';
+  return 'aquarium-supplies';
+}
+
 function renderProducts(question) {
   return question.products.map(([href, name, note]) =>
-    `                <li><a data-amazon-link href="${href}" target="_blank" rel="noopener noreferrer">${name}</a><span>${note}</span></li>`
+    `                <li><a data-amazon-link href="${href}" target="_blank" rel="noopener noreferrer"><img src="/assets/products/${productImage(name)}.svg" alt="" width="320" height="180" loading="lazy"><span class="product-box__name">${name}</span></a><span class="product-box__note">${note}</span></li>`
   ).join('\n');
 }
 
