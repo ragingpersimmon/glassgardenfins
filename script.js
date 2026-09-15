@@ -78,3 +78,95 @@
     observer.observe(el);
   });
 })();
+
+(function () {
+  var montage = document.querySelector('[data-hero-montage]');
+  if (!montage) return;
+
+  var clips = montage.querySelectorAll('[data-hero-clip]');
+  var toggle = montage.querySelector('[data-hero-toggle]');
+  var prefersReducedMotion = typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var activeIndex = 0;
+  var timer = null;
+  var userPaused = false;
+
+  function pauseClips() {
+    Array.prototype.forEach.call(clips, function (clip) {
+      clip.pause();
+    });
+  }
+
+  function playClip(clip, restart) {
+    if (restart) clip.currentTime = 0;
+    var attempt = clip.play();
+    return attempt && typeof attempt.catch === 'function'
+      ? attempt.then(function () { return true; }).catch(function () { return false; })
+      : Promise.resolve(true);
+  }
+
+  function showClip(index) {
+    var previousClip = clips[activeIndex];
+    var nextClip = clips[index];
+    playClip(nextClip, true);
+    Array.prototype.forEach.call(clips, function (clip, clipIndex) {
+      var active = clipIndex === index;
+      clip.classList.toggle('is-active', active);
+      clip.setAttribute('aria-hidden', active ? 'false' : 'true');
+    });
+    activeIndex = index;
+    window.setTimeout(function () {
+      if (!previousClip.classList.contains('is-active')) previousClip.pause();
+    }, 1600);
+  }
+
+  function startTimer() {
+    window.clearInterval(timer);
+    timer = window.setInterval(function () {
+      showClip((activeIndex + 1) % clips.length);
+    }, 8000);
+  }
+
+  function setPaused(paused) {
+    userPaused = paused;
+    toggle.setAttribute('aria-pressed', paused ? 'true' : 'false');
+    toggle.textContent = paused ? 'Play motion' : 'Pause motion';
+    if (paused) {
+      window.clearInterval(timer);
+      pauseClips();
+      return;
+    }
+    playClip(clips[activeIndex], false).then(function (playing) {
+      if (playing) startTimer();
+    });
+  }
+
+  if (clips.length < 2 || !toggle || prefersReducedMotion) {
+    pauseClips();
+    return;
+  }
+
+  playClip(clips[activeIndex], false).then(function (playing) {
+    toggle.hidden = false;
+    if (playing) {
+      startTimer();
+    } else {
+      setPaused(true);
+    }
+  });
+
+  toggle.addEventListener('click', function () {
+    setPaused(!userPaused);
+  });
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) {
+      window.clearInterval(timer);
+      pauseClips();
+    } else if (!userPaused) {
+      playClip(clips[activeIndex], false).then(function (playing) {
+        if (playing) startTimer();
+      });
+    }
+  });
+})();

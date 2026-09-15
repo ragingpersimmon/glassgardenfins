@@ -5,10 +5,34 @@
   <url>
     <loc>https://littlefinswim.net/</loc>
     <lastmod>2026-09-15</lastmod>
-    <image:image>
-      <image:loc>https://littlefinswim.net/assets/media/tank-overview-home.webp</image:loc>
-      <image:caption>Mature planted 70-litre aquarium with dense greenery and branching hardscape.</image:caption>
-    </image:image>
+    <video:video>
+      <video:thumbnail_loc>https://littlefinswim.net/assets/media/corydoras-group-foraging-poster.webp</video:thumbnail_loc>
+      <video:title>A group of Corydoras foraging across the aquarium substrate</video:title>
+      <video:description>A group of Corydoras foraging across the aquarium substrate</video:description>
+      <video:content_loc>https://littlefinswim.net/assets/media/corydoras-group-foraging.mp4</video:content_loc>
+      <video:duration>11</video:duration>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://littlefinswim.net/assets/media/corydoras-close-foraging-poster.webp</video:thumbnail_loc>
+      <video:title>A Corydoras swimming and feeding close to the substrate</video:title>
+      <video:description>A Corydoras swimming and feeding close to the substrate</video:description>
+      <video:content_loc>https://littlefinswim.net/assets/media/corydoras-close-foraging.mp4</video:content_loc>
+      <video:duration>12</video:duration>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://littlefinswim.net/assets/media/amano-shrimp-poster.webp</video:thumbnail_loc>
+      <video:title>Amano shrimp grazing on reddish driftwood</video:title>
+      <video:description>Amano shrimp grazing on reddish driftwood</video:description>
+      <video:content_loc>https://littlefinswim.net/assets/media/amano-shrimp-stabilized.mp4</video:content_loc>
+      <video:duration>15</video:duration>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://littlefinswim.net/assets/media/stocking-shrimp-poster.webp</video:thumbnail_loc>
+      <video:title>Shrimp moving across aquarium driftwood and plants</video:title>
+      <video:description>Shrimp moving across aquarium driftwood and plants</video:description>
+      <video:content_loc>https://littlefinswim.net/assets/media/stocking-shrimp-stabilized.mp4</video:content_loc>
+      <video:duration>13</video:duration>
+    </video:video>
   </url>
   <url>
     <loc>https://littlefinswim.net/journal/</loc>

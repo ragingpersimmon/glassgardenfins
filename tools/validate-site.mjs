@@ -119,9 +119,11 @@ if (!fs.existsSync(sitemapPath)) {
     console.error('\n❌ sitemap.xml requires one non-future lastmod per route');
   }
   const expectedSitemapMedia = [
-    '/assets/media/tank-overview-home.webp',
+    '/assets/media/amano-shrimp-poster.webp',
     '/assets/media/hardscape-equipment-detail.webp',
     '/assets/media/shrimp-hardscape-detail.webp',
+    '/assets/media/corydoras-group-foraging.mp4',
+    '/assets/media/corydoras-close-foraging.mp4',
     '/assets/media/amano-shrimp-stabilized.mp4',
     '/assets/media/stocking-shrimp-stabilized.mp4'
   ];
