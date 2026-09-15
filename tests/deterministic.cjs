@@ -67,7 +67,8 @@ async function run() {
     const tankDetails = await page.locator('.spec-list').innerText();
     assert.match(tankDetails, /Hikari Aquarium Solutions Bacto-Surge/i);
     assert.doesNotMatch(tankDetails, /Fluval 207/i);
-    assert.match(tankDetails, /CO₂\s+none currently/i);
+    assert.match(tankDetails, /CO₂ injection\s+no active system/i);
+    assert.match(tankDetails, /CO₂ monitoring\s+Pawfly glass CO₂ drop checker \(in use\)/i);
     assert.match(tankDetails, /Dimensions\s+1 ft × 1 ft × 2\.5 ft/i);
     const purchaseDates = await page.locator('.purchase-day > time').evaluateAll((times) =>
       times.map((time) => time.getAttribute('datetime'))
