@@ -58,6 +58,7 @@ function schemaFor(html, file) {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
       name: 'Little Fin Swim',
+      alternateName: 'Little Fin Swim — a planted tank journal',
       description,
       url,
       image: SOCIAL_IMAGE
@@ -79,6 +80,7 @@ function schemaFor(html, file) {
       datePublished,
       dateModified: datePublished,
       mainEntityOfPage: url,
+      url,
       image: SOCIAL_IMAGE,
       author: { '@type': 'Organization', name: 'Little Fin Swim' },
       publisher: { '@type': 'Organization', name: 'Little Fin Swim' }
@@ -99,6 +101,7 @@ function schemaFor(html, file) {
 export function enrichPage(html, file, amazonAssociateTag) {
   let output = html
     .replace(/\s*<meta\s+name="theme-color"[^>]*>/gi, '')
+    .replace(/\s*<meta\s+property="og:site_name"[^>]*>/gi, '')
     .replace(/\s*<meta\s+property="og:image[^>]*>/gi, '')
     .replace(/\s*<meta\s+name="twitter:image[^>]*>/gi, '')
     .replace(/\s*<script\s+type="application\/ld\+json"\s+data-site-schema>[\s\S]*?<\/script>/gi, '')
@@ -108,6 +111,10 @@ export function enrichPage(html, file, amazonAssociateTag) {
   output = output.replace(
     /(<meta\s+name="viewport"[^>]*>)/i,
     '$1\n<meta name="theme-color" content="#0A1614">'
+  );
+  output = output.replace(
+    /(<meta\s+property="og:type"[^>]*>)/i,
+    '$1\n<meta property="og:site_name" content="Little Fin Swim">'
   );
   output = output.replace(
     /<meta\s+name="twitter:card"\s+content="[^"]+">/i,

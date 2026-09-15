@@ -43,9 +43,19 @@ export function discoverPublicPages(repoRoot) {
 }
 
 export function generateSitemap(repoRoot) {
-  const urls = discoverPublicPages(repoRoot)
-    .filter(({ sitemap }) => sitemap !== false)
-    .map(({ route }) => `  <url><loc>${SITE_ORIGIN}${route}</loc></url>`)
+  const pages = discoverPublicPages(repoRoot).filter(({ sitemap }) => sitemap !== false);
+  const datedPages = pages.map((page) => {
+    const html = fs.readFileSync(path.join(repoRoot, page.file), 'utf8');
+    const date = html.match(/<time[^>]+datetime="(\d{4}-\d{2}-\d{2})"/i)?.[1] || null;
+    return { ...page, date };
+  });
+  const latestContentDate = datedPages
+    .map(({ date }) => date)
+    .filter(Boolean)
+    .sort()
+    .at(-1);
+  const urls = datedPages
+    .map(({ route, date }) => `  <url>\n    <loc>${SITE_ORIGIN}${route}</loc>\n    <lastmod>${date || latestContentDate}</lastmod>\n  </url>`)
     .join('\n');
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
   fs.writeFileSync(path.join(repoRoot, 'sitemap.xml'), xml);
