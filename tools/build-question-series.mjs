@@ -58,6 +58,13 @@ const questions = [
     title: 'What Happened to My Shrimp’s Skin?',
     description: 'How to recognize a normal shrimp molt, understand the vulnerable period afterward, and investigate repeated molt trouble.',
     dek: 'A hollow shrimp shape on the substrate is often a successful molt, not a dead shrimp. The difference is easier to see once you know what to inspect.',
+    media: {
+      src: '/assets/media/shrimp-moss-grazing.mp4',
+      poster: '/assets/media/shrimp-moss-grazing-poster.webp',
+      label: 'Shrimp grazing across aquarium moss',
+      duration: 'PT8.07S',
+      caption: 'A shrimp grazing across moss and planted hardscape.'
+    },
     paragraphs: [
       'Shrimp wear an exoskeleton that cannot stretch as they grow. They periodically form a softer shell underneath, split the old shell, and wriggle free. The discarded shell, called an exuvia, can preserve the legs and antennae so perfectly that it looks alarming at first glance.',
       'A molt is usually translucent, papery, and hollow. A dead shrimp keeps body tissue and often retains more colour. When the object is clearly an empty shell, it can stay in the aquarium: shrimp and tankmates may eat it and recycle some of its minerals.',
@@ -260,22 +267,9 @@ const relatedQuestionSlugs = {
   'why-are-my-aquarium-plants-turning-brown': ['how-much-sun-do-fish-need', 'why-is-my-aquarium-water-cloudy']
 };
 
-function productImage(name) {
-  const normalized = name.toLowerCase();
-  if (/wafer|bug bites|food/.test(normalized)) return 'food';
-  if (/power center|grow light/.test(normalized)) return 'lighting';
-  if (/test kit/.test(normalized)) return 'water-test';
-  if (/stratum|almond|cholla/.test(normalized)) return 'habitat';
-  if (/filter/.test(normalized)) return 'filtration';
-  if (/air pump|check valve|tubing/.test(normalized)) return 'aeration';
-  if (/stability/.test(normalized)) return 'maintenance';
-  if (/drop checker|flourish/.test(normalized)) return 'plants';
-  return 'aquarium-supplies';
-}
-
 function renderProducts(question) {
   return question.products.map(([href, name, note]) =>
-    `                <li><a data-amazon-link href="${href}" target="_blank" rel="noopener noreferrer"><img src="/assets/products/${productImage(name)}.svg" alt="" width="320" height="180" loading="lazy"><span class="product-box__name">${name}</span></a><span class="product-box__note">${note}</span></li>`
+    `                <li><a data-amazon-link href="${href}" target="_blank" rel="noopener noreferrer"><span class="product-box__name">${name}</span></a><span class="product-box__note">${note}</span></li>`
   ).join('\n');
 }
 
@@ -296,16 +290,27 @@ ${related}
 function renderArticle(question) {
   const canonical = `https://littlefinswim.net/journal/${question.slug}/`;
   const paragraphs = question.paragraphs.map((paragraph, index) => {
-    const rendered = `            <p>${paragraph}</p>`;
-    if (index !== 3) return rendered;
-    return `${rendered}
+    const rendered = [`            <p>${paragraph}</p>`];
+    if (index === 1 && question.media) {
+      rendered.push(`            <figure class="site-media entry-media">
+              <video controls playsinline preload="metadata" poster="${question.media.poster}" aria-label="${question.media.label}" data-duration="${question.media.duration}">
+                <source src="${question.media.src}" type="video/mp4">
+                Your browser does not support embedded video.
+              </video>
+              <figcaption>${question.media.caption}</figcaption>
+            </figure>`);
+    }
+    if (index === 3) {
+      rendered.push(`
             <aside class="product-box" aria-labelledby="${question.slug}-products">
               <h2 id="${question.slug}-products">${question.boxTitle}</h2>
               <p>${question.boxIntro}</p>
               <ul class="product-box__list">
 ${renderProducts(question)}
               </ul>
-            </aside>`;
+            </aside>`);
+    }
+    return rendered.join('\n');
   }).join('\n');
 
   return `<!DOCTYPE html>

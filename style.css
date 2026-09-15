@@ -14,6 +14,7 @@
 
   --color-amber:       #C68A4B;   /* tannin / driftwood */
   --color-amber-soft:  #8C6238;
+  --color-home-orange: #F0A34A;
   --color-green:       #5C8A62;   /* plant growth */
   --color-green-soft:  #3E5E43;
   --color-surface:     #DCEEE8;   /* surface highlight */
@@ -260,6 +261,14 @@ a:hover { text-decoration-color: currentColor; }
   box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.26);
 }
 
+.hero-montage {
+  cursor: pointer;
+}
+
+.hero-montage:focus-visible {
+  outline-color: var(--color-home-orange);
+}
+
 .hero-photo img {
   aspect-ratio: 16 / 9;
   object-fit: cover;
@@ -287,30 +296,14 @@ a:hover { text-decoration-color: currentColor; }
   opacity: 1;
 }
 
-.hero-montage__toggle {
-  position: absolute;
-  right: var(--space-2);
-  bottom: var(--space-2);
-  z-index: 2;
-  min-width: 44px;
-  min-height: 44px;
-  padding: 0.6rem 0.8rem;
-  border: 1px solid rgba(198, 138, 75, 0.72);
-  border-radius: 999px;
-  background: rgba(10, 22, 20, 0.84);
-  color: var(--color-amber);
-  font: 600 0.72rem/1 var(--font-mono);
-  cursor: pointer;
-}
-
-.hero-montage__toggle:hover,
-.hero-montage__toggle:focus-visible {
-  border-color: var(--color-amber);
-  background: rgba(10, 22, 20, 0.96);
-}
-
 .home-page :where(.site-header, .hero, .readout, .page-nav, .home-update, .site-footer) * {
-  color: var(--color-amber) !important;
+  color: var(--color-home-orange) !important;
+}
+
+.home-page .skip-link {
+  border: 1px solid var(--color-home-orange);
+  background: var(--color-bg-deep);
+  color: var(--color-home-orange);
 }
 
 .tank-scene {
@@ -616,6 +609,11 @@ a:hover { text-decoration-color: currentColor; }
   object-fit: cover;
 }
 
+.tank-media-grid video {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
 .spec-card {
   background: var(--color-bg-panel);
   border: 1px solid var(--color-border-soft);
@@ -722,22 +720,11 @@ a:hover { text-decoration-color: currentColor; }
 
 .equipment-link,
 .purchase-list a {
-  display: inline-grid;
-  grid-template-columns: 6rem minmax(0, 1fr);
+  display: inline-flex;
   align-items: center;
-  gap: 0.8rem;
   min-height: 54px;
   color: var(--color-surface);
   text-decoration-color: var(--color-amber);
-}
-
-.purchase-list a img {
-  display: block;
-  width: 6rem;
-  height: 3.375rem;
-  object-fit: cover;
-  border: 1px solid var(--color-border);
-  border-radius: 5px;
 }
 
 .equipment-link:hover,
@@ -1095,30 +1082,15 @@ a:hover { text-decoration-color: currentColor; }
   text-decoration: none;
 }
 
-.product-box__list img {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  border-bottom: 1px solid rgba(220, 238, 232, 0.08);
-  transition: filter 180ms ease, transform 180ms ease;
-}
-
 .product-box__list a:hover {
   color: var(--color-amber);
-}
-
-.product-box__list a:hover img {
-  filter: brightness(1.08);
-  transform: scale(1.015);
 }
 
 .product-box__name {
   display: flex;
   min-height: 44px;
   align-items: center;
-  padding: 0.6rem 0.75rem 0.35rem;
+  padding: 0.75rem;
   text-decoration: underline;
   text-decoration-color: var(--color-amber);
   text-underline-offset: 0.2em;
@@ -1126,7 +1098,7 @@ a:hover { text-decoration-color: currentColor; }
 
 .product-box__note {
   display: block;
-  padding: 0 0.75rem 0.75rem;
+  padding: 0 0.75rem 0.85rem;
   color: var(--color-text-faint);
   font-size: 0.82rem;
   line-height: 1.5;
@@ -1231,14 +1203,32 @@ a:hover { text-decoration-color: currentColor; }
 }
 
 .site-footer__inner {
+  display: grid;
+  gap: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--color-text-faint);
+}
+
+.site-footer__row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   gap: var(--space-2);
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
+}
+
+.ad-slot {
+  display: grid;
+  min-height: 6rem;
+  place-items: center;
+  border: 1px dashed var(--color-border);
+  border-radius: 6px;
+  background: rgba(5, 22, 19, 0.3);
   color: var(--color-text-faint);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .site-footer__links {
@@ -1313,7 +1303,7 @@ a:hover { text-decoration-color: currentColor; }
   }
   .journal-card .entry__meta { margin-bottom: 0.75rem; }
   .journal-card__link::after { right: 1rem; }
-  .site-footer__inner,
+  .site-footer__row,
   .site-footer__links { align-items: flex-start; }
   .site-footer__links { flex-direction: column; gap: 0; }
 }

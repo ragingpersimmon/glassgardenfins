@@ -42,13 +42,19 @@ GitHub Actions runs all validation and test suites on each push and pull request
 
 Product links remain ordinary Amazon links until a valid Associates tracking ID is configured. The shared script adds the tag only to allowlisted Amazon hosts.
 
+Product cards remain text-only until approved Amazon Creators API access is
+configured. Do not copy, locally host, or hotlink images from Amazon product
+pages; official catalog images must be delivered through Amazon's approved API.
+
 Use `npm run set:amazon-tag -- your-tag-20` to set a real tracking ID across
 the site, or `npm run set:amazon-tag -- --clear` to disable it. The command
 validates the ID, updates `site-config.json`, regenerates every product page,
 and keeps `/privacy/` synchronized with the actual commission state.
 
 The site currently has no ad network configured, so `ads.txt` is intentionally
-absent. Add it only when a network supplies a real publisher record.
+absent. A reserved footer slot is present, but add provider code only when a
+network supplies approved publisher configuration. Do not commit private ad
+network credentials.
 
 ## Static-host security boundary
 

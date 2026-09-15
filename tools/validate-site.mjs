@@ -120,10 +120,10 @@ if (!fs.existsSync(sitemapPath)) {
   }
   const expectedSitemapMedia = [
     '/assets/media/amano-shrimp-poster.webp',
-    '/assets/media/hardscape-equipment-detail.webp',
-    '/assets/media/shrimp-hardscape-detail.webp',
+    '/assets/media/red-bristlenose-pleco-foraging.mp4',
+    '/assets/media/shrimp-open-water-swimming.mp4',
+    '/assets/media/shrimp-moss-grazing.mp4',
     '/assets/media/corydoras-group-foraging.mp4',
-    '/assets/media/corydoras-close-foraging.mp4',
     '/assets/media/amano-shrimp-stabilized.mp4',
     '/assets/media/stocking-shrimp-stabilized.mp4'
   ];

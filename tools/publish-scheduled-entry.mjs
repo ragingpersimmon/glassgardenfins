@@ -57,21 +57,17 @@ export function publishScheduledEntry(repoRoot, today = new Date().toISOString()
     fs.writeFileSync(journalPath, journal);
   }
 
-  if (!home.includes(`/journal/${SLUG}/`)) {
-    home = replaceBetweenMarkers(home, LATEST_START, LATEST_END, latest, 'Homepage latest-entry');
-    fs.writeFileSync(homePath, home);
-  }
+  home = replaceBetweenMarkers(home, LATEST_START, LATEST_END, latest, 'Homepage latest-entry');
+  fs.writeFileSync(homePath, home);
 
-  if (!tank.includes('5 Thai micro spider crabs')) {
-    tank = replaceBetweenMarkers(
-      tank,
-      STOCKING_START,
-      STOCKING_END,
-      stocking,
-      'Tank stocking'
-    );
-    fs.writeFileSync(tankPath, tank);
-  }
+  tank = replaceBetweenMarkers(
+    tank,
+    STOCKING_START,
+    STOCKING_END,
+    stocking,
+    'Tank stocking'
+  );
+  fs.writeFileSync(tankPath, tank);
 
   generateSitemap(repoRoot);
   return { published: true, reason: `released ${SLUG}` };

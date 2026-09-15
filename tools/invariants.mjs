@@ -152,6 +152,12 @@ export function checkPage(html, { route, current }) {
   if (!has(html, /<script\s+src="\/script\.js"><\/script>/i)) {
     errors.push('missing /script.js include');
   }
+  if (!has(
+    html,
+    /<aside\s+class="ad-slot"[^>]+data-ad-slot>[\s\S]*?<\/aside>[\s\S]*?<a\s+href="\/privacy\/">Privacy &amp; disclosure<\/a>/i
+  )) {
+    errors.push('missing advertisement space before privacy disclosure');
+  }
   for (const match of html.matchAll(/<script[^>]+\ssrc="([^"]+)"/gi)) {
     if (!match[1].startsWith('/')) errors.push(`external script is not CSP-aligned: ${match[1]}`);
   }

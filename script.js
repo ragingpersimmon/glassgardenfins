@@ -84,7 +84,9 @@
   if (!montage) return;
 
   var clips = montage.querySelectorAll('[data-hero-clip]');
-  var toggle = montage.querySelector('[data-hero-toggle]');
+  var toggle = montage.matches('[data-hero-toggle]')
+    ? montage
+    : montage.querySelector('[data-hero-toggle]');
   var prefersReducedMotion = typeof window.matchMedia === 'function' &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var activeIndex = 0;
@@ -122,6 +124,7 @@
 
   function startTimer() {
     window.clearInterval(timer);
+    if (clips.length < 2) return;
     timer = window.setInterval(function () {
       showClip((activeIndex + 1) % clips.length);
     }, 8000);
@@ -130,7 +133,10 @@
   function setPaused(paused) {
     userPaused = paused;
     toggle.setAttribute('aria-pressed', paused ? 'true' : 'false');
-    toggle.textContent = paused ? 'Play motion' : 'Pause motion';
+    toggle.setAttribute(
+      'aria-label',
+      paused ? 'Play tank video montage' : 'Pause tank video montage'
+    );
     if (paused) {
       window.clearInterval(timer);
       pauseClips();
@@ -141,8 +147,22 @@
     });
   }
 
-  if (clips.length < 2 || !toggle || prefersReducedMotion) {
+  if (!clips.length || !toggle) {
     pauseClips();
+    return;
+  }
+
+  toggle.addEventListener('click', function () {
+    setPaused(!userPaused);
+  });
+  toggle.addEventListener('keydown', function (event) {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+    event.preventDefault();
+    setPaused(!userPaused);
+  });
+
+  if (prefersReducedMotion) {
+    setPaused(true);
     return;
   }
 
@@ -153,10 +173,6 @@
     } else {
       setPaused(true);
     }
-  });
-
-  toggle.addEventListener('click', function () {
-    setPaused(!userPaused);
   });
 
   document.addEventListener('visibilitychange', function () {

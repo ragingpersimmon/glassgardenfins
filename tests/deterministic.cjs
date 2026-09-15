@@ -59,33 +59,44 @@ async function run() {
     const homeMontage = page.locator('[data-hero-montage]');
     assert.strictEqual(
       await homeMontage.locator('video[data-hero-clip] source[src^="/assets/media/"]').count(),
-      4,
-      'homepage should crossfade four locally hosted tank videos'
+      1,
+      'homepage should show one locally hosted Corydoras video'
     );
     assert.strictEqual(
       await homeMontage.locator('source[src^="/assets/media/corydoras-"]').count(),
-      2,
-      'homepage montage should lead with two Corydoras clips'
+      1,
+      'homepage should show only the Corydoras group-foraging clip'
     );
-    await page.waitForFunction(() => {
-      const toggle = document.querySelector('[data-hero-toggle]');
-      return toggle && !toggle.hidden;
-    });
+    await page.waitForFunction(() => !document.querySelector('[data-hero-clip]').paused);
     assert.strictEqual(
       await homeMontage.locator('.hero-montage__clip.is-active').count(),
       1,
       'homepage montage should expose one active clip'
     );
-    const montageToggle = homeMontage.locator('[data-hero-toggle]');
+    const montageToggle = page.locator('[data-hero-toggle]');
     await montageToggle.click();
     assert.strictEqual(await montageToggle.getAttribute('aria-pressed'), 'true');
-    assert.strictEqual(await montageToggle.innerText(), 'play motion');
-    const homeTextColors = await page.locator(
-      '.wordmark, .hero__title, .hero__tagline, .readout dd, .page-nav__title, .home-update__text, .site-footer p'
-    ).evaluateAll((elements) => elements.map((element) => window.getComputedStyle(element).color));
-    assert.ok(
-      homeTextColors.every((color) => color === 'rgb(198, 138, 75)'),
-      'all homepage wording should use the orange text color'
+    assert.strictEqual(await montageToggle.getAttribute('aria-label'), 'Play tank video montage');
+    assert.strictEqual(
+      await homeMontage.locator('button, figcaption').count(),
+      0,
+      'homepage montage should not show a pause button or caption'
+    );
+    const nonOrangeHomeText = await page.locator('body *').evaluateAll((elements) =>
+      elements
+        .filter((element) =>
+          (element.offsetWidth || element.offsetHeight || element.getClientRects().length) &&
+          Array.from(element.childNodes).some((node) =>
+            node.nodeType === Node.TEXT_NODE && node.textContent.trim()
+          )
+        )
+        .filter((element) => window.getComputedStyle(element).color !== 'rgb(240, 163, 74)')
+        .map((element) => element.textContent.trim().slice(0, 60))
+    );
+    assert.deepStrictEqual(
+      nonOrangeHomeText,
+      [],
+      'every homepage text node should use the bright orange text color'
     );
 
     await checkPageMeta(
@@ -104,8 +115,18 @@ async function run() {
     assert.match(tankDetails, /Dimensions\s+1 ft × 1 ft × 2\.5 ft/i);
     assert.strictEqual(
       await page.locator('.tank-media-grid img[src^="/assets/media/"]').count(),
-      2,
-      'tank page should show two contextual tank photographs'
+      0,
+      'tank page should replace its contextual photographs with video'
+    );
+    assert.strictEqual(
+      await page.locator('.tank-media-grid video source[src="/assets/media/red-bristlenose-pleco-foraging.mp4"]').count(),
+      1,
+      'tank page should show the Corydoras and red pleco footage first'
+    );
+    assert.strictEqual(
+      await page.locator('.tank-media-grid video source[src="/assets/media/shrimp-open-water-swimming.mp4"]').count(),
+      1,
+      'tank page should show the swimming shrimp footage second'
     );
     const purchaseDates = await page.locator('.purchase-day > time').evaluateAll((times) =>
       times.map((time) => time.getAttribute('datetime'))
@@ -125,9 +146,12 @@ async function run() {
     );
     assert.strictEqual(
       await page.locator('.purchase-list a[data-amazon-link] > img[src^="/assets/products/"]').count(),
-      16,
-      'every purchase should show a clickable thumbnail before its item name'
+      0,
+      'tank purchases should not show placeholder product artwork'
     );
+    const currentLivestock = await page.locator('.stocking-plan--current').innerText();
+    assert.match(currentLivestock, /1 red bristlenose shortfin pleco/i);
+    assert.match(currentLivestock, /6 gold laser Corydoras/i);
 
     await checkPageMeta(
       page,
@@ -296,8 +320,8 @@ async function run() {
     assert.ok(await productLinks.count(), 'journal should include relevant Amazon product links');
     assert.strictEqual(
       await productLinks.locator('img[src^="/assets/products/"]').count(),
-      await productLinks.count(),
-      'every journal product link should include a clickable local product image'
+      0,
+      'journal product links should not show placeholder artwork'
     );
     const untaggedLinks = await productLinks.evaluateAll((links) =>
       links.map((link) => ({
@@ -391,10 +415,17 @@ async function run() {
       );
       assert.strictEqual(
         await entryProductLinks.locator('img[src^="/assets/products/"]').count(),
-        await entryProductLinks.count(),
-        `${route}: every Amazon recommendation should have a clickable product image`
+        0,
+        `${route}: product recommendations should not show placeholder artwork`
       );
       const articleText = await page.locator('.entry > p:not([data-affiliate-disclosure])').allInnerTexts();
+      if (route === '/journal/what-happened-to-my-shrimps-skin/') {
+        assert.strictEqual(
+          await page.locator('video source[src="/assets/media/shrimp-moss-grazing.mp4"]').count(),
+          1,
+          'shrimp-care entry should show the moss-grazing shrimp clip'
+        );
+      }
       articleWordCounts.push(articleText.join(' ').trim().split(/\s+/).length);
     }
     await page.goto(`${server.baseUrl}/journal/september-15-stocking-update/`, {
@@ -403,8 +434,8 @@ async function run() {
     const stockingProductLinks = page.locator('a[data-amazon-link]');
     assert.strictEqual(
       await stockingProductLinks.locator('img[src^="/assets/products/"]').count(),
-      await stockingProductLinks.count(),
-      'stocking entry Amazon recommendations should have clickable product images'
+      0,
+      'stocking entry should not show placeholder product artwork'
     );
     assert.ok(
       Math.min(...articleWordCounts) >= 300,
@@ -458,9 +489,9 @@ async function run() {
     await reducedPage.goto(`${server.baseUrl}/`, { waitUntil: 'domcontentloaded' });
     await reducedPage.waitForTimeout(200);
     assert.strictEqual(
-      await reducedPage.locator('[data-hero-toggle]').isHidden(),
-      true,
-      'reduced motion mode should leave the homepage montage paused'
+      await reducedPage.locator('[data-hero-toggle]').getAttribute('aria-pressed'),
+      'true',
+      'reduced motion mode should initialize the homepage montage as paused'
     );
     assert.ok(
       await reducedPage.locator('[data-hero-clip]').evaluateAll((clips) =>
