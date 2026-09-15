@@ -3,7 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { discoverPublicPages } from './generate-sitemap.mjs';
 
-const SITE_ORIGIN = 'https://littlefinswim.net';
+const SITE_ORIGIN = 'https://glassgardenfins.com';
 const SOCIAL_IMAGE = `${SITE_ORIGIN}/assets/social-card.png`;
 const SOCIAL_METADATA = `<meta property="og:image" content="${SOCIAL_IMAGE}">
 <meta property="og:image:width" content="1200">
@@ -208,6 +208,7 @@ function schemaFor(html, file) {
 
 export function enrichPage(html, file, amazonAssociateTag) {
   let output = html
+    .replaceAll('https://littlefinswim.net', SITE_ORIGIN)
     .replace(/\s*<meta\s+name="theme-color"[^>]*>/gi, '')
     .replace(/\s*<meta\s+name="robots"[^>]*>/gi, '')
     .replace(/\s*<meta\s+property="og:site_name"[^>]*>/gi, '')

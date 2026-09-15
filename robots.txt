@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://littlefinswim.net/sitemap.xml
+Sitemap: https://glassgardenfins.com/sitemap.xml
