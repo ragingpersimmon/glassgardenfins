@@ -187,19 +187,26 @@ async function run() {
       const gridStyle = window.getComputedStyle(grid);
       const firstCard = cards[0].getBoundingClientRect();
       const secondCard = cards[1].getBoundingClientRect();
+      const titleLineHeights = cards.map((card) => {
+        const title = card.querySelector('.journal-card__title');
+        const style = window.getComputedStyle(title);
+        return title.getBoundingClientRect().height / Number.parseFloat(style.lineHeight);
+      });
       return {
         columns: gridStyle.gridTemplateColumns.split(' ').length,
-        featuredWidth: firstCard.width,
+        firstWidth: firstCard.width,
         standardWidth: secondCard.width,
-        maxCardHeight: Math.max(...cards.map((card) => card.getBoundingClientRect().height))
+        maxCardHeight: Math.max(...cards.map((card) => card.getBoundingClientRect().height)),
+        maxTitleLines: Math.max(...titleLineHeights)
       };
     });
     assert.strictEqual(desktopJournalLayout.columns, 2, 'journal archive should use two columns on desktop');
     assert.ok(
-      desktopJournalLayout.featuredWidth > desktopJournalLayout.standardWidth * 1.8,
-      'latest journal entry should span both desktop columns'
+      Math.abs(desktopJournalLayout.firstWidth - desktopJournalLayout.standardWidth) < 2,
+      'every journal card should occupy one desktop grid column'
     );
     assert.ok(desktopJournalLayout.maxCardHeight <= 160, 'desktop journal cards should remain compact');
+    assert.ok(desktopJournalLayout.maxTitleLines <= 2.1, 'journal headlines should use at most two lines');
     const journalEntryLink = page.locator('.journal-card__link[href="/journal/how-much-fish-food/"]');
     assert.strictEqual(await journalEntryLink.count(), 1, 'journal index should list the latest question');
     await journalEntryLink.click();
