@@ -103,8 +103,8 @@ export function buildSpeciesPage() {
     <a href="/" class="wordmark">Glass Garden Fins</a>
     <nav class="site-nav" aria-label="Primary">
       <a href="/tank/">The Tank</a>
-      <a href="/species/" aria-current="page">Species</a>
       <a href="/journal/">Journal</a>
+      <a href="/species/" aria-current="page">Species</a>
     </nav>
   </div>
 </header>
