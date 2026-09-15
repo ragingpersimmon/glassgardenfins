@@ -288,7 +288,7 @@ ${related}
 }
 
 function renderArticle(question) {
-  const canonical = `https://littlefinswim.net/journal/${question.slug}/`;
+  const canonical = `https://glassgardenfins.com/journal/${question.slug}/`;
   const paragraphs = question.paragraphs.map((paragraph, index) => {
     const rendered = [`            <p>${paragraph}</p>`];
     if (index === 1 && question.media) {
@@ -394,7 +394,7 @@ ${renderRelatedGuides(question)}
 }
 
 function renderSeriesIndex() {
-  const canonical = 'https://littlefinswim.net/journal/10-aquarium-questions/';
+  const canonical = 'https://glassgardenfins.com/journal/10-aquarium-questions/';
   const cards = questions.map((question, index) => `        <article class="journal-card">
           <a class="journal-card__link" href="/journal/${question.slug}/">
             <div class="entry__meta">

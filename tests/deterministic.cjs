@@ -63,7 +63,7 @@ async function run() {
       server.baseUrl,
       '/',
       'Glass Garden Fins — a planted tank journal',
-      'https://littlefinswim.net/'
+      'https://glassgardenfins.com/'
     );
     const homeTheme = await page.locator('body').evaluate((element) => {
       const style = window.getComputedStyle(element);
@@ -104,7 +104,7 @@ async function run() {
       server.baseUrl,
       '/tank/',
       'The Tank — Glass Garden Fins',
-      'https://littlefinswim.net/tank/'
+      'https://glassgardenfins.com/tank/'
     );
     const tankDetails = await page.locator('.spec-list').innerText();
     assert.match(tankDetails, /Hikari Aquarium Solutions Bacto-Surge/i);
@@ -169,7 +169,7 @@ async function run() {
       server.baseUrl,
       '/privacy/',
       'Privacy & Disclosure — Glass Garden Fins',
-      'https://littlefinswim.net/privacy/'
+      'https://glassgardenfins.com/privacy/'
     );
     assert.match(
       await page.locator('[data-affiliate-status]').innerText(),
@@ -182,7 +182,7 @@ async function run() {
       server.baseUrl,
       '/journal/',
       'Journal — Glass Garden Fins',
-      'https://littlefinswim.net/journal/'
+      'https://glassgardenfins.com/journal/'
     );
 
     await checkPageMeta(
@@ -190,7 +190,7 @@ async function run() {
       server.baseUrl,
       '/journal/10-aquarium-questions/',
       '10 Aquarium Questions — Glass Garden Fins',
-      'https://littlefinswim.net/journal/10-aquarium-questions/'
+      'https://glassgardenfins.com/journal/10-aquarium-questions/'
     );
     assert.strictEqual(
       await page.locator('.journal-card__link').count(),
@@ -202,7 +202,7 @@ async function run() {
       server.baseUrl,
       '/journal/first-residents-amano-shrimp/',
       'First Residents: Amano Shrimp Are In — Glass Garden Fins',
-      'https://littlefinswim.net/journal/first-residents-amano-shrimp/'
+      'https://glassgardenfins.com/journal/first-residents-amano-shrimp/'
     );
     assert.strictEqual(
       await page.locator('video source[src="/assets/media/amano-shrimp-stabilized.mp4"]').count(),
@@ -214,14 +214,14 @@ async function run() {
       server.baseUrl,
       '/journal/detritus-worms/',
       'Detritus Worms, and What They Were Actually Telling Me — Glass Garden Fins',
-      'https://littlefinswim.net/journal/detritus-worms/'
+      'https://glassgardenfins.com/journal/detritus-worms/'
     );
     await checkPageMeta(
       page,
       server.baseUrl,
       '/journal/dialing-in-before-stocking/',
       'Dialing In Before Anything Goes In — Glass Garden Fins',
-      'https://littlefinswim.net/journal/dialing-in-before-stocking/'
+      'https://glassgardenfins.com/journal/dialing-in-before-stocking/'
     );
 
     await page.goto(`${server.baseUrl}/journal/`, { waitUntil: 'domcontentloaded' });
@@ -418,7 +418,7 @@ async function run() {
         server.baseUrl,
         route,
         title,
-        `https://littlefinswim.net${route}`
+        `https://glassgardenfins.com${route}`
       );
       const entryProductLinks = page.locator('a[data-amazon-link]');
       assert.ok(

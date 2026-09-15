@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { discoverPublicPages } from './generate-sitemap.mjs';
 
-export const SITE_ORIGIN = 'https://littlefinswim.net';
+export const SITE_ORIGIN = 'https://glassgardenfins.com';
 
 export const PAGE_DEFS = discoverPublicPages(process.cwd()).map(({ file, route }) => ({
   file,

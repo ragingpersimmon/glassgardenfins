@@ -71,7 +71,7 @@ try {
   );
   assert.match(
     fs.readFileSync(path.join(fixtureRoot, 'sitemap.xml'), 'utf8'),
-    /https:\/\/littlefinswim\.net\/journal\/september-15-stocking-update\//
+    /https:\/\/glassgardenfins\.com\/journal\/september-15-stocking-update\//
   );
 
   publishScheduledEntry(fixtureRoot, '2026-09-16');

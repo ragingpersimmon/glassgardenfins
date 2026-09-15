@@ -83,7 +83,7 @@ for (const route of discoveredRoutes) {
 
 const robotsPath = path.join(repoRoot, 'robots.txt');
 if (!fs.existsSync(robotsPath) ||
-    !/Sitemap:\s+https:\/\/littlefinswim\.net\/sitemap\.xml/i.test(fs.readFileSync(robotsPath, 'utf8'))) {
+    !fs.readFileSync(robotsPath, 'utf8').includes(`Sitemap: ${SITE_ORIGIN}/sitemap.xml`)) {
   failures += 1;
   console.error('\n❌ robots.txt is missing or does not advertise sitemap.xml');
 }
@@ -95,7 +95,7 @@ if (!fs.existsSync(sitemapPath)) {
 } else {
   const sitemap = fs.readFileSync(sitemapPath, 'utf8');
   for (const route of sitemapRoutes) {
-    const url = `https://littlefinswim.net${route}`;
+    const url = `https://glassgardenfins.com${route}`;
     if (!sitemap.includes(`<loc>${url}</loc>`)) {
       failures += 1;
       console.error(`\n❌ sitemap.xml missing ${url}`);

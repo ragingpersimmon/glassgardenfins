@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const SITE_ORIGIN = 'https://littlefinswim.net';
+const SITE_ORIGIN = 'https://glassgardenfins.com';
 const EXCLUDED_DIRECTORIES = new Set([
   '.git',
   '.github',

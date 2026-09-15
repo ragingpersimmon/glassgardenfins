@@ -1,6 +1,6 @@
-# littlefinswim
+# Glass Garden Fins
 
-Static GitHub Pages site for https://littlefinswim.net, with static validation and deterministic and chaos-style browser backtests.
+Static GitHub Pages site for https://glassgardenfins.com, with static validation and deterministic and chaos-style browser backtests.
 
 ## Local validation
 
@@ -27,10 +27,10 @@ The ten aquarium-question articles are generated from the editorial source in
 metadata, journal `ItemList` data, article/video structured data, contextual guide
 links, and image/video sitemap entries. The 404 page remains `noindex, follow`.
 
-After a production deployment, the site owner should add `littlefinswim.net` to
+After a production deployment, the site owner should add `glassgardenfins.com` to
 [Google Search Console](https://search.google.com/search-console/) and
 [Bing Webmaster Tools](https://www.bing.com/webmasters/), verify ownership, and
-submit `https://littlefinswim.net/sitemap.xml`. Verification credentials should
+submit `https://glassgardenfins.com/sitemap.xml`. Verification credentials should
 not be committed to this repository. Indexing and rankings remain controlled by
 the search engines.
 
