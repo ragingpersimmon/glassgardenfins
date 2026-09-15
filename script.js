@@ -1,4 +1,4 @@
-// Little Fin Swim - minimal, restrained interaction only.
+// Glass Garden Fins - minimal, restrained interaction only.
 
 (function () {
   if (window.top === window.self) return;
