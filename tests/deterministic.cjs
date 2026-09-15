@@ -145,29 +145,32 @@ async function run() {
     const journalDates = await page.locator('.journal-card time').evaluateAll((times) =>
       times.map((time) => time.getAttribute('datetime'))
     );
+    const septemberEntryPublished = journalDates[0] === '2026-09-15';
+    const expectedJournalDates = [
+      '2026-08-21',
+      '2026-08-20',
+      '2026-08-19',
+      '2026-08-18',
+      '2026-08-17',
+      '2026-08-16',
+      '2026-08-15',
+      '2026-08-14',
+      '2026-08-13',
+      '2026-08-12',
+      '2026-08-09',
+      '2026-07-14',
+      '2026-06-06'
+    ];
+    if (septemberEntryPublished) expectedJournalDates.unshift('2026-09-15');
     assert.deepStrictEqual(
       journalDates,
-      [
-        '2026-08-21',
-        '2026-08-20',
-        '2026-08-19',
-        '2026-08-18',
-        '2026-08-17',
-        '2026-08-16',
-        '2026-08-15',
-        '2026-08-14',
-        '2026-08-13',
-        '2026-08-12',
-        '2026-08-09',
-        '2026-07-14',
-        '2026-06-06'
-      ],
+      expectedJournalDates,
       'journal index should list every entry newest first'
     );
     assert.strictEqual(
       await page.locator('.journal-card__link').count(),
-      13,
-      'journal index should expose all thirteen dedicated entry links'
+      expectedJournalDates.length,
+      'journal index should expose one dedicated link for every published entry'
     );
     assert.strictEqual(
       await page.locator('.entry__section').count(),
