@@ -6,7 +6,7 @@
   "main": "script.js",
   "type": "module",
   "scripts": {
-    "build:questions": "node ./tools/build-question-series.mjs && node ./tools/enrich-metadata.mjs && node ./tools/generate-sitemap.mjs",
+    "build:questions": "node ./tools/build-question-series.mjs && node ./tools/build-species-page.mjs && node ./tools/enrich-metadata.mjs && node ./tools/generate-sitemap.mjs",
     "build:site": "npm run build:questions",
     "set:amazon-tag": "node ./tools/set-amazon-tag.mjs",
     "test": "npm run test:setup && npm run validate:site && npm run test:scheduled && npm run test:mutations && npm run test:deterministic && npm run test:chaos",

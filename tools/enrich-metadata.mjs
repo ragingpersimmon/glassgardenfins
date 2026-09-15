@@ -26,6 +26,24 @@ const FOOTER = `<footer class="site-footer">
   </div>
 </footer>`;
 
+function primaryNavigation(file) {
+  const normalized = file.replaceAll('\\', '/');
+  const links = [
+    ['/tank/', 'The Tank', normalized === 'tank/index.html'],
+    ['/species/', 'Species', normalized === 'species/index.html'],
+    [
+      '/journal/',
+      'Journal',
+      normalized.startsWith('journal/') || normalized.startsWith('_scheduled/')
+    ]
+  ];
+  return `<nav class="site-nav" aria-label="Primary">
+      ${links.map(([href, label, current]) =>
+        `<a href="${href}"${current ? ' aria-current="page"' : ''}>${label}</a>`
+      ).join('\n      ')}
+    </nav>`;
+}
+
 function decodeEntities(value) {
   return value
     .replace(/&amp;/g, '&')
@@ -203,6 +221,24 @@ function schemaFor(html, file) {
       }))
     };
   }
+  const species = Array.from(html.matchAll(
+    /<article\s+class="species-card"[^>]+data-species-name="([^"]+)"/gi
+  ));
+  if (species.length) {
+    schema.about = species.map(([, name]) => ({
+      '@type': 'Thing',
+      name: decodeEntities(name)
+    }));
+    schema.mainEntity = {
+      '@type': 'ItemList',
+      numberOfItems: species.length,
+      itemListElement: species.map(([, name], index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: decodeEntities(name)
+      }))
+    };
+  }
   return schema;
 }
 
@@ -216,7 +252,8 @@ export function enrichPage(html, file, amazonAssociateTag) {
     .replace(/\s*<meta\s+name="twitter:image[^>]*>/gi, '')
     .replace(/\s*<script\s+type="application\/ld\+json"\s+data-site-schema>[\s\S]*?<\/script>/gi, '')
     .replace(/\sframe-ancestors\s+[^;"]+;?/gi, '')
-    .replace(/<footer class="site-footer">[\s\S]*?<\/footer>/i, FOOTER);
+    .replace(/<footer class="site-footer">[\s\S]*?<\/footer>/i, FOOTER)
+    .replace(/<nav class="site-nav" aria-label="Primary">[\s\S]*?<\/nav>/i, primaryNavigation(file));
 
   output = output.replace(
     /(<meta\s+name="viewport"[^>]*>)/i,

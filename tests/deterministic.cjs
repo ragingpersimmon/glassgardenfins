@@ -167,6 +167,62 @@ async function run() {
     await checkPageMeta(
       page,
       server.baseUrl,
+      '/species/',
+      'Species — Glass Garden Fins',
+      'https://glassgardenfins.com/species/'
+    );
+    assert.strictEqual(
+      await page.locator('.site-nav a[href="/species/"][aria-current="page"]').count(),
+      1,
+      'species page should identify its primary navigation item'
+    );
+    assert.strictEqual(
+      await page.locator('.species-card').count(),
+      11,
+      'species page should show every current fish, shrimp, crab, and snail group'
+    );
+    assert.strictEqual(
+      await page.locator('.species-video-placeholder').count(),
+      11,
+      'each current species should have a reserved video position'
+    );
+    assert.strictEqual(
+      await page.locator('.species-card video, .species-card [controls]').count(),
+      0,
+      'species placeholders should not expose duplicate videos or playback controls'
+    );
+    const speciesNames = await page.locator('.species-card__title').allInnerTexts();
+    for (const expectedName of [
+      'Thai micro spider crab',
+      'Rainbow emperor tetra',
+      'Sanke koi swordtail',
+      'Red bristlenose shortfin pleco',
+      'Gold laser Corydoras',
+      'Bamboo shrimp',
+      'Yellow Poso rabbit snail',
+      'King Koopa snail',
+      'Magenta apple snail',
+      'Red racer snail',
+      'White Hercules snail'
+    ]) {
+      assert.ok(
+        speciesNames.some((name) => name.toLowerCase() === expectedName.toLowerCase()),
+        `species page should include ${expectedName}`
+      );
+    }
+    const speciesSchema = JSON.parse(
+      await page.locator('script[data-site-schema]').textContent()
+    );
+    assert.strictEqual(
+      speciesSchema.mainEntity?.numberOfItems,
+      11,
+      'species schema should enumerate all current species'
+    );
+    await assertAllVisibleTextOrange(page, 'species page');
+
+    await checkPageMeta(
+      page,
+      server.baseUrl,
       '/privacy/',
       'Privacy & Disclosure — Glass Garden Fins',
       'https://glassgardenfins.com/privacy/'
@@ -383,6 +439,7 @@ async function run() {
     for (const route of [
       '/',
       '/tank/',
+      '/species/',
       '/privacy/',
       '/journal/',
       '/journal/how-much-fish-food/'

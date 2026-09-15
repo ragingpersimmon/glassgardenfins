@@ -58,6 +58,10 @@ const heuristicMutators = [
   {
     mutate: (html) => html.replace(/href="\/journal\/"/gi, 'href="/journal"'),
     expect: /primary nav links/
+  },
+  {
+    mutate: (html) => html.replace(/href="\/species\/"/gi, 'href="/species"'),
+    expect: /primary nav links/
   }
 ];
 
