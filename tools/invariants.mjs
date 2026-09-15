@@ -1,83 +1,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { discoverPublicPages } from './generate-sitemap.mjs';
 
 export const SITE_ORIGIN = 'https://littlefinswim.net';
 
-export const PAGE_DEFS = [
-  { file: 'index.html', route: '/', current: null },
-  { file: 'tank/index.html', route: '/tank/', current: '/tank/' },
-  { file: 'journal/index.html', route: '/journal/', current: '/journal/' },
-  {
-    file: 'journal/10-aquarium-questions/index.html',
-    route: '/journal/10-aquarium-questions/',
-    current: '/journal/'
-  },
-  {
-    file: 'journal/how-much-fish-food/index.html',
-    route: '/journal/how-much-fish-food/',
-    current: '/journal/'
-  },
-  {
-    file: 'journal/how-much-sun-do-fish-need/index.html',
-    route: '/journal/how-much-sun-do-fish-need/',
-    current: '/journal/'
-  },
-  {
-    file: 'journal/what-happened-to-my-shrimps-skin/index.html',
-    route: '/journal/what-happened-to-my-shrimps-skin/',
-    current: '/journal/'
-  },
-  {
-    file: 'journal/why-is-my-fish-staying-at-the-bottom/index.html',
-    route: '/journal/why-is-my-fish-staying-at-the-bottom/',
-    current: '/journal/'
-  },
-  {
-    file: 'journal/why-is-my-fish-swimming-at-the-top/index.html',
-    route: '/journal/why-is-my-fish-swimming-at-the-top/',
-    current: '/journal/'
-  },
-  {
-    file: 'journal/how-often-should-you-change-aquarium-water/index.html',
-    route: '/journal/how-often-should-you-change-aquarium-water/',
-    current: '/journal/'
-  },
-  {
-    file: 'journal/why-is-my-aquarium-water-cloudy/index.html',
-    route: '/journal/why-is-my-aquarium-water-cloudy/',
-    current: '/journal/'
-  },
-  {
-    file: 'journal/is-my-aquarium-filter-big-enough/index.html',
-    route: '/journal/is-my-aquarium-filter-big-enough/',
-    current: '/journal/'
-  },
-  {
-    file: 'journal/how-many-fish-can-i-put-in-my-aquarium/index.html',
-    route: '/journal/how-many-fish-can-i-put-in-my-aquarium/',
-    current: '/journal/'
-  },
-  {
-    file: 'journal/why-are-my-aquarium-plants-turning-brown/index.html',
-    route: '/journal/why-are-my-aquarium-plants-turning-brown/',
-    current: '/journal/'
-  },
-  {
-    file: 'journal/first-residents-amano-shrimp/index.html',
-    route: '/journal/first-residents-amano-shrimp/',
-    current: '/journal/'
-  },
-  {
-    file: 'journal/detritus-worms/index.html',
-    route: '/journal/detritus-worms/',
-    current: '/journal/'
-  },
-  {
-    file: 'journal/dialing-in-before-stocking/index.html',
-    route: '/journal/dialing-in-before-stocking/',
-    current: '/journal/'
-  }
-];
+export const PAGE_DEFS = discoverPublicPages(process.cwd()).map(({ file, route }) => ({
+  file,
+  route,
+  current: route === '/tank/' ? '/tank/' : route.startsWith('/journal/') ? '/journal/' : null
+}));
 
 function firstMatch(source, regex) {
   const match = source.match(regex);
@@ -94,6 +25,12 @@ export function checkPage(html, { route, current }) {
 
   const title = firstMatch(html, /<title>([^<]+)<\/title>/i);
   if (!title) errors.push('missing <title>');
+  if (!has(html, /<meta\s+name="description"\s+content="[^"]+">/i)) {
+    errors.push('missing meta description');
+  }
+  if (!has(html, /<meta\s+name="theme-color"\s+content="#0A1614">/i)) {
+    errors.push('missing or invalid theme-color');
+  }
 
   const canonical = firstMatch(
     html,
@@ -125,6 +62,46 @@ export function checkPage(html, { route, current }) {
     errors.push(`twitter:url mismatch: expected ${canonical}, got ${twitterUrl}`);
   }
 
+  const expectedImage = `${SITE_ORIGIN}/assets/social-card.png`;
+  const ogImage = firstMatch(html, /<meta\s+property="og:image"\s+content="([^"]+)">/i);
+  if (ogImage !== expectedImage) errors.push('missing or invalid og:image');
+  if (!has(html, /<meta\s+property="og:image:width"\s+content="1200">/i)) {
+    errors.push('missing og:image width');
+  }
+  if (!has(html, /<meta\s+property="og:image:height"\s+content="630">/i)) {
+    errors.push('missing og:image height');
+  }
+  const twitterImage = firstMatch(
+    html,
+    /<meta\s+name="twitter:image"\s+content="([^"]+)">/i
+  );
+  if (twitterImage !== expectedImage) errors.push('missing or invalid twitter:image');
+
+  const schemaSource = firstMatch(
+    html,
+    /<script\s+type="application\/ld\+json"\s+data-site-schema>([\s\S]*?)<\/script>/i
+  );
+  if (!schemaSource) {
+    errors.push('missing JSON-LD schema');
+  } else {
+    try {
+      const schema = JSON.parse(schemaSource);
+      const expectedType = route === '/'
+        ? 'WebSite'
+        : has(html, /<meta\s+property="og:type"\s+content="article">/i)
+          ? 'BlogPosting'
+          : 'WebPage';
+      if (schema['@type'] !== expectedType) {
+        errors.push(`JSON-LD type mismatch: expected ${expectedType}`);
+      }
+      if (expectedType === 'BlogPosting' && !schema.datePublished) {
+        errors.push('BlogPosting schema missing datePublished');
+      }
+    } catch {
+      errors.push('invalid JSON-LD schema');
+    }
+  }
+
   if (!has(html, /<main[^>]*\sid="top"[^>]*>/i)) {
     errors.push('missing #top main landmark');
   }
@@ -132,9 +109,24 @@ export function checkPage(html, { route, current }) {
   if (!has(html, /<script\s+src="\/script\.js"><\/script>/i)) {
     errors.push('missing /script.js include');
   }
+  for (const match of html.matchAll(/<script[^>]+\ssrc="([^"]+)"/gi)) {
+    if (!match[1].startsWith('/')) errors.push(`external script is not CSP-aligned: ${match[1]}`);
+  }
+  for (const match of html.matchAll(/<link[^>]+>/gi)) {
+    if (!/\brel="(?:stylesheet|preconnect)"/i.test(match[0])) continue;
+    const href = match[0].match(/\shref="(https?:\/\/[^"]+)"/i)?.[1];
+    if (!href) continue;
+    const url = new URL(href);
+    if (!['fonts.googleapis.com', 'fonts.gstatic.com'].includes(url.hostname)) {
+      errors.push(`external link origin is not CSP-aligned: ${url.hostname}`);
+    }
+  }
 
   if (!has(html, /href="\/tank\/"/i) || !has(html, /href="\/journal\/"/i)) {
     errors.push('missing primary nav links');
+  }
+  if (!has(html, /<footer[\s\S]*href="\/privacy\/"/i)) {
+    errors.push('footer missing privacy and disclosure link');
   }
 
   const tankCurrent = has(html, /<a\s+href="\/tank\/"[^>]*aria-current="page"/i);
@@ -164,6 +156,18 @@ export function checkPage(html, { route, current }) {
     }
     if (!/font-src[^;]*https:\/\/fonts\.gstatic\.com(?=\s|;|$)/i.test(csp)) {
       errors.push('CSP missing Google Fonts font source');
+    }
+    if (/(?:frame-ancestors|sandbox|report-uri|report-to)\b/i.test(csp)) {
+      errors.push('CSP meta claims a directive that is not enforceable from meta');
+    }
+  }
+
+  const headingLevels = Array.from(html.matchAll(/<h([1-6])\b/gi), (match) => Number(match[1]));
+  if (headingLevels[0] !== 1) errors.push('page must begin its heading outline with h1');
+  for (let index = 1; index < headingLevels.length; index += 1) {
+    if (headingLevels[index] > headingLevels[index - 1] + 1) {
+      errors.push(`heading level skips from h${headingLevels[index - 1]} to h${headingLevels[index]}`);
+      break;
     }
   }
 

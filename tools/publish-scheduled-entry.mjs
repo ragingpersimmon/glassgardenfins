@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { generateSitemap } from './generate-sitemap.mjs';
 
 const RELEASE_DATE = '2026-09-15';
 const SLUG = 'september-15-stocking-update';
@@ -72,6 +73,7 @@ export function publishScheduledEntry(repoRoot, today = new Date().toISOString()
     fs.writeFileSync(tankPath, tank);
   }
 
+  generateSitemap(repoRoot);
   return { published: true, reason: `released ${SLUG}` };
 }
 

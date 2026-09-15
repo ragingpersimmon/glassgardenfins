@@ -19,6 +19,7 @@ The ten aquarium-question articles are generated from the editorial source in
 - `npm run test:mutations`: verifies fault detection under deterministic and seeded randomized mutations.
 - `npm run test:deterministic`: browser checks for page metadata, canonical URLs, navigation, reduced-motion/runtime fallbacks, comparable question-entry lengths, and at least two contextual product links per question.
 - `npm run test:chaos`: seeded (`1337`) browser backtests across random routes, viewports, reduced-motion modes, and resource fault injection (font blocking, script delay/block).
+- `npm run build:site`: regenerates the question series, social metadata and JSON-LD, normalized footers, and `sitemap.xml`.
 
 ## CI
 
@@ -26,7 +27,22 @@ GitHub Actions runs all validation and test suites on each push and pull request
 
 ## Amazon Associates links
 
-Product links remain ordinary Amazon links until a valid Associates tracking ID is configured. To enable tracked links and the on-page affiliate disclosure, set the `content` value of the `amazon-associate-tag` meta element on each page containing recommendations, including `tank/index.html` and full journal entries. The shared script adds the tag only to allowlisted Amazon hosts.
+Product links remain ordinary Amazon links until a valid Associates tracking ID is configured. The shared script adds the tag only to allowlisted Amazon hosts.
+
+Use `npm run set:amazon-tag -- your-tag-20` to set a real tracking ID across
+the site, or `npm run set:amazon-tag -- --clear` to disable it. The command
+validates the ID, updates `site-config.json`, regenerates every product page,
+and keeps `/privacy/` synchronized with the actual commission state.
+
+The site currently has no ad network configured, so `ads.txt` is intentionally
+absent. Add it only when a network supplies a real publisher record.
+
+## Static-host security boundary
+
+The CSP is delivered through page metadata and contains only directives browsers
+enforce from a `<meta>` element. GitHub Pages cannot set custom response headers
+for this deployment. Strong framing, HSTS, and reporting headers require a proxy
+such as Cloudflare in front of the GitHub Pages origin.
 
 ## Scheduled journal entries
 
