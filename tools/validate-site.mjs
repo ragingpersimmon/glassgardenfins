@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { PAGE_DEFS, checkPage, readProjectPage } from './invariants.mjs';
+import { PAGE_DEFS, SITE_ORIGIN, checkPage, readProjectPage } from './invariants.mjs';
 import { discoverPublicPages } from './generate-sitemap.mjs';
 
 const repoRoot = process.cwd();
@@ -101,7 +101,10 @@ if (!fs.existsSync(sitemapPath)) {
       console.error(`\n❌ sitemap.xml missing ${url}`);
     }
   }
-  const sitemapEntries = Array.from(sitemap.matchAll(/<loc>([^<]+)<\/loc>/g), (match) => match[1]);
+  const sitemapEntries = Array.from(
+    sitemap.matchAll(/<url>\s*<loc>([^<]+)<\/loc>/g),
+    (match) => match[1]
+  );
   const sitemapDates = Array.from(
     sitemap.matchAll(/<lastmod>(\d{4}-\d{2}-\d{2})<\/lastmod>/g),
     (match) => match[1]
@@ -114,6 +117,19 @@ if (!fs.existsSync(sitemapPath)) {
       sitemapDates.some((date) => date > new Date().toISOString().slice(0, 10))) {
     failures += 1;
     console.error('\n❌ sitemap.xml requires one non-future lastmod per route');
+  }
+  const expectedSitemapMedia = [
+    '/assets/media/tank-overview-home.webp',
+    '/assets/media/hardscape-equipment-detail.webp',
+    '/assets/media/shrimp-hardscape-detail.webp',
+    '/assets/media/amano-shrimp-stabilized.mp4',
+    '/assets/media/stocking-shrimp-stabilized.mp4'
+  ];
+  if (!sitemap.includes('xmlns:image=') ||
+      !sitemap.includes('xmlns:video=') ||
+      expectedSitemapMedia.some((media) => !sitemap.includes(`${SITE_ORIGIN}${media}`))) {
+    failures += 1;
+    console.error('\n❌ sitemap.xml is missing image or video discovery metadata');
   }
 }
 

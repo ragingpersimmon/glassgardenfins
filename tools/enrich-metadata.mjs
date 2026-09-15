@@ -37,6 +37,41 @@ function firstMatch(html, pattern, label, file) {
   return decodeEntities(value);
 }
 
+function optionalMatch(html, pattern) {
+  const value = html.match(pattern)?.[1];
+  return value ? decodeEntities(value) : null;
+}
+
+function absoluteUrl(value) {
+  return value?.startsWith('/') ? `${SITE_ORIGIN}${value}` : value;
+}
+
+function articleTopics(title, description, section) {
+  const source = `${title} ${description} ${section || ''}`.toLowerCase();
+  const topics = ['freshwater aquarium care'];
+  const candidates = [
+    ['shrimp', 'freshwater shrimp care'],
+    ['molt', 'shrimp molting'],
+    ['fish food', 'aquarium fish feeding'],
+    ['feeding', 'aquarium fish feeding'],
+    ['sun', 'aquarium lighting'],
+    ['lighting', 'aquarium lighting'],
+    ['filter', 'aquarium filtration'],
+    ['cloudy', 'cloudy aquarium water'],
+    ['water change', 'aquarium water changes'],
+    ['water quality', 'aquarium water quality'],
+    ['stock', 'aquarium stocking'],
+    ['plant', 'planted aquariums'],
+    ['oxygen', 'aquarium aeration'],
+    ['top of the tank', 'fish gasping at the surface'],
+    ['bottom of the tank', 'fish behavior']
+  ];
+  for (const [term, topic] of candidates) {
+    if (source.includes(term) && !topics.includes(topic)) topics.push(topic);
+  }
+  return topics.slice(0, 6);
+}
+
 function schemaFor(html, file) {
   const title = firstMatch(html, /<title>([\s\S]*?)<\/title>/i, 'title', file);
   const description = firstMatch(
@@ -52,6 +87,10 @@ function schemaFor(html, file) {
     file
   );
   const article = /<meta\s+property="og:type"\s+content="article"/i.test(html);
+  const contentImage = optionalMatch(
+    html,
+    /<img[^>]+src="(\/assets\/media\/[^"]+)"/i
+  ) || optionalMatch(html, /<video[^>]+poster="(\/assets\/media\/[^"]+)"/i);
 
   if (url === `${SITE_ORIGIN}/`) {
     return {
@@ -61,7 +100,13 @@ function schemaFor(html, file) {
       alternateName: 'Little Fin Swim — a planted tank journal',
       description,
       url,
-      image: SOCIAL_IMAGE
+      image: absoluteUrl(contentImage) || SOCIAL_IMAGE,
+      inLanguage: 'en-CA',
+      about: [
+        { '@type': 'Thing', name: 'freshwater aquariums' },
+        { '@type': 'Thing', name: 'planted aquariums' },
+        { '@type': 'Thing', name: 'aquarium care' }
+      ]
     };
   }
 
@@ -72,7 +117,12 @@ function schemaFor(html, file) {
       'article publication date',
       file
     );
-    return {
+    const articleSection = optionalMatch(
+      html,
+      /<span\s+class="entry__tag">([^<]+)<\/span>/i
+    ) || 'Aquarium journal';
+    const topics = articleTopics(title, description, articleSection);
+    const schema = {
       '@context': 'https://schema.org',
       '@type': 'BlogPosting',
       headline: title.replace(/ — Little Fin Swim$/, ''),
@@ -81,26 +131,80 @@ function schemaFor(html, file) {
       dateModified: datePublished,
       mainEntityOfPage: url,
       url,
-      image: SOCIAL_IMAGE,
+      image: absoluteUrl(contentImage) || SOCIAL_IMAGE,
+      articleSection,
+      keywords: topics.join(', '),
+      about: topics.map((name) => ({ '@type': 'Thing', name })),
+      inLanguage: 'en-CA',
+      isPartOf: {
+        '@type': 'Blog',
+        name: 'Little Fin Swim Journal',
+        url: `${SITE_ORIGIN}/journal/`
+      },
       author: { '@type': 'Organization', name: 'Little Fin Swim' },
       publisher: { '@type': 'Organization', name: 'Little Fin Swim' }
     };
+    const videoTag = html.match(
+      /<video\b([^>]*)>([\s\S]*?)<\/video>\s*(?:<figcaption>([^<]+)<\/figcaption>)?/i
+    );
+    if (videoTag) {
+      const attributes = videoTag[1];
+      const source = videoTag[2];
+      const name = optionalMatch(attributes, /\baria-label="([^"]+)"/i);
+      const thumbnailUrl = optionalMatch(attributes, /\bposter="([^"]+)"/i);
+      const duration = optionalMatch(attributes, /\bdata-duration="([^"]+)"/i);
+      const contentUrl = optionalMatch(source, /<source[^>]+src="([^"]+)"/i);
+      if (name && thumbnailUrl && duration && contentUrl) {
+        schema.video = {
+          '@type': 'VideoObject',
+          name,
+          description: videoTag[3] ? decodeEntities(videoTag[3]) : name,
+          thumbnailUrl: absoluteUrl(thumbnailUrl),
+          uploadDate: datePublished,
+          duration,
+          contentUrl: absoluteUrl(contentUrl)
+        };
+      }
+    }
+    return schema;
   }
 
-  return {
+  const schema = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
     name: title.replace(/ — Little Fin Swim$/, ''),
     description,
     url,
     image: SOCIAL_IMAGE,
+    inLanguage: 'en-CA',
+    about: [
+      { '@type': 'Thing', name: 'freshwater aquariums' },
+      { '@type': 'Thing', name: 'aquarium care' }
+    ],
     isPartOf: { '@type': 'WebSite', name: 'Little Fin Swim', url: `${SITE_ORIGIN}/` }
   };
+  const cards = Array.from(html.matchAll(
+    /<a\s+class="journal-card__link"\s+href="([^"]+)"[\s\S]*?<h2\s+class="journal-card__title">([\s\S]*?)<\/h2>/gi
+  ));
+  if (cards.length) {
+    schema.mainEntity = {
+      '@type': 'ItemList',
+      numberOfItems: cards.length,
+      itemListElement: cards.map(([, href, name], index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: decodeEntities(name.replace(/<[^>]+>/g, '')),
+        url: absoluteUrl(href)
+      }))
+    };
+  }
+  return schema;
 }
 
 export function enrichPage(html, file, amazonAssociateTag) {
   let output = html
     .replace(/\s*<meta\s+name="theme-color"[^>]*>/gi, '')
+    .replace(/\s*<meta\s+name="robots"[^>]*>/gi, '')
     .replace(/\s*<meta\s+property="og:site_name"[^>]*>/gi, '')
     .replace(/\s*<meta\s+property="og:image[^>]*>/gi, '')
     .replace(/\s*<meta\s+name="twitter:image[^>]*>/gi, '')
@@ -110,7 +214,11 @@ export function enrichPage(html, file, amazonAssociateTag) {
 
   output = output.replace(
     /(<meta\s+name="viewport"[^>]*>)/i,
-    '$1\n<meta name="theme-color" content="#0A1614">'
+    `$1\n<meta name="theme-color" content="#0A1614">\n<meta name="robots" content="${
+      file === '404.html'
+        ? 'noindex, follow'
+        : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
+    }">`
   );
   output = output.replace(
     /(<meta\s+property="og:type"[^>]*>)/i,

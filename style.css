@@ -949,6 +949,33 @@ a:hover { text-decoration-color: currentColor; }
   font-style: italic;
 }
 
+.related-guides {
+  max-width: 62ch;
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.related-guides h2 {
+  margin: 0 0 var(--space-2);
+  color: var(--color-surface);
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 500;
+}
+
+.related-guides ul {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.related-guides a {
+  color: var(--color-surface);
+  text-underline-offset: 0.18em;
+}
+
 .eyebrow__link {
   display: inline-flex;
   min-height: 44px;
