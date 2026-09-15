@@ -40,6 +40,7 @@ for (const route of declaredRoutes) {
 
 const titles = new Map();
 const descriptions = new Map();
+const videoSources = new Map();
 const inboundRoutes = new Set(['/']);
 for (const page of PAGE_DEFS) {
   const html = readProjectPage(repoRoot, page.file);
@@ -70,6 +71,16 @@ for (const page of PAGE_DEFS) {
     if (!discoveredRoutes.has(link)) {
       failures += 1;
       console.error(`\n❌ dead internal link in ${page.file}: ${link}`);
+    }
+  }
+
+  for (const match of html.matchAll(/<source\s+src="(\/assets\/media\/[^"]+\.mp4)"/gi)) {
+    const source = match[1];
+    if (videoSources.has(source)) {
+      failures += 1;
+      console.error(`\n❌ duplicate public video: ${page.file} and ${videoSources.get(source)} use ${source}`);
+    } else {
+      videoSources.set(source, page.file);
     }
   }
 }

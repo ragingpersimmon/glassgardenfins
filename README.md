@@ -10,8 +10,10 @@ npm test
 ```
 
 The ten aquarium-question articles are generated from the editorial source in
-`tools/build-question-series.mjs`. After changing that series, run
-`npm run build:questions` and commit both the source and generated pages.
+`tools/build-question-series.mjs`. The species catalog is generated from
+`_data/species.json`; assign an optional, unique local video object to a species
+only when original footage is available. After changing either source, run
+`npm run build:site` and commit both the source and generated pages.
 
 ## Test suites
 

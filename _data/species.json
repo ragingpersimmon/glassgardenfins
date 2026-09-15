@@ -1,0 +1,90 @@
+[
+  {
+    "slug": "thai-micro-spider-crab",
+    "name": "Thai micro spider crab",
+    "scientificName": "Limnopilos naiyanetri",
+    "quantity": 5,
+    "note": "A tiny freshwater crab group living among the planted hardscape.",
+    "video": null
+  },
+  {
+    "slug": "rainbow-emperor-tetra",
+    "name": "Rainbow emperor tetra",
+    "scientificName": "Nematobrycon lacortei",
+    "quantity": 5,
+    "note": "The mid-water schooling group in the current community.",
+    "video": null
+  },
+  {
+    "slug": "sanke-koi-swordtail",
+    "name": "Sanke koi swordtail",
+    "scientificName": "Xiphophorus hellerii",
+    "quantity": 3,
+    "note": "Two female high-fin swordtails and one male swordtail.",
+    "video": null
+  },
+  {
+    "slug": "red-bristlenose-shortfin-pleco",
+    "name": "Red bristlenose shortfin pleco",
+    "scientificName": "Ancistrus sp.",
+    "quantity": 1,
+    "note": "A bottom-dwelling grazer that works across wood and hardscape.",
+    "video": null
+  },
+  {
+    "slug": "gold-laser-corydoras",
+    "name": "Gold laser Corydoras",
+    "scientificName": "Corydoras sp. CW010",
+    "quantity": 6,
+    "note": "A social bottom-foraging group with a bright gold lateral stripe.",
+    "video": null
+  },
+  {
+    "slug": "bamboo-shrimp",
+    "name": "Bamboo shrimp",
+    "scientificName": "Atyopsis moluccensis",
+    "quantity": 2,
+    "note": "Filter-feeding shrimp that favor steady current and elevated perches.",
+    "video": null
+  },
+  {
+    "slug": "yellow-poso-rabbit-snail",
+    "name": "Yellow Poso rabbit snail",
+    "scientificName": "Tylomelania sp.",
+    "quantity": 1,
+    "note": "A yellow-bodied rabbit snail moving through the lower planted areas.",
+    "video": null
+  },
+  {
+    "slug": "king-koopa-snail",
+    "name": "King Koopa snail",
+    "scientificName": null,
+    "quantity": 1,
+    "note": "One of five individually tracked snail varieties in the aquarium.",
+    "video": null
+  },
+  {
+    "slug": "magenta-apple-snail",
+    "name": "Magenta apple snail",
+    "scientificName": "Pomacea sp.",
+    "quantity": 1,
+    "note": "A vivid magenta-shelled member of the cleanup crew.",
+    "video": null
+  },
+  {
+    "slug": "red-racer-snail",
+    "name": "Red racer snail",
+    "scientificName": "Vittina waigiensis",
+    "quantity": 1,
+    "note": "A patterned algae grazer that travels across glass and hardscape.",
+    "video": null
+  },
+  {
+    "slug": "white-hercules-snail",
+    "name": "White Hercules snail",
+    "scientificName": "Brotia herculea",
+    "quantity": 1,
+    "note": "A pale, long-shelled snail that spends much of its time near the substrate.",
+    "video": null
+  }
+]

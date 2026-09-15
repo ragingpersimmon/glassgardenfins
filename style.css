@@ -1,5 +1,5 @@
 /* ===================================================================
-  LITTLE FIN SWIM - design tokens
+  GLASS GARDEN FINS - design tokens
    Palette pulled from the subject itself: deep tank water, driftwood
    tannin, plant foliage, and the pale glint of light on the surface.
    =================================================================== */
@@ -564,6 +564,18 @@ body * {
   max-width: 64ch;
 }
 
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* section dividers - smaller echo of the surface motif */
 .divider {
   line-height: 0;
@@ -773,6 +785,111 @@ body * {
 .purchase-note {
   color: var(--color-text-faint);
   font-size: 0.82rem;
+}
+
+/* ===================================================================
+   Species catalog
+   =================================================================== */
+
+.species {
+  padding-block: var(--space-4) var(--space-5);
+}
+
+.species-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.species-card {
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-bg-panel);
+}
+
+.species-card__media {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg-alt);
+}
+
+.species-card__media video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.species-video-placeholder {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-content: center;
+  gap: 0.25rem;
+  padding: var(--space-2);
+  background:
+    radial-gradient(circle at 25% 30%, rgba(92, 138, 98, 0.2), transparent 38%),
+    linear-gradient(145deg, rgba(220, 238, 232, 0.04), transparent 58%),
+    var(--color-bg-alt);
+  font-family: var(--font-mono);
+  text-align: center;
+}
+
+.species-video-placeholder::before {
+  content: '▶';
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin: 0 auto 0.45rem;
+  place-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  font-size: 0.75rem;
+}
+
+.species-video-placeholder span {
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.species-video-placeholder strong {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 500;
+}
+
+.species-card__body {
+  padding: var(--space-3);
+}
+
+.species-card__count {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.species-card__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.species-card__scientific {
+  margin: 0.35rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.species-card__note {
+  margin: var(--space-2) 0 0;
+  font-size: 0.9rem;
 }
 
 /* ===================================================================
@@ -1115,7 +1232,7 @@ body * {
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
   gap: var(--space-4);
 }
 
@@ -1261,6 +1378,8 @@ body * {
 
   .tank-media-grid { grid-template-columns: 1fr; }
 
+  .species-grid { grid-template-columns: 1fr; }
+
   .page-nav__list { grid-template-columns: 1fr; }
 
   .product-box__list { grid-template-columns: 1fr; }
@@ -1293,8 +1412,15 @@ body * {
     --space-6: 4rem;
   }
 
-  .site-header__inner { padding-block: 0.35rem; }
-  .site-nav { gap: var(--space-1); }
+  .site-header__inner {
+    align-items: stretch;
+    flex-direction: column;
+    padding-block: 0.35rem;
+  }
+  .site-nav {
+    justify-content: space-between;
+    gap: var(--space-1);
+  }
   .journal--index { padding-top: var(--space-2); }
   .journal-grid { gap: 0.6rem; }
   .journal-card__link {

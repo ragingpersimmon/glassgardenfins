@@ -7,7 +7,13 @@ export const SITE_ORIGIN = 'https://glassgardenfins.com';
 export const PAGE_DEFS = discoverPublicPages(process.cwd()).map(({ file, route }) => ({
   file,
   route,
-  current: route === '/tank/' ? '/tank/' : route.startsWith('/journal/') ? '/journal/' : null
+  current: route === '/tank/'
+    ? '/tank/'
+    : route === '/species/'
+      ? '/species/'
+      : route.startsWith('/journal/')
+        ? '/journal/'
+        : null
 }));
 
 function firstMatch(source, regex) {
@@ -171,7 +177,9 @@ export function checkPage(html, { route, current }) {
     }
   }
 
-  if (!has(html, /href="\/tank\/"/i) || !has(html, /href="\/journal\/"/i)) {
+  if (!has(html, /href="\/tank\/"/i) ||
+      !has(html, /href="\/species\/"/i) ||
+      !has(html, /href="\/journal\/"/i)) {
     errors.push('missing primary nav links');
   }
   if (!has(html, /<footer[\s\S]*href="\/privacy\/"/i)) {
@@ -179,16 +187,22 @@ export function checkPage(html, { route, current }) {
   }
 
   const tankCurrent = has(html, /<a\s+href="\/tank\/"[^>]*aria-current="page"/i);
+  const speciesCurrent = has(html, /<a\s+href="\/species\/"[^>]*aria-current="page"/i);
   const journalCurrent = has(html, /<a\s+href="\/journal\/"[^>]*aria-current="page"/i);
 
   if (current === '/tank/') {
     if (!tankCurrent) errors.push('tank page missing aria-current');
-    if (journalCurrent) errors.push('journal nav should not be current on tank page');
+    if (speciesCurrent || journalCurrent) errors.push('only tank nav should be current on tank page');
+  } else if (current === '/species/') {
+    if (!speciesCurrent) errors.push('species page missing aria-current');
+    if (tankCurrent || journalCurrent) errors.push('only species nav should be current on species page');
   } else if (current === '/journal/') {
     if (!journalCurrent) errors.push('journal page missing aria-current');
-    if (tankCurrent) errors.push('tank nav should not be current on journal page');
+    if (tankCurrent || speciesCurrent) errors.push('only journal nav should be current on journal page');
   } else {
-    if (tankCurrent || journalCurrent) errors.push('home page should not set aria-current on subpage links');
+    if (tankCurrent || speciesCurrent || journalCurrent) {
+      errors.push('home page should not set aria-current on subpage links');
+    }
   }
 
   const csp = firstMatch(
