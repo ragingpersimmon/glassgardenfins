@@ -96,6 +96,28 @@ async function run() {
         ),
         `${viewport.width}px: shared page header spacing should be identical across routes`
       );
+      for (const route of ['/', ...standardPageRoutes]) {
+        await page.goto(`${server.baseUrl}${route}`, { waitUntil: 'domcontentloaded' });
+        const dividerSpacing = await page.evaluate(() => {
+          const siteHeader = document.querySelector('.site-header');
+          const wordmark = document.querySelector('.wordmark');
+          const nav = document.querySelector('.site-nav');
+          const eyebrow = document.querySelector('main .eyebrow');
+          const headerBottom = siteHeader.getBoundingClientRect().bottom;
+          const upperContentBottom = Math.max(
+            wordmark.getBoundingClientRect().bottom,
+            nav.getBoundingClientRect().bottom
+          );
+          return {
+            above: headerBottom - upperContentBottom,
+            below: eyebrow.getBoundingClientRect().top - headerBottom
+          };
+        });
+        assert.ok(
+          Math.abs(dividerSpacing.above - dividerSpacing.below) <= 1.5,
+          `${route} at ${viewport.width}px: spacing should mirror above and below the header line`
+        );
+      }
     }
     await page.setViewportSize({ width: 1280, height: 720 });
 
