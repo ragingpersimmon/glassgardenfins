@@ -296,11 +296,11 @@ a:hover { text-decoration-color: currentColor; }
   opacity: 1;
 }
 
-.home-page :where(.site-header, .hero, .readout, .page-nav, .home-update, .site-footer) * {
+body * {
   color: var(--color-home-orange) !important;
 }
 
-.home-page .skip-link {
+.skip-link {
   border: 1px solid var(--color-home-orange);
   background: var(--color-bg-deep);
   color: var(--color-home-orange);
@@ -981,7 +981,7 @@ a:hover { text-decoration-color: currentColor; }
 
 .entry__closing {
   margin-top: var(--space-4) !important;
-  color: var(--color-text) !important;
+  color: var(--color-home-orange) !important;
   font-style: italic;
 }
 
@@ -1023,7 +1023,7 @@ a:hover { text-decoration-color: currentColor; }
   margin-top: var(--space-3) !important;
   padding: var(--space-2);
   border-left: 2px solid var(--color-amber-soft);
-  color: var(--color-text-faint) !important;
+  color: var(--color-home-orange) !important;
   font-family: var(--font-mono);
   font-size: 0.75rem;
 }
