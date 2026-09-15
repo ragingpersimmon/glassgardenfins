@@ -318,18 +318,18 @@ ${renderProducts(question)}
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${question.title} — Little Fin Swim</title>
+<title>${question.title} — Glass Garden Fins</title>
 <meta name="description" content="${question.description}">
 <meta http-equiv="Content-Security-Policy" content="${csp}">
 <meta name="amazon-associate-tag" content="">
 <link rel="canonical" href="${canonical}">
 <meta property="og:type" content="article">
 <meta property="og:url" content="${canonical}">
-<meta property="og:title" content="${question.title} — Little Fin Swim">
+<meta property="og:title" content="${question.title} — Glass Garden Fins">
 <meta property="og:description" content="${question.description}">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:url" content="${canonical}">
-<meta name="twitter:title" content="${question.title} — Little Fin Swim">
+<meta name="twitter:title" content="${question.title} — Glass Garden Fins">
 <meta name="twitter:description" content="${question.description}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -340,7 +340,7 @@ ${renderProducts(question)}
 <a class="skip-link" href="#top">Skip to content</a>
 <header class="site-header">
   <div class="wrap site-header__inner">
-    <a href="/" class="wordmark">Little Fin Swim</a>
+    <a href="/" class="wordmark">Glass Garden Fins</a>
     <nav class="site-nav" aria-label="Primary">
       <a href="/tank/">The Tank</a>
       <a href="/journal/" aria-current="page">Journal</a>
@@ -364,7 +364,7 @@ ${renderProducts(question)}
             <time class="entry__date" datetime="${question.date}">${question.displayDate}</time>
           </div>
           <p class="entry__dek">${question.dek}</p>
-          <p class="affiliate-disclosure" data-affiliate-disclosure hidden>As an Amazon Associate, Little Fin Swim earns from qualifying purchases. Product links are selected for relevance; purchases made through them may earn the site a commission at no extra cost to you.</p>
+          <p class="affiliate-disclosure" data-affiliate-disclosure hidden>As an Amazon Associate, Glass Garden Fins earns from qualifying purchases. Product links are selected for relevance; purchases made through them may earn the site a commission at no extra cost to you.</p>
 ${paragraphs}
 ${renderRelatedGuides(question)}
           <p class="entry__closing"><a href="/journal/10-aquarium-questions/">Browse all ten aquarium questions</a> or return to the <a href="/journal/">full journal archive</a>.</p>
@@ -383,7 +383,7 @@ ${renderRelatedGuides(question)}
 </main>
 <footer class="site-footer">
   <div class="wrap site-footer__inner">
-    <p>Little Fin Swim — a planted tank log, updated as the tank changes.</p>
+    <p>Glass Garden Fins — a planted tank log, updated as the tank changes.</p>
     <a href="#top" class="back-to-top">Back to top ↑</a>
   </div>
 </footer>
@@ -410,17 +410,17 @@ function renderSeriesIndex() {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>10 Aquarium Questions — Little Fin Swim</title>
+<title>10 Aquarium Questions — Glass Garden Fins</title>
 <meta name="description" content="Ten practical aquarium guides on feeding, lighting, shrimp molts, fish behavior, water changes, cloudy water, filtration, stocking, and plants.">
 <meta http-equiv="Content-Security-Policy" content="${csp}">
 <link rel="canonical" href="${canonical}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="${canonical}">
-<meta property="og:title" content="10 Aquarium Questions — Little Fin Swim">
+<meta property="og:title" content="10 Aquarium Questions — Glass Garden Fins">
 <meta property="og:description" content="Ten practical aquarium questions, each answered in its own focused journal entry.">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:url" content="${canonical}">
-<meta name="twitter:title" content="10 Aquarium Questions — Little Fin Swim">
+<meta name="twitter:title" content="10 Aquarium Questions — Glass Garden Fins">
 <meta name="twitter:description" content="Ten practical aquarium questions, each answered in its own focused journal entry.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -431,7 +431,7 @@ function renderSeriesIndex() {
 <a class="skip-link" href="#top">Skip to content</a>
 <header class="site-header">
   <div class="wrap site-header__inner">
-    <a href="/" class="wordmark">Little Fin Swim</a>
+    <a href="/" class="wordmark">Glass Garden Fins</a>
     <nav class="site-nav" aria-label="Primary">
       <a href="/tank/">The Tank</a>
       <a href="/journal/" aria-current="page">Journal</a>
@@ -464,7 +464,7 @@ ${cards}
 </main>
 <footer class="site-footer">
   <div class="wrap site-footer__inner">
-    <p>Little Fin Swim — a planted tank log, updated as the tank changes.</p>
+    <p>Glass Garden Fins — a planted tank log, updated as the tank changes.</p>
     <a href="#top" class="back-to-top">Back to top ↑</a>
   </div>
 </footer>

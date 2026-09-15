@@ -1,4 +1,4 @@
-// Little Fin Swim - minimal, restrained interaction only.
+// Glass Garden Fins - minimal, restrained interaction only.
 // Fades journal entries in as they enter view. No-ops entirely
 // if the visitor has requested reduced motion.
 

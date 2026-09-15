@@ -71,7 +71,7 @@ export function checkPage(html, { route, current }) {
   }
 
   const expectedImage = `${SITE_ORIGIN}/assets/social-card.png`;
-  if (!has(html, /<meta\s+property="og:site_name"\s+content="Little Fin Swim">/i)) {
+  if (!has(html, /<meta\s+property="og:site_name"\s+content="Glass Garden Fins">/i)) {
     errors.push('missing or invalid og:site_name');
   }
   const ogImage = firstMatch(html, /<meta\s+property="og:image"\s+content="([^"]+)">/i);

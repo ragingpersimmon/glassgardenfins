@@ -2,7 +2,7 @@
   "name": "littlefinswim",
   "version": "1.0.0",
   "private": true,
-  "description": "Little Fin Swim static site validation and backtesting",
+  "description": "Glass Garden Fins static site validation and backtesting",
   "main": "script.js",
   "type": "module",
   "scripts": {

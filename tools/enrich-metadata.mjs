@@ -8,16 +8,16 @@ const SOCIAL_IMAGE = `${SITE_ORIGIN}/assets/social-card.png`;
 const SOCIAL_METADATA = `<meta property="og:image" content="${SOCIAL_IMAGE}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Little Fin Swim planted aquarium journal">
+<meta property="og:image:alt" content="Glass Garden Fins planted aquarium journal">
 <meta name="twitter:image" content="${SOCIAL_IMAGE}">
-<meta name="twitter:image:alt" content="Little Fin Swim planted aquarium journal">`;
+<meta name="twitter:image:alt" content="Glass Garden Fins planted aquarium journal">`;
 const FOOTER = `<footer class="site-footer">
   <div class="wrap site-footer__inner">
     <aside class="ad-slot" aria-label="Advertisement" data-ad-slot>
       <span>Advertisement</span>
     </aside>
     <div class="site-footer__row">
-      <p>Little Fin Swim — a planted tank log, updated as the tank changes.</p>
+      <p>Glass Garden Fins — a planted tank log, updated as the tank changes.</p>
       <div class="site-footer__links">
         <a href="/privacy/">Privacy &amp; disclosure</a>
         <a href="#top" class="back-to-top">Back to top ↑</a>
@@ -101,8 +101,8 @@ function schemaFor(html, file) {
     return {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
-      name: 'Little Fin Swim',
-      alternateName: 'Little Fin Swim — a planted tank journal',
+      name: 'Glass Garden Fins',
+      alternateName: 'Glass Garden Fins — a planted tank journal',
       description,
       url,
       image: absoluteUrl(contentImage) || SOCIAL_IMAGE,
@@ -130,7 +130,7 @@ function schemaFor(html, file) {
     const schema = {
       '@context': 'https://schema.org',
       '@type': 'BlogPosting',
-      headline: title.replace(/ — Little Fin Swim$/, ''),
+      headline: title.replace(/ — Glass Garden Fins$/, ''),
       description,
       datePublished,
       dateModified: datePublished,
@@ -143,11 +143,11 @@ function schemaFor(html, file) {
       inLanguage: 'en-CA',
       isPartOf: {
         '@type': 'Blog',
-        name: 'Little Fin Swim Journal',
+        name: 'Glass Garden Fins Journal',
         url: `${SITE_ORIGIN}/journal/`
       },
-      author: { '@type': 'Organization', name: 'Little Fin Swim' },
-      publisher: { '@type': 'Organization', name: 'Little Fin Swim' }
+      author: { '@type': 'Organization', name: 'Glass Garden Fins' },
+      publisher: { '@type': 'Organization', name: 'Glass Garden Fins' }
     };
     const videoTag = html.match(
       /<video\b([^>]*)>([\s\S]*?)<\/video>\s*(?:<figcaption>([^<]+)<\/figcaption>)?/i
@@ -177,7 +177,7 @@ function schemaFor(html, file) {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
-    name: title.replace(/ — Little Fin Swim$/, ''),
+    name: title.replace(/ — Glass Garden Fins$/, ''),
     description,
     url,
     image: SOCIAL_IMAGE,
@@ -186,7 +186,7 @@ function schemaFor(html, file) {
       { '@type': 'Thing', name: 'freshwater aquariums' },
       { '@type': 'Thing', name: 'aquarium care' }
     ],
-    isPartOf: { '@type': 'WebSite', name: 'Little Fin Swim', url: `${SITE_ORIGIN}/` }
+    isPartOf: { '@type': 'WebSite', name: 'Glass Garden Fins', url: `${SITE_ORIGIN}/` }
   };
   const cards = Array.from(html.matchAll(
     /<a\s+class="journal-card__link"\s+href="([^"]+)"[\s\S]*?<h2\s+class="journal-card__title">([\s\S]*?)<\/h2>/gi
@@ -227,7 +227,7 @@ export function enrichPage(html, file, amazonAssociateTag) {
   );
   output = output.replace(
     /(<meta\s+property="og:type"[^>]*>)/i,
-    '$1\n<meta property="og:site_name" content="Little Fin Swim">'
+    '$1\n<meta property="og:site_name" content="Glass Garden Fins">'
   );
   output = output.replace(
     /<meta\s+name="twitter:card"\s+content="[^"]+">/i,
@@ -260,8 +260,8 @@ export function enrichPage(html, file, amazonAssociateTag) {
 
   if (file.replaceAll('\\', '/') === 'privacy/index.html') {
     const status = amazonAssociateTag
-      ? 'Amazon product links are configured as sponsored affiliate links. Little Fin Swim may earn from qualifying purchases at no extra cost to the visitor.'
-      : 'Amazon product links are currently ordinary, untagged links. Little Fin Swim does not currently earn a commission from them.';
+      ? 'Amazon product links are configured as sponsored affiliate links. Glass Garden Fins may earn from qualifying purchases at no extra cost to the visitor.'
+      : 'Amazon product links are currently ordinary, untagged links. Glass Garden Fins does not currently earn a commission from them.';
     output = output.replace(
       /<p data-affiliate-status>[\s\S]*?<\/p>/i,
       `<p data-affiliate-status>${status}</p>`

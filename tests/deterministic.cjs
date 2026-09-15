@@ -3,16 +3,16 @@ const { chromium } = require('playwright');
 const { startServer } = require('./helpers.cjs');
 
 const QUESTION_ENTRIES = [
-  ['/journal/how-much-fish-food/', 'How Much Fish Food Is the Right Amount? — Little Fin Swim'],
-  ['/journal/how-much-sun-do-fish-need/', 'How Much Sun Do Fish Need? — Little Fin Swim'],
-  ['/journal/what-happened-to-my-shrimps-skin/', 'What Happened to My Shrimp’s Skin? — Little Fin Swim'],
-  ['/journal/why-is-my-fish-staying-at-the-bottom/', 'Why Is My Fish Staying at the Bottom of the Tank? — Little Fin Swim'],
-  ['/journal/why-is-my-fish-swimming-at-the-top/', 'Why Is My Fish Swimming at the Top of the Tank? — Little Fin Swim'],
-  ['/journal/how-often-should-you-change-aquarium-water/', 'How Often Should You Change Aquarium Water? — Little Fin Swim'],
-  ['/journal/why-is-my-aquarium-water-cloudy/', 'Why Is My Aquarium Water Cloudy? — Little Fin Swim'],
-  ['/journal/is-my-aquarium-filter-big-enough/', 'How Do I Know If My Aquarium Filter Is Big Enough? — Little Fin Swim'],
-  ['/journal/how-many-fish-can-i-put-in-my-aquarium/', 'How Many Fish Can I Put in My Aquarium? — Little Fin Swim'],
-  ['/journal/why-are-my-aquarium-plants-turning-brown/', 'Why Are My Aquarium Plants Turning Brown? — Little Fin Swim']
+  ['/journal/how-much-fish-food/', 'How Much Fish Food Is the Right Amount? — Glass Garden Fins'],
+  ['/journal/how-much-sun-do-fish-need/', 'How Much Sun Do Fish Need? — Glass Garden Fins'],
+  ['/journal/what-happened-to-my-shrimps-skin/', 'What Happened to My Shrimp’s Skin? — Glass Garden Fins'],
+  ['/journal/why-is-my-fish-staying-at-the-bottom/', 'Why Is My Fish Staying at the Bottom of the Tank? — Glass Garden Fins'],
+  ['/journal/why-is-my-fish-swimming-at-the-top/', 'Why Is My Fish Swimming at the Top of the Tank? — Glass Garden Fins'],
+  ['/journal/how-often-should-you-change-aquarium-water/', 'How Often Should You Change Aquarium Water? — Glass Garden Fins'],
+  ['/journal/why-is-my-aquarium-water-cloudy/', 'Why Is My Aquarium Water Cloudy? — Glass Garden Fins'],
+  ['/journal/is-my-aquarium-filter-big-enough/', 'How Do I Know If My Aquarium Filter Is Big Enough? — Glass Garden Fins'],
+  ['/journal/how-many-fish-can-i-put-in-my-aquarium/', 'How Many Fish Can I Put in My Aquarium? — Glass Garden Fins'],
+  ['/journal/why-are-my-aquarium-plants-turning-brown/', 'Why Are My Aquarium Plants Turning Brown? — Glass Garden Fins']
 ];
 
 async function checkPageMeta(page, baseUrl, path, expectedTitle, expectedCanonical) {
@@ -62,7 +62,7 @@ async function run() {
       page,
       server.baseUrl,
       '/',
-      'Little Fin Swim — a planted tank journal',
+      'Glass Garden Fins — a planted tank journal',
       'https://littlefinswim.net/'
     );
     const homeTheme = await page.locator('body').evaluate((element) => {
@@ -103,7 +103,7 @@ async function run() {
       page,
       server.baseUrl,
       '/tank/',
-      'The Tank — Little Fin Swim',
+      'The Tank — Glass Garden Fins',
       'https://littlefinswim.net/tank/'
     );
     const tankDetails = await page.locator('.spec-list').innerText();
@@ -168,7 +168,7 @@ async function run() {
       page,
       server.baseUrl,
       '/privacy/',
-      'Privacy & Disclosure — Little Fin Swim',
+      'Privacy & Disclosure — Glass Garden Fins',
       'https://littlefinswim.net/privacy/'
     );
     assert.match(
@@ -181,7 +181,7 @@ async function run() {
       page,
       server.baseUrl,
       '/journal/',
-      'Journal — Little Fin Swim',
+      'Journal — Glass Garden Fins',
       'https://littlefinswim.net/journal/'
     );
 
@@ -189,7 +189,7 @@ async function run() {
       page,
       server.baseUrl,
       '/journal/10-aquarium-questions/',
-      '10 Aquarium Questions — Little Fin Swim',
+      '10 Aquarium Questions — Glass Garden Fins',
       'https://littlefinswim.net/journal/10-aquarium-questions/'
     );
     assert.strictEqual(
@@ -201,7 +201,7 @@ async function run() {
       page,
       server.baseUrl,
       '/journal/first-residents-amano-shrimp/',
-      'First Residents: Amano Shrimp Are In — Little Fin Swim',
+      'First Residents: Amano Shrimp Are In — Glass Garden Fins',
       'https://littlefinswim.net/journal/first-residents-amano-shrimp/'
     );
     assert.strictEqual(
@@ -213,14 +213,14 @@ async function run() {
       page,
       server.baseUrl,
       '/journal/detritus-worms/',
-      'Detritus Worms, and What They Were Actually Telling Me — Little Fin Swim',
+      'Detritus Worms, and What They Were Actually Telling Me — Glass Garden Fins',
       'https://littlefinswim.net/journal/detritus-worms/'
     );
     await checkPageMeta(
       page,
       server.baseUrl,
       '/journal/dialing-in-before-stocking/',
-      'Dialing In Before Anything Goes In — Little Fin Swim',
+      'Dialing In Before Anything Goes In — Glass Garden Fins',
       'https://littlefinswim.net/journal/dialing-in-before-stocking/'
     );
 
