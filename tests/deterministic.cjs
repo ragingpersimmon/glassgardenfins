@@ -182,6 +182,24 @@ async function run() {
       0,
       'journal index should remain a compact headline archive'
     );
+    const desktopJournalLayout = await page.locator('.journal-grid').evaluate((grid) => {
+      const cards = Array.from(grid.querySelectorAll('.journal-card'));
+      const gridStyle = window.getComputedStyle(grid);
+      const firstCard = cards[0].getBoundingClientRect();
+      const secondCard = cards[1].getBoundingClientRect();
+      return {
+        columns: gridStyle.gridTemplateColumns.split(' ').length,
+        featuredWidth: firstCard.width,
+        standardWidth: secondCard.width,
+        maxCardHeight: Math.max(...cards.map((card) => card.getBoundingClientRect().height))
+      };
+    });
+    assert.strictEqual(desktopJournalLayout.columns, 2, 'journal archive should use two columns on desktop');
+    assert.ok(
+      desktopJournalLayout.featuredWidth > desktopJournalLayout.standardWidth * 1.8,
+      'latest journal entry should span both desktop columns'
+    );
+    assert.ok(desktopJournalLayout.maxCardHeight <= 160, 'desktop journal cards should remain compact');
     const journalEntryLink = page.locator('.journal-card__link[href="/journal/how-much-fish-food/"]');
     assert.strictEqual(await journalEntryLink.count(), 1, 'journal index should list the latest question');
     await journalEntryLink.click();
@@ -244,6 +262,15 @@ async function run() {
       () => document.documentElement.scrollWidth > document.documentElement.clientWidth
     );
     assert.strictEqual(hasHorizontalOverflow, false, 'journal should not overflow horizontally at 390px');
+    const mobileJournalLayout = await page.locator('.journal-grid').evaluate((grid) => ({
+      columns: window.getComputedStyle(grid).gridTemplateColumns.split(' ').length,
+      maxCardHeight: Math.max(
+        ...Array.from(grid.querySelectorAll('.journal-card'))
+          .map((card) => card.getBoundingClientRect().height)
+      )
+    }));
+    assert.strictEqual(mobileJournalLayout.columns, 1, 'journal archive should use one column on mobile');
+    assert.ok(mobileJournalLayout.maxCardHeight <= 130, 'mobile journal cards should remain compact');
 
     await page.setViewportSize({ width: 320, height: 640 });
     for (const route of [
