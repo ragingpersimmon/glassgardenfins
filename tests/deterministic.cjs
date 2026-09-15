@@ -87,6 +87,11 @@ async function run() {
       16,
       'tank purchase timeline should link all 16 supplied products'
     );
+    assert.strictEqual(
+      await page.locator('.purchase-list a[data-amazon-link] > img[src^="/assets/products/"]').count(),
+      16,
+      'every purchase should show a clickable thumbnail before its item name'
+    );
 
     await checkPageMeta(
       page,

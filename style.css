@@ -624,8 +624,22 @@ a:hover { text-decoration-color: currentColor; }
 
 .equipment-link,
 .purchase-list a {
+  display: inline-grid;
+  grid-template-columns: 6rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.8rem;
+  min-height: 54px;
   color: var(--color-surface);
   text-decoration-color: var(--color-amber);
+}
+
+.purchase-list a img {
+  display: block;
+  width: 6rem;
+  height: 3.375rem;
+  object-fit: cover;
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
 }
 
 .equipment-link:hover,
