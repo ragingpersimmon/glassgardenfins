@@ -157,7 +157,9 @@ a:hover { text-decoration-color: currentColor; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-block: var(--space-2);
+  gap: var(--space-2);
+  min-height: 4.25rem;
+  padding-block: 0.75rem;
 }
 
 .wordmark {
@@ -174,7 +176,7 @@ a:hover { text-decoration-color: currentColor; }
 
 .site-nav {
   display: flex;
-  gap: var(--space-3);
+  gap: 0.25rem;
   font-family: var(--font-mono);
   font-size: 0.8rem;
   letter-spacing: 0.03em;
@@ -187,9 +189,10 @@ a:hover { text-decoration-color: currentColor; }
   min-width: 44px;
   min-height: 44px;
   align-items: center;
+  justify-content: center;
+  padding-inline: 0.75rem;
 }
 .site-nav a:hover { color: var(--color-surface); }
-.site-nav a:not(:last-child) { margin-right: var(--space-3); }
 .site-nav a[aria-current="page"] {
   color: var(--color-surface);
   text-decoration: underline;
@@ -554,8 +557,7 @@ body * {
 }
 
 .page-hero {
-  padding-top: var(--space-5);
-  padding-bottom: var(--space-2);
+  padding-block: var(--space-4) var(--space-2);
 }
 
 .page-hero__lead {
@@ -900,11 +902,6 @@ body * {
 
 .journal--index {
   padding-top: var(--space-3);
-}
-
-.journal-index-page .page-hero {
-  padding-top: var(--space-4);
-  padding-bottom: var(--space-1);
 }
 
 .journal-grid {
@@ -1396,8 +1393,7 @@ body * {
 
   .purchase-day { grid-template-columns: 1fr; gap: var(--space-1); }
 
-  .site-nav { gap: var(--space-2); }
-  .site-nav a:not(:last-child) { margin-right: 0; }
+  .site-nav { gap: 0.25rem; }
 
   .readout { gap: var(--space-3); }
 
@@ -1421,6 +1417,7 @@ body * {
     justify-content: space-between;
     gap: var(--space-1);
   }
+  .site-nav a { padding-inline: 0.35rem; }
   .journal--index { padding-top: var(--space-2); }
   .journal-grid { gap: 0.6rem; }
   .journal-card__link {

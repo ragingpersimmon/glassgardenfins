@@ -58,6 +58,47 @@ async function run() {
     const pageErrors = [];
     page.on('pageerror', (err) => pageErrors.push(err));
 
+    const standardPageRoutes = [
+      '/tank/',
+      '/journal/',
+      '/species/',
+      '/privacy/',
+      '/journal/how-much-fish-food/'
+    ];
+    const collectPageHeaderMetrics = async (viewport) => {
+      await page.setViewportSize(viewport);
+      const metrics = [];
+      for (const route of standardPageRoutes) {
+        await page.goto(`${server.baseUrl}${route}`, { waitUntil: 'domcontentloaded' });
+        metrics.push(await page.evaluate(() => {
+          const header = document.querySelector('.site-header__inner');
+          const hero = document.querySelector('.page-hero');
+          const nav = document.querySelector('.site-nav');
+          const headerStyle = window.getComputedStyle(header);
+          const heroStyle = window.getComputedStyle(hero);
+          return {
+            headerHeight: Math.round(header.getBoundingClientRect().height),
+            headerPaddingTop: headerStyle.paddingTop,
+            headerPaddingBottom: headerStyle.paddingBottom,
+            heroPaddingTop: heroStyle.paddingTop,
+            heroPaddingBottom: heroStyle.paddingBottom,
+            navGap: window.getComputedStyle(nav).gap
+          };
+        }));
+      }
+      return metrics;
+    };
+    for (const viewport of [{ width: 1280, height: 900 }, { width: 320, height: 640 }]) {
+      const [expectedMetrics, ...remainingMetrics] = await collectPageHeaderMetrics(viewport);
+      assert.ok(
+        remainingMetrics.every((metrics) =>
+          JSON.stringify(metrics) === JSON.stringify(expectedMetrics)
+        ),
+        `${viewport.width}px: shared page header spacing should be identical across routes`
+      );
+    }
+    await page.setViewportSize({ width: 1280, height: 720 });
+
     await checkPageMeta(
       page,
       server.baseUrl,
