@@ -32,6 +32,21 @@ async function checkPageMeta(page, baseUrl, path, expectedTitle, expectedCanonic
   assert.ok(navCount >= 2, `${path}: expected navigation links`);
 }
 
+async function assertAllVisibleTextOrange(page, label) {
+  const nonOrangeText = await page.locator('body *').evaluateAll((elements) =>
+    elements
+      .filter((element) =>
+        (element.offsetWidth || element.offsetHeight || element.getClientRects().length) &&
+        Array.from(element.childNodes).some((node) =>
+          node.nodeType === Node.TEXT_NODE && node.textContent.trim()
+        )
+      )
+      .filter((element) => window.getComputedStyle(element).color !== 'rgb(240, 163, 74)')
+      .map((element) => element.textContent.trim().slice(0, 60))
+  );
+  assert.deepStrictEqual(nonOrangeText, [], `${label}: every visible text node should be orange`);
+}
+
 async function run() {
   const server = await startServer();
   const browser = await chromium.launch({ headless: true });
@@ -82,22 +97,7 @@ async function run() {
       0,
       'homepage montage should not show a pause button or caption'
     );
-    const nonOrangeHomeText = await page.locator('body *').evaluateAll((elements) =>
-      elements
-        .filter((element) =>
-          (element.offsetWidth || element.offsetHeight || element.getClientRects().length) &&
-          Array.from(element.childNodes).some((node) =>
-            node.nodeType === Node.TEXT_NODE && node.textContent.trim()
-          )
-        )
-        .filter((element) => window.getComputedStyle(element).color !== 'rgb(240, 163, 74)')
-        .map((element) => element.textContent.trim().slice(0, 60))
-    );
-    assert.deepStrictEqual(
-      nonOrangeHomeText,
-      [],
-      'every homepage text node should use the bright orange text color'
-    );
+    await assertAllVisibleTextOrange(page, 'homepage');
 
     await checkPageMeta(
       page,
@@ -128,6 +128,16 @@ async function run() {
       1,
       'tank page should show the swimming shrimp footage second'
     );
+    assert.strictEqual(
+      await page.locator('.tank-media-grid video[autoplay][muted][loop]:not([controls])').count(),
+      2,
+      'tank videos should autoplay silently without browser controls'
+    );
+    assert.strictEqual(
+      await page.locator('.tank-media-grid figcaption').count(),
+      0,
+      'tank videos should not show captions'
+    );
     const purchaseDates = await page.locator('.purchase-day > time').evaluateAll((times) =>
       times.map((time) => time.getAttribute('datetime'))
     );
@@ -152,6 +162,7 @@ async function run() {
     const currentLivestock = await page.locator('.stocking-plan--current').innerText();
     assert.match(currentLivestock, /1 red bristlenose shortfin pleco/i);
     assert.match(currentLivestock, /6 gold laser Corydoras/i);
+    await assertAllVisibleTextOrange(page, 'tank page');
 
     await checkPageMeta(
       page,
@@ -313,6 +324,7 @@ async function run() {
       'none',
       'journal entry should retain its original capitalization'
     );
+    await assertAllVisibleTextOrange(page, 'journal article');
 
     await page.waitForTimeout(250);
 
