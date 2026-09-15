@@ -214,7 +214,7 @@ a:hover { text-decoration-color: currentColor; }
 .hero__title {
   font-family: var(--font-display);
   font-weight: 400;
-  font-style: italic;
+  font-style: normal;
   font-size: clamp(2.8rem, 8vw, 5rem);
   line-height: 1.05;
   margin: 0 0 var(--space-3);
