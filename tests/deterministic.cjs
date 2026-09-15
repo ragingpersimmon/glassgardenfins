@@ -56,6 +56,12 @@ async function run() {
     });
     assert.match(homeTheme.fontFamily, /^Arial/i, 'site theme should use Arial');
     assert.strictEqual(homeTheme.textTransform, 'lowercase', 'site theme should render lowercase');
+    const homeTankPhoto = page.locator('.hero-photo img[src="/assets/media/tank-overview-home.webp"]');
+    assert.strictEqual(await homeTankPhoto.count(), 1, 'homepage should feature the real tank overview');
+    assert.ok(
+      await homeTankPhoto.evaluate((image) => image.complete && image.naturalWidth >= 1200),
+      'homepage tank photo should load at an appropriate resolution'
+    );
 
     await checkPageMeta(
       page,
@@ -71,6 +77,11 @@ async function run() {
     assert.match(tankDetails, /CO₂ monitoring\s+Pawfly glass CO₂ drop checker/i);
     assert.doesNotMatch(tankDetails, /\(in use\)/i);
     assert.match(tankDetails, /Dimensions\s+1 ft × 1 ft × 2\.5 ft/i);
+    assert.strictEqual(
+      await page.locator('.tank-media-grid img[src^="/assets/media/"]').count(),
+      2,
+      'tank page should show two contextual tank photographs'
+    );
     const purchaseDates = await page.locator('.purchase-day > time').evaluateAll((times) =>
       times.map((time) => time.getAttribute('datetime'))
     );
@@ -133,6 +144,11 @@ async function run() {
       'First Residents: Amano Shrimp Are In — Little Fin Swim',
       'https://littlefinswim.net/journal/first-residents-amano-shrimp/'
     );
+    assert.strictEqual(
+      await page.locator('video source[src="/assets/media/amano-shrimp-stabilized.mp4"]').count(),
+      1,
+      'Amano entry should include the stabilized shrimp clip'
+    );
     await checkPageMeta(
       page,
       server.baseUrl,
@@ -189,6 +205,17 @@ async function run() {
       0,
       'journal index should remain a compact headline archive'
     );
+    if (septemberEntryPublished) {
+      await page.goto(`${server.baseUrl}/journal/september-15-stocking-update/`, {
+        waitUntil: 'domcontentloaded'
+      });
+      assert.strictEqual(
+        await page.locator('.entry-media video source[src="/assets/media/stocking-shrimp-stabilized.mp4"]').count(),
+        1,
+        'stocking entry should include the stabilized shrimp clip'
+      );
+      await page.goto(`${server.baseUrl}/journal/`, { waitUntil: 'domcontentloaded' });
+    }
     const desktopJournalLayout = await page.locator('.journal-grid').evaluate((grid) => {
       const cards = Array.from(grid.querySelectorAll('.journal-card'));
       const gridStyle = window.getComputedStyle(grid);
