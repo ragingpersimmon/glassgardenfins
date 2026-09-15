@@ -63,6 +63,9 @@ export function checkPage(html, { route, current }) {
   }
 
   const expectedImage = `${SITE_ORIGIN}/assets/social-card.png`;
+  if (!has(html, /<meta\s+property="og:site_name"\s+content="Little Fin Swim">/i)) {
+    errors.push('missing or invalid og:site_name');
+  }
   const ogImage = firstMatch(html, /<meta\s+property="og:image"\s+content="([^"]+)">/i);
   if (ogImage !== expectedImage) errors.push('missing or invalid og:image');
   if (!has(html, /<meta\s+property="og:image:width"\s+content="1200">/i)) {
@@ -76,6 +79,9 @@ export function checkPage(html, { route, current }) {
     /<meta\s+name="twitter:image"\s+content="([^"]+)">/i
   );
   if (twitterImage !== expectedImage) errors.push('missing or invalid twitter:image');
+  if (!has(html, /<meta\s+name="twitter:card"\s+content="summary_large_image">/i)) {
+    errors.push('missing summary_large_image Twitter card');
+  }
 
   const schemaSource = firstMatch(
     html,
@@ -96,6 +102,12 @@ export function checkPage(html, { route, current }) {
       }
       if (expectedType === 'BlogPosting' && !schema.datePublished) {
         errors.push('BlogPosting schema missing datePublished');
+      }
+      if (expectedType === 'BlogPosting' && schema.url !== canonical) {
+        errors.push('BlogPosting schema URL mismatch');
+      }
+      if (expectedType === 'WebSite' && !schema.alternateName) {
+        errors.push('WebSite schema missing alternateName');
       }
     } catch {
       errors.push('invalid JSON-LD schema');

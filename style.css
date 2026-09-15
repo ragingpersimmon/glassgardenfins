@@ -144,9 +144,10 @@ a:hover { text-decoration-color: currentColor; }
   border-bottom: 1px solid var(--color-border-soft);
 }
 
-@supports (backdrop-filter: blur(10px)) {
+@supports (backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px)) {
   .site-header {
     background: rgba(10, 22, 20, 0.82);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
   }
 }

@@ -102,9 +102,18 @@ if (!fs.existsSync(sitemapPath)) {
     }
   }
   const sitemapEntries = Array.from(sitemap.matchAll(/<loc>([^<]+)<\/loc>/g), (match) => match[1]);
+  const sitemapDates = Array.from(
+    sitemap.matchAll(/<lastmod>(\d{4}-\d{2}-\d{2})<\/lastmod>/g),
+    (match) => match[1]
+  );
   if (sitemapEntries.length !== sitemapRoutes.size) {
     failures += 1;
     console.error('\n❌ sitemap.xml contains stale or duplicate routes');
+  }
+  if (sitemapDates.length !== sitemapRoutes.size ||
+      sitemapDates.some((date) => date > new Date().toISOString().slice(0, 10))) {
+    failures += 1;
+    console.error('\n❌ sitemap.xml requires one non-future lastmod per route');
   }
 }
 
