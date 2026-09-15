@@ -30,12 +30,12 @@ function primaryNavigation(file) {
   const normalized = file.replaceAll('\\', '/');
   const links = [
     ['/tank/', 'The Tank', normalized === 'tank/index.html'],
-    ['/species/', 'Species', normalized === 'species/index.html'],
     [
       '/journal/',
       'Journal',
       normalized.startsWith('journal/') || normalized.startsWith('_scheduled/')
-    ]
+    ],
+    ['/species/', 'Species', normalized === 'species/index.html']
   ];
   return `<nav class="site-nav" aria-label="Primary">
       ${links.map(([href, label, current]) =>

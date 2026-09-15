@@ -176,6 +176,11 @@ async function run() {
       1,
       'species page should identify its primary navigation item'
     );
+    assert.deepStrictEqual(
+      await page.locator('.site-nav a').allInnerTexts(),
+      ['the tank', 'journal', 'species'],
+      'species should appear to the right of journal in primary navigation'
+    );
     assert.strictEqual(
       await page.locator('.species-card').count(),
       11,
