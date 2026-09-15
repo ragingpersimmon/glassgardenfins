@@ -253,7 +253,8 @@ a:hover { text-decoration-color: currentColor; }
   text-align: left;
 }
 
-.hero-photo {
+.hero-photo,
+.hero-montage {
   max-width: 56rem;
   margin: var(--space-4) auto 0;
   box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.26);
@@ -262,6 +263,54 @@ a:hover { text-decoration-color: currentColor; }
 .hero-photo img {
   aspect-ratio: 16 / 9;
   object-fit: cover;
+}
+
+.hero-montage__stage {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--color-bg-deep);
+}
+
+.site-media .hero-montage__clip {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}
+
+.site-media .hero-montage__clip.is-active {
+  z-index: 1;
+  opacity: 1;
+}
+
+.hero-montage__toggle {
+  position: absolute;
+  right: var(--space-2);
+  bottom: var(--space-2);
+  z-index: 2;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid rgba(198, 138, 75, 0.72);
+  border-radius: 999px;
+  background: rgba(10, 22, 20, 0.84);
+  color: var(--color-amber);
+  font: 600 0.72rem/1 var(--font-mono);
+  cursor: pointer;
+}
+
+.hero-montage__toggle:hover,
+.hero-montage__toggle:focus-visible {
+  border-color: var(--color-amber);
+  background: rgba(10, 22, 20, 0.96);
+}
+
+.home-page :where(.site-header, .hero, .readout, .page-nav, .home-update, .site-footer) * {
+  color: var(--color-amber) !important;
 }
 
 .tank-scene {
@@ -1277,6 +1326,7 @@ a:hover { text-decoration-color: currentColor; }
   html { scroll-behavior: auto; }
 
   .hero__bubbles span { animation: none; display: none; }
+  .site-media .hero-montage__clip { transition: none; }
   .surface-line__line { animation: none; }
   *, *::before, *::after {
     scroll-behavior: auto !important;

@@ -120,7 +120,7 @@ export function checkPage(html, { route, current }) {
         errors.push('BlogPosting schema missing topic or language metadata');
       }
       const videoSource = firstMatch(html, /<video\b[^>]*>[\s\S]*?<source[^>]+src="([^"]+)"/i);
-      if (videoSource) {
+      if (expectedType === 'BlogPosting' && videoSource) {
         const expectedVideoUrl = `${SITE_ORIGIN}${videoSource}`;
         if (schema.video?.['@type'] !== 'VideoObject' ||
             schema.video.contentUrl !== expectedVideoUrl ||

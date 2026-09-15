@@ -32,7 +32,7 @@
   "alternateName": "Little Fin Swim — a planted tank journal",
   "description": "Notes from a 70L planted freshwater aquarium. Water chemistry, plants, and a slow stocking plan.",
   "url": "https://littlefinswim.net/",
-  "image": "https://littlefinswim.net/assets/media/tank-overview-home.webp",
+  "image": "https://littlefinswim.net/assets/media/corydoras-group-foraging-poster.webp",
   "inLanguage": "en-CA",
   "about": [
     {
@@ -55,7 +55,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,500&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;1,7..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css">
 </head>
-<body>
+<body class="home-page">
 <a class="skip-link" href="#top">Skip to content</a>
 
 <header class="site-header">
@@ -80,9 +80,23 @@
       <h1 class="hero__title">Little Fin Swim</h1>
       <p class="hero__tagline">Notes from below the surface of a 70&nbsp;litre planted tank — water chemistry, plant growth, and a stocking plan taken slowly.</p>
 
-      <figure class="site-media hero-photo">
-        <img src="/assets/media/tank-overview-home.webp" width="1600" height="900" alt="Mature planted 70-litre aquarium with dense greenery and branching hardscape." fetchpriority="high">
-        <figcaption>The 70-litre planted tank.</figcaption>
+      <figure class="site-media hero-montage" data-hero-montage>
+        <div class="hero-montage__stage">
+          <video class="hero-montage__clip is-active" muted loop playsinline preload="metadata" poster="/assets/media/corydoras-group-foraging-poster.webp" aria-label="A group of Corydoras foraging across the aquarium substrate" data-duration="PT10.53S" data-hero-clip>
+            <source src="/assets/media/corydoras-group-foraging.mp4" type="video/mp4">
+          </video>
+          <video class="hero-montage__clip" muted loop playsinline preload="metadata" poster="/assets/media/corydoras-close-foraging-poster.webp" aria-label="A Corydoras swimming and feeding close to the substrate" aria-hidden="true" data-duration="PT11.98S" data-hero-clip>
+            <source src="/assets/media/corydoras-close-foraging.mp4" type="video/mp4">
+          </video>
+          <video class="hero-montage__clip" muted loop playsinline preload="metadata" poster="/assets/media/amano-shrimp-poster.webp" aria-label="Amano shrimp grazing on reddish driftwood" aria-hidden="true" data-duration="PT15S" data-hero-clip>
+            <source src="/assets/media/amano-shrimp-stabilized.mp4" type="video/mp4">
+          </video>
+          <video class="hero-montage__clip" muted loop playsinline preload="metadata" poster="/assets/media/stocking-shrimp-poster.webp" aria-label="Shrimp moving across aquarium driftwood and plants" aria-hidden="true" data-duration="PT12.5S" data-hero-clip>
+            <source src="/assets/media/stocking-shrimp-stabilized.mp4" type="video/mp4">
+          </video>
+          <button class="hero-montage__toggle" type="button" aria-pressed="false" data-hero-toggle hidden>Pause motion</button>
+        </div>
+        <figcaption>Corydoras and shrimp foraging inside the 70-litre planted tank.</figcaption>
       </figure>
     </div>
 

@@ -56,11 +56,36 @@ async function run() {
     });
     assert.match(homeTheme.fontFamily, /^Arial/i, 'site theme should use Arial');
     assert.strictEqual(homeTheme.textTransform, 'lowercase', 'site theme should render lowercase');
-    const homeTankPhoto = page.locator('.hero-photo img[src="/assets/media/tank-overview-home.webp"]');
-    assert.strictEqual(await homeTankPhoto.count(), 1, 'homepage should feature the real tank overview');
+    const homeMontage = page.locator('[data-hero-montage]');
+    assert.strictEqual(
+      await homeMontage.locator('video[data-hero-clip] source[src^="/assets/media/"]').count(),
+      4,
+      'homepage should crossfade four locally hosted tank videos'
+    );
+    assert.strictEqual(
+      await homeMontage.locator('source[src^="/assets/media/corydoras-"]').count(),
+      2,
+      'homepage montage should lead with two Corydoras clips'
+    );
+    await page.waitForFunction(() => {
+      const toggle = document.querySelector('[data-hero-toggle]');
+      return toggle && !toggle.hidden;
+    });
+    assert.strictEqual(
+      await homeMontage.locator('.hero-montage__clip.is-active').count(),
+      1,
+      'homepage montage should expose one active clip'
+    );
+    const montageToggle = homeMontage.locator('[data-hero-toggle]');
+    await montageToggle.click();
+    assert.strictEqual(await montageToggle.getAttribute('aria-pressed'), 'true');
+    assert.strictEqual(await montageToggle.innerText(), 'play motion');
+    const homeTextColors = await page.locator(
+      '.wordmark, .hero__title, .hero__tagline, .readout dd, .page-nav__title, .home-update__text, .site-footer p'
+    ).evaluateAll((elements) => elements.map((element) => window.getComputedStyle(element).color));
     assert.ok(
-      await homeTankPhoto.evaluate((image) => image.complete && image.naturalWidth >= 1200),
-      'homepage tank photo should load at an appropriate resolution'
+      homeTextColors.every((color) => color === 'rgb(198, 138, 75)'),
+      'all homepage wording should use the orange text color'
     );
 
     await checkPageMeta(
@@ -430,6 +455,19 @@ async function run() {
 
     const reducedContext = await browser.newContext({ reducedMotion: 'reduce' });
     const reducedPage = await reducedContext.newPage();
+    await reducedPage.goto(`${server.baseUrl}/`, { waitUntil: 'domcontentloaded' });
+    await reducedPage.waitForTimeout(200);
+    assert.strictEqual(
+      await reducedPage.locator('[data-hero-toggle]').isHidden(),
+      true,
+      'reduced motion mode should leave the homepage montage paused'
+    );
+    assert.ok(
+      await reducedPage.locator('[data-hero-clip]').evaluateAll((clips) =>
+        clips.every((clip) => clip.paused)
+      ),
+      'reduced motion mode should not autoplay homepage videos'
+    );
     await reducedPage.goto(`${server.baseUrl}/journal/how-much-fish-food/`, { waitUntil: 'domcontentloaded' });
     await reducedPage.waitForTimeout(200);
 
