@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img" aria-labelledby="title">
+  <title id="title">Aquarium aeration illustration</title>
+  <rect width="320" height="180" fill="#081d19"/>
+  <path d="M38 144h244" stroke="#31594d" stroke-width="3"/>
+  <rect x="55" y="92" width="94" height="51" rx="15" fill="#d9e7dc"/>
+  <circle cx="102" cy="117" r="16" fill="#6e9f89"/><circle cx="102" cy="117" r="6" fill="#081d19"/>
+  <path d="M149 117c37 0 57-15 57-43" fill="none" stroke="#8aa49a" stroke-width="7"/>
+  <circle cx="208" cy="66" r="7" fill="#69a9a3"/><circle cx="225" cy="47" r="10" fill="#69a9a3" opacity=".8"/><circle cx="248" cy="74" r="5" fill="#69a9a3"/>
+  <path d="M207 143h43l-7-18h-29z" fill="#6e9f89"/>
+  <text x="24" y="28" fill="#d59a57" font-family="Arial,sans-serif" font-size="12" letter-spacing="2">AERATION</text>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img" aria-labelledby="title">
+  <title id="title">Shrimp habitat illustration</title>
+  <rect width="320" height="180" fill="#081d19"/>
+  <path d="M0 141c65-20 120-16 164 4 52-24 104-24 156-3v38H0z" fill="#60472f"/>
+  <circle cx="40" cy="153" r="6" fill="#a57a4e"/><circle cx="84" cy="146" r="8" fill="#8a653f"/><circle cx="224" cy="151" r="7" fill="#b38a5c"/><circle cx="272" cy="144" r="9" fill="#85603b"/>
+  <path d="M82 137c19-47 40-76 63-86-9 30-3 58 17 84" fill="none" stroke="#6e9f89" stroke-width="8" stroke-linecap="round"/>
+  <path d="M156 132c23-30 45-44 67-43-13 18-17 36-12 55" fill="none" stroke="#8bad75" stroke-width="7" stroke-linecap="round"/>
+  <path d="M178 71c16-17 35-18 55-4-13 20-31 26-55 4z" fill="#a06c3e"/>
+  <text x="24" y="28" fill="#d59a57" font-family="Arial,sans-serif" font-size="12" letter-spacing="2">SHRIMP HABITAT</text>
+</svg>

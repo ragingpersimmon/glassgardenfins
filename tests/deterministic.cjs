@@ -235,6 +235,11 @@ async function run() {
 
     const productLinks = page.locator('a[data-amazon-link]');
     assert.ok(await productLinks.count(), 'journal should include relevant Amazon product links');
+    assert.strictEqual(
+      await productLinks.locator('img[src^="/assets/products/"]').count(),
+      await productLinks.count(),
+      'every journal product link should include a clickable local product image'
+    );
     const untaggedLinks = await productLinks.evaluateAll((links) =>
       links.map((link) => ({
         host: new URL(link.href).hostname,
@@ -320,13 +325,28 @@ async function run() {
         title,
         `https://littlefinswim.net${route}`
       );
+      const entryProductLinks = page.locator('a[data-amazon-link]');
       assert.ok(
-        await page.locator('a[data-amazon-link]').count() >= 2,
+        await entryProductLinks.count() >= 2,
         `${route}: expected at least two contextual Amazon links`
+      );
+      assert.strictEqual(
+        await entryProductLinks.locator('img[src^="/assets/products/"]').count(),
+        await entryProductLinks.count(),
+        `${route}: every Amazon recommendation should have a clickable product image`
       );
       const articleText = await page.locator('.entry > p:not([data-affiliate-disclosure])').allInnerTexts();
       articleWordCounts.push(articleText.join(' ').trim().split(/\s+/).length);
     }
+    await page.goto(`${server.baseUrl}/journal/september-15-stocking-update/`, {
+      waitUntil: 'domcontentloaded'
+    });
+    const stockingProductLinks = page.locator('a[data-amazon-link]');
+    assert.strictEqual(
+      await stockingProductLinks.locator('img[src^="/assets/products/"]').count(),
+      await stockingProductLinks.count(),
+      'stocking entry Amazon recommendations should have clickable product images'
+    );
     assert.ok(
       Math.min(...articleWordCounts) >= 300,
       `question entries should each contain at least 300 words: ${articleWordCounts.join(', ')}`

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img" aria-labelledby="title">
+  <title id="title">Aquarium filtration illustration</title>
+  <rect width="320" height="180" fill="#081d19"/>
+  <circle cx="252" cy="44" r="75" fill="#12362f"/>
+  <path d="M129 45h62v18h-62z" fill="#d9e7dc"/>
+  <path d="M139 63h42v18h-42z" fill="#8aa49a"/>
+  <rect x="111" y="81" width="98" height="70" rx="12" fill="#334b43" stroke="#6e9f89" stroke-width="4"/>
+  <path d="M125 94h70M125 108h70M125 122h70M125 136h70" stroke="#081d19" stroke-width="5" opacity=".65"/>
+  <path d="M160 45V28m0 0h49v38" fill="none" stroke="#d9e7dc" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="218" cy="78" r="6" fill="#69a9a3"/><circle cx="230" cy="61" r="4" fill="#69a9a3"/>
+  <text x="24" y="28" fill="#d59a57" font-family="Arial,sans-serif" font-size="12" letter-spacing="2">FILTRATION</text>
+</svg>

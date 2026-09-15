@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img" aria-labelledby="title">
+  <title id="title">Aquarium water testing illustration</title>
+  <rect width="320" height="180" fill="#081d19"/>
+  <circle cx="68" cy="145" r="78" fill="#12362f"/>
+  <path d="M119 43h27v19l-9 13v66c0 10-8 18-18 18h-14c-10 0-18-8-18-18V75l-9-13V43h27" fill="none" stroke="#d9e7dc" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M92 111h40v29c0 7-5 12-12 12h-16c-7 0-12-5-12-12z" fill="#69a9a3"/>
+  <rect x="178" y="48" width="64" height="100" rx="5" fill="#d9e7dc"/>
+  <rect x="188" y="61" width="44" height="10" fill="#d59a57"/><rect x="188" y="79" width="44" height="10" fill="#7b9f65"/><rect x="188" y="97" width="44" height="10" fill="#75a2b6"/><rect x="188" y="115" width="44" height="10" fill="#b57374"/>
+  <text x="24" y="28" fill="#d59a57" font-family="Arial,sans-serif" font-size="12" letter-spacing="2">WATER TESTING</text>
+</svg>

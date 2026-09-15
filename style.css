@@ -934,27 +934,55 @@ a:hover { text-decoration-color: currentColor; }
 
 .product-box__list li {
   min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(220, 238, 232, 0.08);
+  border-radius: 7px;
+  background: rgba(5, 22, 19, 0.38);
 }
 
 .product-box__list a {
-  display: flex;
+  display: grid;
   min-height: 44px;
-  align-items: center;
   color: var(--color-surface);
   font-family: var(--font-mono);
   font-size: 0.8rem;
   font-weight: 600;
   line-height: 1.4;
-  text-decoration-color: var(--color-amber);
+  text-decoration: none;
+}
+
+.product-box__list img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-bottom: 1px solid rgba(220, 238, 232, 0.08);
+  transition: filter 180ms ease, transform 180ms ease;
 }
 
 .product-box__list a:hover {
   color: var(--color-amber);
 }
 
-.product-box__list span {
+.product-box__list a:hover img {
+  filter: brightness(1.08);
+  transform: scale(1.015);
+}
+
+.product-box__name {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  padding: 0.6rem 0.75rem 0.35rem;
+  text-decoration: underline;
+  text-decoration-color: var(--color-amber);
+  text-underline-offset: 0.2em;
+}
+
+.product-box__note {
   display: block;
-  margin-top: 0.25rem;
+  padding: 0 0.75rem 0.75rem;
   color: var(--color-text-faint);
   font-size: 0.82rem;
   line-height: 1.5;
