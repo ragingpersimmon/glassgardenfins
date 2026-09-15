@@ -247,6 +247,18 @@ const questions = [
 
 const fonts = 'https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,500&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;1,7..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap';
 const csp = "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests";
+const relatedQuestionSlugs = {
+  'how-much-fish-food': ['why-is-my-aquarium-water-cloudy', 'how-often-should-you-change-aquarium-water'],
+  'how-much-sun-do-fish-need': ['why-are-my-aquarium-plants-turning-brown', 'why-is-my-aquarium-water-cloudy'],
+  'what-happened-to-my-shrimps-skin': ['how-often-should-you-change-aquarium-water', 'how-many-fish-can-i-put-in-my-aquarium'],
+  'why-is-my-fish-staying-at-the-bottom': ['why-is-my-fish-swimming-at-the-top', 'why-is-my-aquarium-water-cloudy'],
+  'why-is-my-fish-swimming-at-the-top': ['is-my-aquarium-filter-big-enough', 'why-is-my-fish-staying-at-the-bottom'],
+  'how-often-should-you-change-aquarium-water': ['why-is-my-aquarium-water-cloudy', 'what-happened-to-my-shrimps-skin'],
+  'why-is-my-aquarium-water-cloudy': ['how-often-should-you-change-aquarium-water', 'is-my-aquarium-filter-big-enough'],
+  'is-my-aquarium-filter-big-enough': ['why-is-my-fish-swimming-at-the-top', 'how-many-fish-can-i-put-in-my-aquarium'],
+  'how-many-fish-can-i-put-in-my-aquarium': ['is-my-aquarium-filter-big-enough', 'how-often-should-you-change-aquarium-water'],
+  'why-are-my-aquarium-plants-turning-brown': ['how-much-sun-do-fish-need', 'why-is-my-aquarium-water-cloudy']
+};
 
 function productImage(name) {
   const normalized = name.toLowerCase();
@@ -265,6 +277,20 @@ function renderProducts(question) {
   return question.products.map(([href, name, note]) =>
     `                <li><a data-amazon-link href="${href}" target="_blank" rel="noopener noreferrer"><img src="/assets/products/${productImage(name)}.svg" alt="" width="320" height="180" loading="lazy"><span class="product-box__name">${name}</span></a><span class="product-box__note">${note}</span></li>`
   ).join('\n');
+}
+
+function renderRelatedGuides(question) {
+  const related = relatedQuestionSlugs[question.slug].map((slug) => {
+    const relatedQuestion = questions.find((candidate) => candidate.slug === slug);
+    if (!relatedQuestion) throw new Error(`Unknown related question: ${slug}`);
+    return `                <li><a href="/journal/${slug}/">${relatedQuestion.title}</a></li>`;
+  }).join('\n');
+  return `          <aside class="related-guides" aria-labelledby="${question.slug}-related">
+            <h2 id="${question.slug}-related">Related aquarium guides</h2>
+            <ul>
+${related}
+            </ul>
+          </aside>`;
 }
 
 function renderArticle(question) {
@@ -335,6 +361,7 @@ ${renderProducts(question)}
           <p class="entry__dek">${question.dek}</p>
           <p class="affiliate-disclosure" data-affiliate-disclosure hidden>As an Amazon Associate, Little Fin Swim earns from qualifying purchases. Product links are selected for relevance; purchases made through them may earn the site a commission at no extra cost to you.</p>
 ${paragraphs}
+${renderRelatedGuides(question)}
           <p class="entry__closing"><a href="/journal/10-aquarium-questions/">Browse all ten aquarium questions</a> or return to the <a href="/journal/">full journal archive</a>.</p>
         </article>
       </div>

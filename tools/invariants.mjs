@@ -62,6 +62,14 @@ export function checkPage(html, { route, current }) {
     errors.push(`twitter:url mismatch: expected ${canonical}, got ${twitterUrl}`);
   }
 
+  const robots = firstMatch(html, /<meta\s+name="robots"\s+content="([^"]+)">/i);
+  const expectedRobots = route === '/404.html'
+    ? 'noindex, follow'
+    : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+  if (robots !== expectedRobots) {
+    errors.push(`robots directive mismatch: expected ${expectedRobots}`);
+  }
+
   const expectedImage = `${SITE_ORIGIN}/assets/social-card.png`;
   if (!has(html, /<meta\s+property="og:site_name"\s+content="Little Fin Swim">/i)) {
     errors.push('missing or invalid og:site_name');
@@ -105,6 +113,29 @@ export function checkPage(html, { route, current }) {
       }
       if (expectedType === 'BlogPosting' && schema.url !== canonical) {
         errors.push('BlogPosting schema URL mismatch');
+      }
+      if (expectedType === 'BlogPosting' &&
+          (!schema.articleSection || !schema.keywords || !schema.about?.length ||
+           schema.inLanguage !== 'en-CA')) {
+        errors.push('BlogPosting schema missing topic or language metadata');
+      }
+      const videoSource = firstMatch(html, /<video\b[^>]*>[\s\S]*?<source[^>]+src="([^"]+)"/i);
+      if (videoSource) {
+        const expectedVideoUrl = `${SITE_ORIGIN}${videoSource}`;
+        if (schema.video?.['@type'] !== 'VideoObject' ||
+            schema.video.contentUrl !== expectedVideoUrl ||
+            !schema.video.thumbnailUrl ||
+            !schema.video.duration ||
+            !schema.video.uploadDate) {
+          errors.push('BlogPosting schema missing or invalid VideoObject');
+        }
+      }
+      const cardCount = Array.from(html.matchAll(/class="journal-card__link"/g)).length;
+      if (cardCount &&
+          (schema.mainEntity?.['@type'] !== 'ItemList' ||
+           schema.mainEntity.numberOfItems !== cardCount ||
+           schema.mainEntity.itemListElement?.length !== cardCount)) {
+        errors.push('journal collection schema does not match rendered entries');
       }
       if (expectedType === 'WebSite' && !schema.alternateName) {
         errors.push('WebSite schema missing alternateName');

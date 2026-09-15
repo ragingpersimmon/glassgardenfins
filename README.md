@@ -21,6 +21,19 @@ The ten aquarium-question articles are generated from the editorial source in
 - `npm run test:chaos`: seeded (`1337`) browser backtests across random routes, viewports, reduced-motion modes, and resource fault injection (font blocking, script delay/block).
 - `npm run build:site`: regenerates the question series, social metadata and JSON-LD, normalized footers, and `sitemap.xml`.
 
+## Search indexing
+
+`npm run build:site` also maintains index/follow preview directives, aquarium-topic
+metadata, journal `ItemList` data, article/video structured data, contextual guide
+links, and image/video sitemap entries. The 404 page remains `noindex, follow`.
+
+After a production deployment, the site owner should add `littlefinswim.net` to
+[Google Search Console](https://search.google.com/search-console/) and
+[Bing Webmaster Tools](https://www.bing.com/webmasters/), verify ownership, and
+submit `https://littlefinswim.net/sitemap.xml`. Verification credentials should
+not be committed to this repository. Indexing and rankings remain controlled by
+the search engines.
+
 ## CI
 
 GitHub Actions runs all validation and test suites on each push and pull request.
