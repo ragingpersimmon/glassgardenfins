@@ -717,7 +717,7 @@ a:hover { text-decoration-color: currentColor; }
 
 .journal-card__link {
   display: grid;
-  min-height: 8.25rem;
+  min-height: 6.5rem;
   padding: 1.35rem 3.25rem 1.35rem 1.4rem;
   text-decoration: none;
 }
@@ -750,7 +750,7 @@ a:hover { text-decoration-color: currentColor; }
 .journal-card__title {
   display: -webkit-box;
   align-self: end;
-  max-width: 24ch;
+  max-width: none;
   margin: 0;
   overflow: hidden;
   color: var(--color-surface);
@@ -760,7 +760,7 @@ a:hover { text-decoration-color: currentColor; }
   text-wrap: balance;
   transition: color 180ms ease;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
 }
 
 .journal-card .entry__meta {
@@ -1133,6 +1133,10 @@ a:hover { text-decoration-color: currentColor; }
 
   .journal-card__link {
     min-height: 7.5rem;
+  }
+
+  .journal-card__title {
+    -webkit-line-clamp: 2;
   }
 
   .purchase-day { grid-template-columns: 1fr; gap: var(--space-1); }
