@@ -200,7 +200,7 @@ async function run() {
         maxTitleLines: Math.max(...titleLineHeights)
       };
     });
-    assert.strictEqual(desktopJournalLayout.columns, 2, 'journal archive should use two columns on desktop');
+    assert.strictEqual(desktopJournalLayout.columns, 1, 'journal archive should use one entry per row');
     assert.ok(
       Math.abs(desktopJournalLayout.firstWidth - desktopJournalLayout.standardWidth) < 2,
       'every journal card should occupy one desktop grid column'
