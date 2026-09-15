@@ -80,24 +80,13 @@
       <h1 class="hero__title">Little Fin Swim</h1>
       <p class="hero__tagline">Notes from below the surface of a 70&nbsp;litre planted tank — water chemistry, plant growth, and a stocking plan taken slowly.</p>
 
-      <figure class="site-media hero-montage" data-hero-montage>
+      <div class="site-media hero-montage" role="button" tabindex="0" aria-label="Pause tank video montage" aria-pressed="false" data-hero-montage data-hero-toggle>
         <div class="hero-montage__stage">
-          <video class="hero-montage__clip is-active" muted loop playsinline preload="metadata" poster="/assets/media/corydoras-group-foraging-poster.webp" aria-label="A group of Corydoras foraging across the aquarium substrate" data-duration="PT10.53S" data-hero-clip>
+          <video class="hero-montage__clip is-active" autoplay muted loop playsinline preload="auto" poster="/assets/media/corydoras-group-foraging-poster.webp" aria-label="A group of Corydoras foraging across the aquarium substrate" data-duration="PT10.53S" data-hero-clip>
             <source src="/assets/media/corydoras-group-foraging.mp4" type="video/mp4">
           </video>
-          <video class="hero-montage__clip" muted loop playsinline preload="metadata" poster="/assets/media/corydoras-close-foraging-poster.webp" aria-label="A Corydoras swimming and feeding close to the substrate" aria-hidden="true" data-duration="PT11.98S" data-hero-clip>
-            <source src="/assets/media/corydoras-close-foraging.mp4" type="video/mp4">
-          </video>
-          <video class="hero-montage__clip" muted loop playsinline preload="metadata" poster="/assets/media/amano-shrimp-poster.webp" aria-label="Amano shrimp grazing on reddish driftwood" aria-hidden="true" data-duration="PT15S" data-hero-clip>
-            <source src="/assets/media/amano-shrimp-stabilized.mp4" type="video/mp4">
-          </video>
-          <video class="hero-montage__clip" muted loop playsinline preload="metadata" poster="/assets/media/stocking-shrimp-poster.webp" aria-label="Shrimp moving across aquarium driftwood and plants" aria-hidden="true" data-duration="PT12.5S" data-hero-clip>
-            <source src="/assets/media/stocking-shrimp-stabilized.mp4" type="video/mp4">
-          </video>
-          <button class="hero-montage__toggle" type="button" aria-pressed="false" data-hero-toggle hidden>Pause motion</button>
         </div>
-        <figcaption>Corydoras and shrimp foraging inside the 70-litre planted tank.</figcaption>
-      </figure>
+      </div>
     </div>
 
     <div class="surface-line" role="img" aria-label="Illustration of a water surface">
@@ -155,7 +144,7 @@
         <!-- latest-entry:start -->
 <p class="eyebrow">Latest update</p>
 <h2 class="section-title section-title--compact">A full house: new fish, shrimp, crabs, and snails</h2>
-<p class="home-update__text">The tank&rsquo;s largest stocking day yet brings Thai micro spider crabs, rainbow emperor tetras, koi swordtails, bamboo shrimp, and five distinct snails.</p>
+<p class="home-update__text">The tank&rsquo;s largest stocking day yet brings Thai micro spider crabs, rainbow emperor tetras, koi swordtails, a red bristlenose shortfin pleco, six gold laser Corydoras, bamboo shrimp, and five distinct snails.</p>
 <a class="inline-link" href="/journal/september-15-stocking-update/">Read the stocking update</a>
         <!-- latest-entry:end -->
       </div>
@@ -166,10 +155,15 @@
 
 <footer class="site-footer">
   <div class="wrap site-footer__inner">
-    <p>Little Fin Swim — a planted tank log, updated as the tank changes.</p>
-    <div class="site-footer__links">
-      <a href="/privacy/">Privacy &amp; disclosure</a>
-      <a href="#top" class="back-to-top">Back to top ↑</a>
+    <aside class="ad-slot" aria-label="Advertisement" data-ad-slot>
+      <span>Advertisement</span>
+    </aside>
+    <div class="site-footer__row">
+      <p>Little Fin Swim — a planted tank log, updated as the tank changes.</p>
+      <div class="site-footer__links">
+        <a href="/privacy/">Privacy &amp; disclosure</a>
+        <a href="#top" class="back-to-top">Back to top ↑</a>
+      </div>
     </div>
   </div>
 </footer>

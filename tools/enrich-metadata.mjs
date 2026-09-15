@@ -13,10 +13,15 @@ const SOCIAL_METADATA = `<meta property="og:image" content="${SOCIAL_IMAGE}">
 <meta name="twitter:image:alt" content="Little Fin Swim planted aquarium journal">`;
 const FOOTER = `<footer class="site-footer">
   <div class="wrap site-footer__inner">
-    <p>Little Fin Swim — a planted tank log, updated as the tank changes.</p>
-    <div class="site-footer__links">
-      <a href="/privacy/">Privacy &amp; disclosure</a>
-      <a href="#top" class="back-to-top">Back to top ↑</a>
+    <aside class="ad-slot" aria-label="Advertisement" data-ad-slot>
+      <span>Advertisement</span>
+    </aside>
+    <div class="site-footer__row">
+      <p>Little Fin Swim — a planted tank log, updated as the tank changes.</p>
+      <div class="site-footer__links">
+        <a href="/privacy/">Privacy &amp; disclosure</a>
+        <a href="#top" class="back-to-top">Back to top ↑</a>
+      </div>
     </div>
   </div>
 </footer>`;

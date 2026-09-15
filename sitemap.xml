@@ -12,27 +12,6 @@
       <video:content_loc>https://littlefinswim.net/assets/media/corydoras-group-foraging.mp4</video:content_loc>
       <video:duration>11</video:duration>
     </video:video>
-    <video:video>
-      <video:thumbnail_loc>https://littlefinswim.net/assets/media/corydoras-close-foraging-poster.webp</video:thumbnail_loc>
-      <video:title>A Corydoras swimming and feeding close to the substrate</video:title>
-      <video:description>A Corydoras swimming and feeding close to the substrate</video:description>
-      <video:content_loc>https://littlefinswim.net/assets/media/corydoras-close-foraging.mp4</video:content_loc>
-      <video:duration>12</video:duration>
-    </video:video>
-    <video:video>
-      <video:thumbnail_loc>https://littlefinswim.net/assets/media/amano-shrimp-poster.webp</video:thumbnail_loc>
-      <video:title>Amano shrimp grazing on reddish driftwood</video:title>
-      <video:description>Amano shrimp grazing on reddish driftwood</video:description>
-      <video:content_loc>https://littlefinswim.net/assets/media/amano-shrimp-stabilized.mp4</video:content_loc>
-      <video:duration>15</video:duration>
-    </video:video>
-    <video:video>
-      <video:thumbnail_loc>https://littlefinswim.net/assets/media/stocking-shrimp-poster.webp</video:thumbnail_loc>
-      <video:title>Shrimp moving across aquarium driftwood and plants</video:title>
-      <video:description>Shrimp moving across aquarium driftwood and plants</video:description>
-      <video:content_loc>https://littlefinswim.net/assets/media/stocking-shrimp-stabilized.mp4</video:content_loc>
-      <video:duration>13</video:duration>
-    </video:video>
   </url>
   <url>
     <loc>https://littlefinswim.net/journal/</loc>
@@ -95,6 +74,13 @@
   <url>
     <loc>https://littlefinswim.net/journal/what-happened-to-my-shrimps-skin/</loc>
     <lastmod>2026-08-19</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://littlefinswim.net/assets/media/shrimp-moss-grazing-poster.webp</video:thumbnail_loc>
+      <video:title>Shrimp grazing across aquarium moss</video:title>
+      <video:description>A shrimp grazing across moss and planted hardscape.</video:description>
+      <video:content_loc>https://littlefinswim.net/assets/media/shrimp-moss-grazing.mp4</video:content_loc>
+      <video:duration>8</video:duration>
+    </video:video>
   </url>
   <url>
     <loc>https://littlefinswim.net/journal/why-are-my-aquarium-plants-turning-brown/</loc>
@@ -119,13 +105,19 @@
   <url>
     <loc>https://littlefinswim.net/tank/</loc>
     <lastmod>2026-08-15</lastmod>
-    <image:image>
-      <image:loc>https://littlefinswim.net/assets/media/hardscape-equipment-detail.webp</image:loc>
-      <image:caption>Filter flow, moss, and branching hardscape inside the aquarium.</image:caption>
-    </image:image>
-    <image:image>
-      <image:loc>https://littlefinswim.net/assets/media/shrimp-hardscape-detail.webp</image:loc>
-      <image:caption>A shrimp resting on driftwood inside the planted aquarium.</image:caption>
-    </image:image>
+    <video:video>
+      <video:thumbnail_loc>https://littlefinswim.net/assets/media/red-bristlenose-pleco-foraging-poster.webp</video:thumbnail_loc>
+      <video:title>Red bristlenose shortfin pleco foraging near Corydoras</video:title>
+      <video:description>The red bristlenose shortfin pleco foraging near Corydoras.</video:description>
+      <video:content_loc>https://littlefinswim.net/assets/media/red-bristlenose-pleco-foraging.mp4</video:content_loc>
+      <video:duration>12</video:duration>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://littlefinswim.net/assets/media/shrimp-open-water-swimming-poster.webp</video:thumbnail_loc>
+      <video:title>Shrimp swimming through open aquarium water</video:title>
+      <video:description>A shrimp swimming through the planted tank.</video:description>
+      <video:content_loc>https://littlefinswim.net/assets/media/shrimp-open-water-swimming.mp4</video:content_loc>
+      <video:duration>12</video:duration>
+    </video:video>
   </url>
 </urlset>
