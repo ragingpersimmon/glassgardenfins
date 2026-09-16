@@ -101,16 +101,30 @@ async function run() {
         const dividerSpacing = await page.evaluate(() => {
           const siteHeader = document.querySelector('.site-header');
           const wordmark = document.querySelector('.wordmark');
-          const nav = document.querySelector('.site-nav');
+          const navLinks = [...document.querySelectorAll('.site-nav a')];
           const eyebrow = document.querySelector('main .eyebrow');
+          const textBounds = (element) => {
+            const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+            const bounds = [];
+            while (walker.nextNode()) {
+              if (!walker.currentNode.textContent.trim()) continue;
+              const range = document.createRange();
+              range.selectNodeContents(walker.currentNode);
+              bounds.push(range.getBoundingClientRect());
+            }
+            return {
+              top: Math.min(...bounds.map((bound) => bound.top)),
+              bottom: Math.max(...bounds.map((bound) => bound.bottom))
+            };
+          };
           const headerBottom = siteHeader.getBoundingClientRect().bottom;
           const upperContentBottom = Math.max(
-            wordmark.getBoundingClientRect().bottom,
-            nav.getBoundingClientRect().bottom
+            textBounds(wordmark).bottom,
+            ...navLinks.map((link) => textBounds(link).bottom)
           );
           return {
             above: headerBottom - upperContentBottom,
-            below: eyebrow.getBoundingClientRect().top - headerBottom
+            below: textBounds(eyebrow).top - headerBottom
           };
         });
         assert.ok(
