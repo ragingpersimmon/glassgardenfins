@@ -205,7 +205,7 @@ a:hover { text-decoration-color: currentColor; }
 
 .hero {
   position: relative;
-  padding-top: 1.25rem;
+  padding-top: 1.9rem;
   padding-bottom: var(--space-4);
   overflow: hidden;
   background:
@@ -557,7 +557,7 @@ body * {
 }
 
 .page-hero {
-  padding-block: 1.25rem var(--space-2);
+  padding-block: 1.9rem var(--space-2);
 }
 
 .page-hero__lead {
@@ -1129,7 +1129,7 @@ body * {
 .eyebrow__link {
   display: inline-flex;
   min-height: 44px;
-  align-items: center;
+  align-items: flex-start;
   text-decoration-color: var(--color-amber-soft);
 }
 
@@ -1419,7 +1419,7 @@ body * {
   }
   .site-nav a { padding-inline: 0.35rem; }
   .hero,
-  .page-hero { padding-top: 0.75rem; }
+  .page-hero { padding-top: 1.5rem; }
   .journal--index { padding-top: var(--space-2); }
   .journal-grid { gap: 0.6rem; }
   .journal-card__link {
