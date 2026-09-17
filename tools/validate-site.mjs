@@ -166,7 +166,8 @@ if (!fs.existsSync(sitemapPath)) {
     '/assets/media/shrimp-moss-grazing.mp4',
     '/assets/media/corydoras-group-foraging.mp4',
     '/assets/media/amano-shrimp-stabilized.mp4',
-    '/assets/media/stocking-shrimp-stabilized.mp4'
+    '/assets/media/stocking-koi-swordtail-group.mp4',
+    '/assets/media/stocking-swordtail-acclimation.mp4'
   ];
   if (!sitemap.includes('xmlns:image=') ||
       !sitemap.includes('xmlns:video=') ||

@@ -63,12 +63,35 @@
   <url>
     <loc>https://glassgardenfins.com/journal/september-15-stocking-update/</loc>
     <lastmod>2026-09-15</lastmod>
+    <image:image>
+      <image:loc>https://glassgardenfins.com/assets/media/stocking-rainbow-tetras.webp</image:loc>
+      <image:caption>Rainbow emperor tetras together during acclimation</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://glassgardenfins.com/assets/media/stocking-koi-swordtails.webp</image:loc>
+      <image:caption>Koi-pattern swordtails during the arrival check</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://glassgardenfins.com/assets/media/stocking-arrival-closeup.webp</image:loc>
+      <image:caption>Close view of a new fish during the intake check</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://glassgardenfins.com/assets/media/stocking-snail-assortment.webp</image:loc>
+      <image:caption>Assorted new aquarium snails gathered during the arrival check</image:caption>
+    </image:image>
     <video:video>
-      <video:thumbnail_loc>https://glassgardenfins.com/assets/media/stocking-shrimp-poster.webp</video:thumbnail_loc>
-      <video:title>Shrimp moving across aquarium driftwood and plants</video:title>
-      <video:description>Shrimp moving through driftwood and plants after stocking.</video:description>
-      <video:content_loc>https://glassgardenfins.com/assets/media/stocking-shrimp-stabilized.mp4</video:content_loc>
-      <video:duration>13</video:duration>
+      <video:thumbnail_loc>https://glassgardenfins.com/assets/media/stocking-koi-swordtail-group-poster.webp</video:thumbnail_loc>
+      <video:title>Koi-pattern swordtails during acclimation</video:title>
+      <video:description>The koi-pattern swordtails during their acclimation and intake check.</video:description>
+      <video:content_loc>https://glassgardenfins.com/assets/media/stocking-koi-swordtail-group.mp4</video:content_loc>
+      <video:duration>12</video:duration>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://glassgardenfins.com/assets/media/stocking-swordtail-acclimation-poster.webp</video:thumbnail_loc>
+      <video:title>Swordtail observed closely during acclimation</video:title>
+      <video:description>Watching one swordtail closely during acclimation before release.</video:description>
+      <video:content_loc>https://glassgardenfins.com/assets/media/stocking-swordtail-acclimation.mp4</video:content_loc>
+      <video:duration>10</video:duration>
     </video:video>
   </url>
   <url>
