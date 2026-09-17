@@ -2,8 +2,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { discoverPublicPages } from './generate-sitemap.mjs';
+import { SITE_ORIGIN } from './site-config.mjs';
 
-const SITE_ORIGIN = 'https://glassgardenfins.com';
 const SOCIAL_IMAGE = `${SITE_ORIGIN}/assets/social-card.png`;
 const SOCIAL_METADATA = `<meta property="og:image" content="${SOCIAL_IMAGE}">
 <meta property="og:image:width" content="1200">
@@ -33,7 +33,7 @@ function primaryNavigation(file) {
     [
       '/journal/',
       'Journal',
-      normalized.startsWith('journal/') || normalized.startsWith('_scheduled/')
+      normalized.startsWith('journal/')
     ],
     ['/species/', 'Species', normalized === 'species/index.html']
   ];
@@ -312,17 +312,8 @@ export function enrichPage(html, file, amazonAssociateTag) {
 export function enrichSite(repoRoot) {
   const config = JSON.parse(fs.readFileSync(path.join(repoRoot, 'site-config.json'), 'utf8'));
   const publicPages = discoverPublicPages(repoRoot);
-  const scheduledRoot = path.join(repoRoot, '_scheduled');
-  const scheduledPages = fs.existsSync(scheduledRoot)
-    ? fs.readdirSync(scheduledRoot, { withFileTypes: true })
-      .filter((entry) => entry.isDirectory())
-      .map((entry) => ({
-        file: path.join('_scheduled', entry.name, 'index.html'),
-        route: null
-      }))
-    : [];
 
-  for (const { file } of [...publicPages, ...scheduledPages]) {
+  for (const { file } of publicPages) {
     const absolute = path.join(repoRoot, file);
     if (!fs.existsSync(absolute)) continue;
     const html = fs.readFileSync(absolute, 'utf8');

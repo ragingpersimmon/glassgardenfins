@@ -1,6 +1,7 @@
 const assert = require('assert');
 const { chromium } = require('playwright');
 const { startServer } = require('./helpers.cjs');
+const { siteOrigin: SITE_ORIGIN } = require('../site-config.json');
 
 const QUESTION_ENTRIES = [
   ['/journal/how-much-fish-food/', 'How Much Fish Food Is the Right Amount? — Glass Garden Fins'],
@@ -140,7 +141,7 @@ async function run() {
       server.baseUrl,
       '/',
       'Glass Garden Fins — a planted tank journal',
-      'https://glassgardenfins.com/'
+      `${SITE_ORIGIN}/`
     );
     const homeTheme = await page.locator('body').evaluate((element) => {
       const style = window.getComputedStyle(element);
@@ -186,7 +187,7 @@ async function run() {
       server.baseUrl,
       '/tank/',
       'The Tank — Glass Garden Fins',
-      'https://glassgardenfins.com/tank/'
+      `${SITE_ORIGIN}/tank/`
     );
     const tankDetails = await page.locator('.spec-list').innerText();
     assert.match(tankDetails, /Hikari Aquarium Solutions Bacto-Surge/i);
@@ -251,7 +252,7 @@ async function run() {
       server.baseUrl,
       '/species/',
       'Species — Glass Garden Fins',
-      'https://glassgardenfins.com/species/'
+      `${SITE_ORIGIN}/species/`
     );
     assert.strictEqual(
       await page.locator('.site-nav a[href="/species/"][aria-current="page"]').count(),
@@ -334,7 +335,7 @@ async function run() {
       server.baseUrl,
       '/privacy/',
       'Privacy & Disclosure — Glass Garden Fins',
-      'https://glassgardenfins.com/privacy/'
+      `${SITE_ORIGIN}/privacy/`
     );
     assert.match(
       await page.locator('[data-affiliate-status]').innerText(),
@@ -347,7 +348,7 @@ async function run() {
       server.baseUrl,
       '/journal/',
       'Journal — Glass Garden Fins',
-      'https://glassgardenfins.com/journal/'
+      `${SITE_ORIGIN}/journal/`
     );
 
     await checkPageMeta(
@@ -355,7 +356,7 @@ async function run() {
       server.baseUrl,
       '/journal/10-aquarium-questions/',
       '10 Aquarium Questions — Glass Garden Fins',
-      'https://glassgardenfins.com/journal/10-aquarium-questions/'
+      `${SITE_ORIGIN}/journal/10-aquarium-questions/`
     );
     assert.strictEqual(
       await page.locator('.journal-card__link').count(),
@@ -367,7 +368,7 @@ async function run() {
       server.baseUrl,
       '/journal/first-residents-amano-shrimp/',
       'First Residents: Amano Shrimp Are In — Glass Garden Fins',
-      'https://glassgardenfins.com/journal/first-residents-amano-shrimp/'
+      `${SITE_ORIGIN}/journal/first-residents-amano-shrimp/`
     );
     assert.strictEqual(
       await page.locator('video source[src="/assets/media/amano-shrimp-stabilized.mp4"]').count(),
@@ -379,14 +380,14 @@ async function run() {
       server.baseUrl,
       '/journal/detritus-worms/',
       'Detritus Worms, and What They Were Actually Telling Me — Glass Garden Fins',
-      'https://glassgardenfins.com/journal/detritus-worms/'
+      `${SITE_ORIGIN}/journal/detritus-worms/`
     );
     await checkPageMeta(
       page,
       server.baseUrl,
       '/journal/dialing-in-before-stocking/',
       'Dialing In Before Anything Goes In — Glass Garden Fins',
-      'https://glassgardenfins.com/journal/dialing-in-before-stocking/'
+      `${SITE_ORIGIN}/journal/dialing-in-before-stocking/`
     );
 
     await page.goto(`${server.baseUrl}/journal/`, { waitUntil: 'domcontentloaded' });
@@ -613,7 +614,7 @@ async function run() {
         server.baseUrl,
         route,
         title,
-        `https://glassgardenfins.com${route}`
+        `${SITE_ORIGIN}${route}`
       );
       const entryProductLinks = page.locator('a[data-amazon-link]');
       assert.ok(

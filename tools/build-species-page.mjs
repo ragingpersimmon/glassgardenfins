@@ -1,8 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { SITE_ORIGIN } from './site-config.mjs';
 
-const SITE_ORIGIN = 'https://glassgardenfins.com';
 const repoRoot = process.cwd();
 const speciesPath = path.join(repoRoot, '_data', 'species.json');
 const outputPath = path.join(repoRoot, 'species', 'index.html');

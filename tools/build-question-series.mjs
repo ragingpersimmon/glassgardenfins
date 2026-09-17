@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { SITE_ORIGIN } from './site-config.mjs';
 
 const questions = [
   {
@@ -288,7 +289,7 @@ ${related}
 }
 
 function renderArticle(question) {
-  const canonical = `https://glassgardenfins.com/journal/${question.slug}/`;
+  const canonical = `${SITE_ORIGIN}/journal/${question.slug}/`;
   const paragraphs = question.paragraphs.map((paragraph, index) => {
     const rendered = [`            <p>${paragraph}</p>`];
     if (index === 1 && question.media) {
@@ -394,7 +395,7 @@ ${renderRelatedGuides(question)}
 }
 
 function renderSeriesIndex() {
-  const canonical = 'https://glassgardenfins.com/journal/10-aquarium-questions/';
+  const canonical = `${SITE_ORIGIN}/journal/10-aquarium-questions/`;
   const cards = questions.map((question, index) => `        <article class="journal-card">
           <a class="journal-card__link" href="/journal/${question.slug}/">
             <div class="entry__meta">
