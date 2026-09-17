@@ -106,6 +106,13 @@
     <loc>https://glassgardenfins.com/species/</loc>
     <lastmod>2026-09-15</lastmod>
     <video:video>
+      <video:thumbnail_loc>https://glassgardenfins.com/assets/media/rainbow-emperor-tetras-poster.webp</video:thumbnail_loc>
+      <video:title>Five rainbow emperor tetras schooling together</video:title>
+      <video:description>Five rainbow emperor tetras schooling together</video:description>
+      <video:content_loc>https://glassgardenfins.com/assets/media/rainbow-emperor-tetras.mp4</video:content_loc>
+      <video:duration>12</video:duration>
+    </video:video>
+    <video:video>
       <video:thumbnail_loc>https://glassgardenfins.com/assets/media/sanke-koi-swordtails-poster.webp</video:thumbnail_loc>
       <video:title>Sanke koi swordtails swimming through the planted aquarium</video:title>
       <video:description>Sanke koi swordtails swimming through the planted aquarium</video:description>
@@ -113,10 +120,31 @@
       <video:duration>12</video:duration>
     </video:video>
     <video:video>
-      <video:thumbnail_loc>https://glassgardenfins.com/assets/media/bamboo-shrimp-filter-feeding-poster.webp</video:thumbnail_loc>
-      <video:title>Bamboo shrimp perched on driftwood in the planted aquarium</video:title>
-      <video:description>Bamboo shrimp perched on driftwood in the planted aquarium</video:description>
-      <video:content_loc>https://glassgardenfins.com/assets/media/bamboo-shrimp-filter-feeding.mp4</video:content_loc>
+      <video:thumbnail_loc>https://glassgardenfins.com/assets/media/red-bristlenose-pleco-poster.webp</video:thumbnail_loc>
+      <video:title>Red bristlenose shortfin pleco resting on planted hardscape</video:title>
+      <video:description>Red bristlenose shortfin pleco resting on planted hardscape</video:description>
+      <video:content_loc>https://glassgardenfins.com/assets/media/red-bristlenose-pleco.mp4</video:content_loc>
+      <video:duration>4</video:duration>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://glassgardenfins.com/assets/media/amano-shrimp-driftwood-poster.webp</video:thumbnail_loc>
+      <video:title>Amano shrimp exploring aquarium driftwood</video:title>
+      <video:description>Amano shrimp exploring aquarium driftwood</video:description>
+      <video:content_loc>https://glassgardenfins.com/assets/media/amano-shrimp-driftwood.mp4</video:content_loc>
+      <video:duration>12</video:duration>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://glassgardenfins.com/assets/media/bamboo-shrimp-poster.webp</video:thumbnail_loc>
+      <video:title>Bamboo shrimp moving in an aquarium container</video:title>
+      <video:description>Bamboo shrimp moving in an aquarium container</video:description>
+      <video:content_loc>https://glassgardenfins.com/assets/media/bamboo-shrimp.mp4</video:content_loc>
+      <video:duration>10</video:duration>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://glassgardenfins.com/assets/media/yellow-poso-rabbit-snail-poster.webp</video:thumbnail_loc>
+      <video:title>Yellow Poso rabbit snail moving across aquarium hardscape</video:title>
+      <video:description>Yellow Poso rabbit snail moving across aquarium hardscape</video:description>
+      <video:content_loc>https://glassgardenfins.com/assets/media/yellow-poso-rabbit-snail.mp4</video:content_loc>
       <video:duration>12</video:duration>
     </video:video>
     <video:video>

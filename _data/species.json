@@ -13,14 +13,19 @@
     "scientificName": "Nematobrycon lacortei",
     "quantity": 5,
     "note": "The mid-water schooling group in the current community.",
-    "video": null
+    "video": {
+      "src": "/assets/media/rainbow-emperor-tetras.mp4",
+      "poster": "/assets/media/rainbow-emperor-tetras-poster.webp",
+      "label": "Five rainbow emperor tetras schooling together",
+      "duration": "PT12S"
+    }
   },
   {
     "slug": "sanke-koi-swordtail",
     "name": "Sanke koi swordtail",
     "scientificName": "Xiphophorus hellerii",
-    "quantity": 3,
-    "note": "Two female high-fin swordtails and one male swordtail.",
+    "quantity": 6,
+    "note": "A group of koi-pattern swordtails moving through the planted aquarium.",
     "video": {
       "src": "/assets/media/sanke-koi-swordtails.mp4",
       "poster": "/assets/media/sanke-koi-swordtails-poster.webp",
@@ -34,7 +39,12 @@
     "scientificName": "Ancistrus sp.",
     "quantity": 1,
     "note": "A bottom-dwelling grazer that works across wood and hardscape.",
-    "video": null
+    "video": {
+      "src": "/assets/media/red-bristlenose-pleco.mp4",
+      "poster": "/assets/media/red-bristlenose-pleco-poster.webp",
+      "label": "Red bristlenose shortfin pleco resting on planted hardscape",
+      "duration": "PT4S"
+    }
   },
   {
     "slug": "gold-laser-corydoras",
@@ -45,31 +55,49 @@
     "video": null
   },
   {
+    "slug": "amano-shrimp",
+    "name": "Amano shrimp",
+    "scientificName": "Caridina multidentata",
+    "quantity": 6,
+    "note": "Active algae-grazing shrimp that explore plants, wood, and stone.",
+    "video": {
+      "src": "/assets/media/amano-shrimp-driftwood.mp4",
+      "poster": "/assets/media/amano-shrimp-driftwood-poster.webp",
+      "label": "Amano shrimp exploring aquarium driftwood",
+      "duration": "PT12S"
+    }
+  },
+  {
     "slug": "bamboo-shrimp",
     "name": "Bamboo shrimp",
     "scientificName": "Atyopsis moluccensis",
-    "quantity": 2,
+    "quantity": 3,
     "note": "Filter-feeding shrimp that favor steady current and elevated perches.",
     "video": {
-      "src": "/assets/media/bamboo-shrimp-filter-feeding.mp4",
-      "poster": "/assets/media/bamboo-shrimp-filter-feeding-poster.webp",
-      "label": "Bamboo shrimp perched on driftwood in the planted aquarium",
-      "duration": "PT12S"
+      "src": "/assets/media/bamboo-shrimp.mp4",
+      "poster": "/assets/media/bamboo-shrimp-poster.webp",
+      "label": "Bamboo shrimp moving in an aquarium container",
+      "duration": "PT10S"
     }
   },
   {
     "slug": "yellow-poso-rabbit-snail",
     "name": "Yellow Poso rabbit snail",
     "scientificName": "Tylomelania sp.",
-    "quantity": 1,
+    "quantity": 2,
     "note": "A yellow-bodied rabbit snail moving through the lower planted areas.",
-    "video": null
+    "video": {
+      "src": "/assets/media/yellow-poso-rabbit-snail.mp4",
+      "poster": "/assets/media/yellow-poso-rabbit-snail-poster.webp",
+      "label": "Yellow Poso rabbit snail moving across aquarium hardscape",
+      "duration": "PT12S"
+    }
   },
   {
     "slug": "king-koopa-snail",
     "name": "King Koopa snail",
     "scientificName": null,
-    "quantity": 1,
+    "quantity": 2,
     "note": "One of five individually tracked snail varieties in the aquarium.",
     "video": null
   },
@@ -77,7 +105,7 @@
     "slug": "magenta-apple-snail",
     "name": "Magenta apple snail",
     "scientificName": "Pomacea sp.",
-    "quantity": 1,
+    "quantity": 2,
     "note": "A vivid magenta-shelled member of the cleanup crew.",
     "video": null
   },
@@ -85,7 +113,7 @@
     "slug": "red-racer-snail",
     "name": "Red racer snail",
     "scientificName": "Vittina waigiensis",
-    "quantity": 1,
+    "quantity": 2,
     "note": "A patterned algae grazer that travels across glass and hardscape.",
     "video": null
   },
@@ -93,7 +121,7 @@
     "slug": "white-hercules-snail",
     "name": "White Hercules snail",
     "scientificName": "Brotia herculea",
-    "quantity": 1,
+    "quantity": 2,
     "note": "A pale, long-shelled snail that spends much of its time near the substrate.",
     "video": {
       "src": "/assets/media/white-hercules-snail.mp4",

@@ -265,22 +265,22 @@ async function run() {
     );
     assert.strictEqual(
       await page.locator('.species-card').count(),
-      11,
+      12,
       'species page should show every current fish, shrimp, crab, and snail group'
     );
     assert.strictEqual(
       await page.locator('.species-video-placeholder').count(),
-      8,
+      5,
       'species without original footage should retain a reserved video position'
     );
     assert.strictEqual(
       await page.locator('.species-card video').count(),
-      3,
+      7,
       'the catalog should show each selected original species video once'
     );
     assert.strictEqual(
       await page.locator('.species-card video[autoplay][muted][loop][playsinline]:not([controls])').count(),
-      3,
+      7,
       'species videos should autoplay silently without visible playback controls'
     );
     const speciesNames = await page.locator('.species-card__title').allInnerTexts();
@@ -290,6 +290,7 @@ async function run() {
       'Sanke koi swordtail',
       'Red bristlenose shortfin pleco',
       'Gold laser Corydoras',
+      'Amano shrimp',
       'Bamboo shrimp',
       'Yellow Poso rabbit snail',
       'King Koopa snail',
@@ -307,9 +308,25 @@ async function run() {
     );
     assert.strictEqual(
       speciesSchema.mainEntity?.numberOfItems,
-      11,
+      12,
       'species schema should enumerate all current species'
     );
+    for (const [slug, expectedCount] of [
+      ['sanke-koi-swordtail', '6 residents'],
+      ['amano-shrimp', '6 residents'],
+      ['bamboo-shrimp', '3 residents'],
+      ['yellow-poso-rabbit-snail', '2 residents'],
+      ['king-koopa-snail', '2 residents'],
+      ['magenta-apple-snail', '2 residents'],
+      ['red-racer-snail', '2 residents'],
+      ['white-hercules-snail', '2 residents']
+    ]) {
+      assert.strictEqual(
+        await page.locator(`#${slug} .species-card__count`).innerText(),
+        expectedCount,
+        `${slug} should show the current resident count`
+      );
+    }
     await assertAllVisibleTextOrange(page, 'species page');
 
     await checkPageMeta(
