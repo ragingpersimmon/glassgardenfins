@@ -67,7 +67,13 @@ for (const relativePath of htmlFiles) {
 
   for (const match of html.matchAll(/<video\b[^>]*>/g)) {
     const tag = match[0];
-    if (!/\bautoplay\b/.test(tag)) continue;
+    if (!/\bautoplay\b/.test(tag)) {
+      fail('autoplay-disabled', `${relativePath}: site video is missing autoplay`);
+      continue;
+    }
+    if (/\bcontrols\b/.test(tag)) {
+      fail('visible-controls', `${relativePath}: autoplay video must not expose browser controls`);
+    }
     for (const requiredAttribute of ['muted', 'loop', 'playsinline']) {
       if (!new RegExp(`\\b${requiredAttribute}\\b`).test(tag)) {
         fail('unsafe-autoplay', `${relativePath}: autoplay video is missing ${requiredAttribute}`);
