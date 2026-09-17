@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img" aria-labelledby="title">
-  <title id="title">Aquarium lighting illustration</title>
-  <rect width="320" height="180" fill="#081d19"/>
-  <path d="M62 42h196v19H62z" fill="#d9e7dc"/>
-  <path d="M75 61h170l-30 89H105z" fill="#d59a57" opacity=".14"/>
-  <path d="M93 61v76m45-76v76m44-76v76m45-76v76" stroke="#d59a57" opacity=".35"/>
-  <path d="M95 151c8-25 17-41 27-49-2 22 2 38 12 49m47 0c3-31 14-54 32-70-8 28-7 51 3 70" fill="none" stroke="#6e9f89" stroke-width="6" stroke-linecap="round"/>
-  <text x="24" y="28" fill="#d59a57" font-family="Arial,sans-serif" font-size="12" letter-spacing="2">LIGHTING</text>
-</svg>

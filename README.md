@@ -18,6 +18,7 @@ only when original footage is available. After changing either source, run
 ## Test suites
 
 - `npm run validate:site`: static checks for canonical, Open Graph, and Twitter URL consistency, navigation integrity, `aria-current`, required scripts and landmarks, and baseline CSP directives.
+- `npm run check:integrity`: whole-site checks for broken file references, malformed JSON-LD, unsafe autoplay attributes, leaked local URLs, and unreferenced assets.
 - `npm run test:mutations`: verifies fault detection under deterministic and seeded randomized mutations.
 - `npm run test:deterministic`: browser checks for page metadata, canonical URLs, navigation, reduced-motion/runtime fallbacks, comparable question-entry lengths, and at least two contextual product links per question.
 - `npm run test:chaos`: seeded (`1337`) browser backtests across random routes, viewports, reduced-motion modes, and resource fault injection (font blocking, script delay/block).

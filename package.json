@@ -1,5 +1,5 @@
 {
-  "name": "littlefinswim",
+  "name": "glass-garden-fins",
   "version": "1.0.0",
   "private": true,
   "description": "Glass Garden Fins static site validation and backtesting",
@@ -9,7 +9,8 @@
     "build:questions": "node ./tools/build-question-series.mjs && node ./tools/build-species-page.mjs && node ./tools/enrich-metadata.mjs && node ./tools/generate-sitemap.mjs",
     "build:site": "npm run build:questions",
     "set:amazon-tag": "node ./tools/set-amazon-tag.mjs",
-    "test": "npm run test:setup && npm run validate:site && npm run test:scheduled && npm run test:mutations && npm run test:deterministic && npm run test:chaos",
+    "check:integrity": "node ./tools/check-integrity.mjs",
+    "test": "npm run test:setup && npm run validate:site && npm run check:integrity && npm run test:scheduled && npm run test:mutations && npm run test:deterministic && npm run test:chaos",
     "validate:site": "node ./tools/validate-site.mjs",
     "test:scheduled": "node ./tools/publish-scheduled-entry.test.mjs",
     "test:mutations": "node ./tools/chaos-test.mjs",
@@ -19,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://localhost:26831/ragingpersimmon/littlefinswim"
+    "url": "https://github.com/ragingpersimmon/littlefinswim"
   },
   "keywords": [],
   "author": "",
