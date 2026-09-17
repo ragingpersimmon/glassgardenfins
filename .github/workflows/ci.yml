@@ -29,6 +29,9 @@ jobs:
       - name: Run static invariant validation
         run: npm run validate:site
 
+      - name: Run whole-site integrity checks
+        run: npm run check:integrity
+
       - name: Run static mutation tests
         run: npm run test:mutations
 

@@ -160,14 +160,23 @@
     event.preventDefault();
     setPaused(!userPaused);
   });
+  toggle.hidden = false;
 
-  if (prefersReducedMotion) {
+  var isMobileViewport = typeof window.matchMedia === 'function' &&
+    window.matchMedia('(max-width: 760px)').matches;
+  var connection = navigator.connection || navigator.webkitConnection || navigator.mozConnection;
+  var isDataConscious = !!(connection && (
+    connection.saveData === true ||
+    /(^|-)2g$/.test(connection.effectiveType || '')
+  ));
+  var shouldAutoplay = !prefersReducedMotion && !isMobileViewport && !isDataConscious;
+
+  if (!shouldAutoplay) {
     setPaused(true);
     return;
   }
 
   playClip(clips[activeIndex], false).then(function (playing) {
-    toggle.hidden = false;
     if (playing) {
       startTimer();
     } else {
