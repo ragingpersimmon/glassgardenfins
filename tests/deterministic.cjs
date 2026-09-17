@@ -270,13 +270,18 @@ async function run() {
     );
     assert.strictEqual(
       await page.locator('.species-video-placeholder').count(),
-      11,
-      'each current species should have a reserved video position'
+      8,
+      'species without original footage should retain a reserved video position'
     );
     assert.strictEqual(
-      await page.locator('.species-card video, .species-card [controls]').count(),
-      0,
-      'species placeholders should not expose duplicate videos or playback controls'
+      await page.locator('.species-card video').count(),
+      3,
+      'the catalog should show each selected original species video once'
+    );
+    assert.strictEqual(
+      await page.locator('.species-card video[autoplay][muted][loop][playsinline]:not([controls])').count(),
+      3,
+      'species videos should autoplay silently without visible playback controls'
     );
     const speciesNames = await page.locator('.species-card__title').allInnerTexts();
     for (const expectedName of [
