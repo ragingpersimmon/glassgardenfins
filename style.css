@@ -248,6 +248,11 @@ a:hover { text-decoration-color: currentColor; }
   background: var(--color-bg-deep);
 }
 
+.site-media video {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
 .site-media figcaption {
   padding: 0.65rem 0.8rem;
   color: var(--color-text-faint);

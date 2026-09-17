@@ -253,7 +253,7 @@ const questions = [
 ];
 
 const fonts = 'https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,500&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;1,7..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap';
-const csp = "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests";
+const csp = "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'none'";
 const relatedQuestionSlugs = {
   'how-much-fish-food': ['why-is-my-aquarium-water-cloudy', 'how-often-should-you-change-aquarium-water'],
   'how-much-sun-do-fish-need': ['why-are-my-aquarium-plants-turning-brown', 'why-is-my-aquarium-water-cloudy'],
