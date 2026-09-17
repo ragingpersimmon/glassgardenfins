@@ -93,10 +93,40 @@ for (const route of discoveredRoutes) {
 }
 
 const robotsPath = path.join(repoRoot, 'robots.txt');
-if (!fs.existsSync(robotsPath) ||
-    !fs.readFileSync(robotsPath, 'utf8').includes(`Sitemap: ${SITE_ORIGIN}/sitemap.xml`)) {
+const robotsText = fs.existsSync(robotsPath)
+  ? fs.readFileSync(robotsPath, 'utf8')
+  : '';
+if (!robotsText.includes(`Sitemap: ${SITE_ORIGIN}/sitemap.xml`)) {
   failures += 1;
   console.error('\n❌ robots.txt is missing or does not advertise sitemap.xml');
+}
+const robotsGroups = new Map(
+  [...robotsText.matchAll(
+    /^User-agent:\s*(.+?)\s*$([\s\S]*?)(?=^User-agent:|^Sitemap:|(?![\s\S]))/gim
+  )].map((match) => [match[1], match[2]])
+);
+const wildcardDirectives = robotsGroups.get('*') ?? '';
+if (!/^Allow:\s*\/\s*$/im.test(wildcardDirectives)) {
+  failures += 1;
+  console.error('\n❌ robots.txt must allow all crawlers');
+}
+if (/^Disallow:/im.test(wildcardDirectives)) {
+  failures += 1;
+  console.error('\n❌ robots.txt must not disallow general crawler access');
+}
+for (const agent of [
+  'ChatGPT-User',
+  'OAI-SearchBot',
+  'Claude-SearchBot',
+  'Claude-User',
+  'ClaudeBot',
+  'PerplexityBot'
+]) {
+  const group = robotsGroups.get(agent) ?? '';
+  if (!/^Allow:\s*\/\s*$/im.test(group) || /^Disallow:/im.test(group)) {
+    failures += 1;
+    console.error(`\n❌ robots.txt must permit ${agent}`);
+  }
 }
 
 const sitemapPath = path.join(repoRoot, 'sitemap.xml');
