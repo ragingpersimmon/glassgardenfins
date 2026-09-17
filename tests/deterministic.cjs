@@ -160,9 +160,9 @@ async function run() {
       'homepage should show only the Corydoras group-foraging clip'
     );
     assert.strictEqual(
-      await homeMontage.locator('video[data-hero-clip][preload="none"]:not([autoplay])').count(),
+      await homeMontage.locator('video[data-hero-clip][autoplay][muted][loop][preload="metadata"]').count(),
       1,
-      'homepage video should defer its download and let the runtime decide whether to autoplay'
+      'homepage video should autoplay silently with metadata-only preload'
     );
     await page.waitForFunction(() => !document.querySelector('[data-hero-clip]').paused);
     assert.strictEqual(
@@ -672,37 +672,13 @@ async function run() {
     });
     const mobilePage = await mobileContext.newPage();
     await mobilePage.goto(`${server.baseUrl}/`, { waitUntil: 'domcontentloaded' });
-    await mobilePage.waitForTimeout(200);
+    await mobilePage.waitForFunction(() => !document.querySelector('[data-hero-clip]').paused);
     assert.strictEqual(
       await mobilePage.locator('[data-hero-toggle]').getAttribute('aria-pressed'),
-      'true',
-      'mobile viewports should initialize the homepage video as paused'
-    );
-    assert.ok(
-      await mobilePage.locator('[data-hero-clip]').evaluateAll((clips) =>
-        clips.every((clip) => clip.paused)
-      ),
-      'mobile viewports should not autoplay homepage video'
+      'false',
+      'mobile viewports should autoplay the homepage video'
     );
     await mobileContext.close();
-
-    const saveDataContext = await browser.newContext();
-    await saveDataContext.addInitScript(() => {
-      Object.defineProperty(navigator, 'connection', {
-        configurable: true,
-        value: { saveData: true, effectiveType: '4g' }
-      });
-    });
-    const saveDataPage = await saveDataContext.newPage();
-    await saveDataPage.goto(`${server.baseUrl}/`, { waitUntil: 'domcontentloaded' });
-    await saveDataPage.waitForTimeout(200);
-    assert.ok(
-      await saveDataPage.locator('[data-hero-clip]').evaluateAll((clips) =>
-        clips.every((clip) => clip.paused)
-      ),
-      'Save-Data connections should not autoplay homepage video'
-    );
-    await saveDataContext.close();
 
     const noObserverContext = await browser.newContext();
     await noObserverContext.addInitScript(() => {

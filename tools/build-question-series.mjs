@@ -293,7 +293,7 @@ function renderArticle(question) {
     const rendered = [`            <p>${paragraph}</p>`];
     if (index === 1 && question.media) {
       rendered.push(`            <figure class="site-media entry-media">
-              <video controls playsinline preload="metadata" poster="${question.media.poster}" aria-label="${question.media.label}" data-duration="${question.media.duration}">
+              <video autoplay muted loop playsinline preload="metadata" poster="${question.media.poster}" aria-label="${question.media.label}" data-duration="${question.media.duration}">
                 <source src="${question.media.src}" type="video/mp4">
                 Your browser does not support embedded video.
               </video>

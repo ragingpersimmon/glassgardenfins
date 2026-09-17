@@ -1,6 +1,16 @@
 // Glass Garden Fins - minimal, restrained interaction only.
 
 (function () {
+  if (typeof window.matchMedia !== 'function' ||
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  document.querySelectorAll('video[autoplay]').forEach(function (video) {
+    video.autoplay = false;
+    video.pause();
+  });
+})();
+
+(function () {
   if (window.top === window.self) return;
 
   try {
@@ -162,16 +172,7 @@
   });
   toggle.hidden = false;
 
-  var isMobileViewport = typeof window.matchMedia === 'function' &&
-    window.matchMedia('(max-width: 760px)').matches;
-  var connection = navigator.connection || navigator.webkitConnection || navigator.mozConnection;
-  var isDataConscious = !!(connection && (
-    connection.saveData === true ||
-    /(^|-)2g$/.test(connection.effectiveType || '')
-  ));
-  var shouldAutoplay = !prefersReducedMotion && !isMobileViewport && !isDataConscious;
-
-  if (!shouldAutoplay) {
+  if (prefersReducedMotion) {
     setPaused(true);
     return;
   }
