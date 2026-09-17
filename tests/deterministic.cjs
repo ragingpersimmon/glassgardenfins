@@ -435,9 +435,19 @@ async function run() {
         waitUntil: 'domcontentloaded'
       });
       assert.strictEqual(
-        await page.locator('.entry-media video source[src="/assets/media/stocking-shrimp-stabilized.mp4"]').count(),
-        1,
-        'stocking entry should include the stabilized shrimp clip'
+        await page.locator('.entry video[autoplay][muted][loop][playsinline]:not([controls])').count(),
+        2,
+        'stocking entry should include two control-free videos from the latest stocking'
+      );
+      assert.strictEqual(
+        await page.locator('.entry-media-grid img').count(),
+        4,
+        'stocking entry should include four corrected arrival photos'
+      );
+      assert.strictEqual(
+        await page.locator('source[src="/assets/media/stocking-shrimp-stabilized.mp4"]').count(),
+        0,
+        'stocking entry should not reuse the older shrimp clip'
       );
       await page.goto(`${server.baseUrl}/journal/`, { waitUntil: 'domcontentloaded' });
     }
