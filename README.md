@@ -1,6 +1,6 @@
 # Glass Garden Fins
 
-Static GitHub Pages site for https://glassgardenfins.com, with static validation and deterministic and chaos-style browser backtests.
+Static GitHub Pages site for http://glassgardenfins.com, with static validation and deterministic and chaos-style browser backtests.
 
 ## Local validation
 
@@ -14,6 +14,8 @@ The ten aquarium-question articles are generated from the editorial source in
 `_data/species.json`; assign an optional, unique local video object to a species
 only when original footage is available. After changing either source, run
 `npm run build:site` and commit both the source and generated pages.
+The canonical origin is configured once in `site-config.json`; regenerate the
+site after changing it.
 
 ## Test suites
 
@@ -33,7 +35,7 @@ links, and image/video sitemap entries. The 404 page remains `noindex, follow`.
 After a production deployment, the site owner should add `glassgardenfins.com` to
 [Google Search Console](https://search.google.com/search-console/) and
 [Bing Webmaster Tools](https://www.bing.com/webmasters/), verify ownership, and
-submit `https://glassgardenfins.com/sitemap.xml`. Verification credentials should
+submit `http://glassgardenfins.com/sitemap.xml`. Verification credentials should
 not be committed to this repository. Indexing and rankings remain controlled by
 the search engines.
 
@@ -65,7 +67,3 @@ The CSP is delivered through page metadata and contains only directives browsers
 enforce from a `<meta>` element. GitHub Pages cannot set custom response headers
 for this deployment. Strong framing, HSTS, and reporting headers require a proxy
 such as Cloudflare in front of the GitHub Pages origin.
-
-## Scheduled journal entries
-
-Future entries live under `_scheduled/`, which Jekyll excludes from the published site. The scheduled-entry workflow releases the September 15, 2026 stocking update at 07:00 UTC (midnight Pacific), updates the journal index, homepage teaser, and Tank stocking list, runs the complete test suite, commits the published files, and deploys GitHub Pages.

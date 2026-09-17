@@ -1,8 +1,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { discoverPublicPages } from './generate-sitemap.mjs';
+import { SITE_ORIGIN } from './site-config.mjs';
 
-export const SITE_ORIGIN = 'https://glassgardenfins.com';
+export { SITE_ORIGIN };
 
 export const PAGE_DEFS = discoverPublicPages(process.cwd()).map(({ file, route }) => ({
   file,

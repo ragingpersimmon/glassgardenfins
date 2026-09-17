@@ -3,196 +3,196 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
         xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
   <url>
-    <loc>https://glassgardenfins.com/</loc>
+    <loc>http://glassgardenfins.com/</loc>
     <lastmod>2026-09-15</lastmod>
     <video:video>
-      <video:thumbnail_loc>https://glassgardenfins.com/assets/media/corydoras-group-foraging-poster.webp</video:thumbnail_loc>
+      <video:thumbnail_loc>http://glassgardenfins.com/assets/media/corydoras-group-foraging-poster.webp</video:thumbnail_loc>
       <video:title>A group of Corydoras foraging across the aquarium substrate</video:title>
       <video:description>A group of Corydoras foraging across the aquarium substrate</video:description>
-      <video:content_loc>https://glassgardenfins.com/assets/media/corydoras-group-foraging.mp4</video:content_loc>
+      <video:content_loc>http://glassgardenfins.com/assets/media/corydoras-group-foraging.mp4</video:content_loc>
       <video:duration>11</video:duration>
     </video:video>
   </url>
   <url>
-    <loc>https://glassgardenfins.com/journal/</loc>
+    <loc>http://glassgardenfins.com/journal/</loc>
     <lastmod>2026-09-15</lastmod>
   </url>
   <url>
-    <loc>https://glassgardenfins.com/journal/10-aquarium-questions/</loc>
+    <loc>http://glassgardenfins.com/journal/10-aquarium-questions/</loc>
     <lastmod>2026-08-21</lastmod>
   </url>
   <url>
-    <loc>https://glassgardenfins.com/journal/detritus-worms/</loc>
+    <loc>http://glassgardenfins.com/journal/detritus-worms/</loc>
     <lastmod>2026-07-14</lastmod>
   </url>
   <url>
-    <loc>https://glassgardenfins.com/journal/dialing-in-before-stocking/</loc>
+    <loc>http://glassgardenfins.com/journal/dialing-in-before-stocking/</loc>
     <lastmod>2026-06-06</lastmod>
   </url>
   <url>
-    <loc>https://glassgardenfins.com/journal/first-residents-amano-shrimp/</loc>
+    <loc>http://glassgardenfins.com/journal/first-residents-amano-shrimp/</loc>
     <lastmod>2026-08-09</lastmod>
     <video:video>
-      <video:thumbnail_loc>https://glassgardenfins.com/assets/media/amano-shrimp-poster.webp</video:thumbnail_loc>
+      <video:thumbnail_loc>http://glassgardenfins.com/assets/media/amano-shrimp-poster.webp</video:thumbnail_loc>
       <video:title>Amano shrimp grazing on reddish driftwood</video:title>
       <video:description>An Amano shrimp grazing across the hardscape.</video:description>
-      <video:content_loc>https://glassgardenfins.com/assets/media/amano-shrimp-stabilized.mp4</video:content_loc>
+      <video:content_loc>http://glassgardenfins.com/assets/media/amano-shrimp-stabilized.mp4</video:content_loc>
       <video:duration>15</video:duration>
     </video:video>
   </url>
   <url>
-    <loc>https://glassgardenfins.com/journal/how-many-fish-can-i-put-in-my-aquarium/</loc>
+    <loc>http://glassgardenfins.com/journal/how-many-fish-can-i-put-in-my-aquarium/</loc>
     <lastmod>2026-08-13</lastmod>
   </url>
   <url>
-    <loc>https://glassgardenfins.com/journal/how-much-fish-food/</loc>
+    <loc>http://glassgardenfins.com/journal/how-much-fish-food/</loc>
     <lastmod>2026-08-21</lastmod>
   </url>
   <url>
-    <loc>https://glassgardenfins.com/journal/how-much-sun-do-fish-need/</loc>
+    <loc>http://glassgardenfins.com/journal/how-much-sun-do-fish-need/</loc>
     <lastmod>2026-08-20</lastmod>
   </url>
   <url>
-    <loc>https://glassgardenfins.com/journal/how-often-should-you-change-aquarium-water/</loc>
+    <loc>http://glassgardenfins.com/journal/how-often-should-you-change-aquarium-water/</loc>
     <lastmod>2026-08-16</lastmod>
   </url>
   <url>
-    <loc>https://glassgardenfins.com/journal/is-my-aquarium-filter-big-enough/</loc>
+    <loc>http://glassgardenfins.com/journal/is-my-aquarium-filter-big-enough/</loc>
     <lastmod>2026-08-14</lastmod>
   </url>
   <url>
-    <loc>https://glassgardenfins.com/journal/september-15-stocking-update/</loc>
+    <loc>http://glassgardenfins.com/journal/september-15-stocking-update/</loc>
     <lastmod>2026-09-15</lastmod>
     <image:image>
-      <image:loc>https://glassgardenfins.com/assets/media/stocking-rainbow-tetras.webp</image:loc>
+      <image:loc>http://glassgardenfins.com/assets/media/stocking-rainbow-tetras.webp</image:loc>
       <image:caption>Rainbow emperor tetras together during acclimation</image:caption>
     </image:image>
     <image:image>
-      <image:loc>https://glassgardenfins.com/assets/media/stocking-koi-swordtails.webp</image:loc>
+      <image:loc>http://glassgardenfins.com/assets/media/stocking-koi-swordtails.webp</image:loc>
       <image:caption>Koi-pattern swordtails during the arrival check</image:caption>
     </image:image>
     <image:image>
-      <image:loc>https://glassgardenfins.com/assets/media/stocking-arrival-closeup.webp</image:loc>
+      <image:loc>http://glassgardenfins.com/assets/media/stocking-arrival-closeup.webp</image:loc>
       <image:caption>Close view of a new fish during the intake check</image:caption>
     </image:image>
     <image:image>
-      <image:loc>https://glassgardenfins.com/assets/media/stocking-snail-assortment.webp</image:loc>
+      <image:loc>http://glassgardenfins.com/assets/media/stocking-snail-assortment.webp</image:loc>
       <image:caption>Assorted new aquarium snails gathered during the arrival check</image:caption>
     </image:image>
     <video:video>
-      <video:thumbnail_loc>https://glassgardenfins.com/assets/media/stocking-koi-swordtail-group-poster.webp</video:thumbnail_loc>
+      <video:thumbnail_loc>http://glassgardenfins.com/assets/media/stocking-koi-swordtail-group-poster.webp</video:thumbnail_loc>
       <video:title>Koi-pattern swordtails during acclimation</video:title>
       <video:description>The koi-pattern swordtails during their acclimation and intake check.</video:description>
-      <video:content_loc>https://glassgardenfins.com/assets/media/stocking-koi-swordtail-group.mp4</video:content_loc>
+      <video:content_loc>http://glassgardenfins.com/assets/media/stocking-koi-swordtail-group.mp4</video:content_loc>
       <video:duration>12</video:duration>
     </video:video>
     <video:video>
-      <video:thumbnail_loc>https://glassgardenfins.com/assets/media/stocking-swordtail-acclimation-poster.webp</video:thumbnail_loc>
+      <video:thumbnail_loc>http://glassgardenfins.com/assets/media/stocking-swordtail-acclimation-poster.webp</video:thumbnail_loc>
       <video:title>Swordtail observed closely during acclimation</video:title>
       <video:description>Watching one swordtail closely during acclimation before release.</video:description>
-      <video:content_loc>https://glassgardenfins.com/assets/media/stocking-swordtail-acclimation.mp4</video:content_loc>
+      <video:content_loc>http://glassgardenfins.com/assets/media/stocking-swordtail-acclimation.mp4</video:content_loc>
       <video:duration>10</video:duration>
     </video:video>
   </url>
   <url>
-    <loc>https://glassgardenfins.com/journal/what-happened-to-my-shrimps-skin/</loc>
+    <loc>http://glassgardenfins.com/journal/what-happened-to-my-shrimps-skin/</loc>
     <lastmod>2026-08-19</lastmod>
     <video:video>
-      <video:thumbnail_loc>https://glassgardenfins.com/assets/media/shrimp-moss-grazing-poster.webp</video:thumbnail_loc>
+      <video:thumbnail_loc>http://glassgardenfins.com/assets/media/shrimp-moss-grazing-poster.webp</video:thumbnail_loc>
       <video:title>Shrimp grazing across aquarium moss</video:title>
       <video:description>A shrimp grazing across moss and planted hardscape.</video:description>
-      <video:content_loc>https://glassgardenfins.com/assets/media/shrimp-moss-grazing.mp4</video:content_loc>
+      <video:content_loc>http://glassgardenfins.com/assets/media/shrimp-moss-grazing.mp4</video:content_loc>
       <video:duration>8</video:duration>
     </video:video>
   </url>
   <url>
-    <loc>https://glassgardenfins.com/journal/why-are-my-aquarium-plants-turning-brown/</loc>
+    <loc>http://glassgardenfins.com/journal/why-are-my-aquarium-plants-turning-brown/</loc>
     <lastmod>2026-08-12</lastmod>
   </url>
   <url>
-    <loc>https://glassgardenfins.com/journal/why-is-my-aquarium-water-cloudy/</loc>
+    <loc>http://glassgardenfins.com/journal/why-is-my-aquarium-water-cloudy/</loc>
     <lastmod>2026-08-15</lastmod>
   </url>
   <url>
-    <loc>https://glassgardenfins.com/journal/why-is-my-fish-staying-at-the-bottom/</loc>
+    <loc>http://glassgardenfins.com/journal/why-is-my-fish-staying-at-the-bottom/</loc>
     <lastmod>2026-08-18</lastmod>
   </url>
   <url>
-    <loc>https://glassgardenfins.com/journal/why-is-my-fish-swimming-at-the-top/</loc>
+    <loc>http://glassgardenfins.com/journal/why-is-my-fish-swimming-at-the-top/</loc>
     <lastmod>2026-08-17</lastmod>
   </url>
   <url>
-    <loc>https://glassgardenfins.com/privacy/</loc>
+    <loc>http://glassgardenfins.com/privacy/</loc>
     <lastmod>2026-09-15</lastmod>
   </url>
   <url>
-    <loc>https://glassgardenfins.com/species/</loc>
+    <loc>http://glassgardenfins.com/species/</loc>
     <lastmod>2026-09-15</lastmod>
     <video:video>
-      <video:thumbnail_loc>https://glassgardenfins.com/assets/media/rainbow-emperor-tetras-poster.webp</video:thumbnail_loc>
+      <video:thumbnail_loc>http://glassgardenfins.com/assets/media/rainbow-emperor-tetras-poster.webp</video:thumbnail_loc>
       <video:title>Five rainbow emperor tetras schooling together</video:title>
       <video:description>Five rainbow emperor tetras schooling together</video:description>
-      <video:content_loc>https://glassgardenfins.com/assets/media/rainbow-emperor-tetras.mp4</video:content_loc>
+      <video:content_loc>http://glassgardenfins.com/assets/media/rainbow-emperor-tetras.mp4</video:content_loc>
       <video:duration>12</video:duration>
     </video:video>
     <video:video>
-      <video:thumbnail_loc>https://glassgardenfins.com/assets/media/sanke-koi-swordtails-poster.webp</video:thumbnail_loc>
+      <video:thumbnail_loc>http://glassgardenfins.com/assets/media/sanke-koi-swordtails-poster.webp</video:thumbnail_loc>
       <video:title>Sanke koi swordtails swimming through the planted aquarium</video:title>
       <video:description>Sanke koi swordtails swimming through the planted aquarium</video:description>
-      <video:content_loc>https://glassgardenfins.com/assets/media/sanke-koi-swordtails.mp4</video:content_loc>
+      <video:content_loc>http://glassgardenfins.com/assets/media/sanke-koi-swordtails.mp4</video:content_loc>
       <video:duration>12</video:duration>
     </video:video>
     <video:video>
-      <video:thumbnail_loc>https://glassgardenfins.com/assets/media/red-bristlenose-pleco-poster.webp</video:thumbnail_loc>
+      <video:thumbnail_loc>http://glassgardenfins.com/assets/media/red-bristlenose-pleco-poster.webp</video:thumbnail_loc>
       <video:title>Red bristlenose shortfin pleco resting on planted hardscape</video:title>
       <video:description>Red bristlenose shortfin pleco resting on planted hardscape</video:description>
-      <video:content_loc>https://glassgardenfins.com/assets/media/red-bristlenose-pleco.mp4</video:content_loc>
+      <video:content_loc>http://glassgardenfins.com/assets/media/red-bristlenose-pleco.mp4</video:content_loc>
       <video:duration>4</video:duration>
     </video:video>
     <video:video>
-      <video:thumbnail_loc>https://glassgardenfins.com/assets/media/amano-shrimp-driftwood-poster.webp</video:thumbnail_loc>
+      <video:thumbnail_loc>http://glassgardenfins.com/assets/media/amano-shrimp-driftwood-poster.webp</video:thumbnail_loc>
       <video:title>Amano shrimp exploring aquarium driftwood</video:title>
       <video:description>Amano shrimp exploring aquarium driftwood</video:description>
-      <video:content_loc>https://glassgardenfins.com/assets/media/amano-shrimp-driftwood.mp4</video:content_loc>
+      <video:content_loc>http://glassgardenfins.com/assets/media/amano-shrimp-driftwood.mp4</video:content_loc>
       <video:duration>12</video:duration>
     </video:video>
     <video:video>
-      <video:thumbnail_loc>https://glassgardenfins.com/assets/media/bamboo-shrimp-poster.webp</video:thumbnail_loc>
+      <video:thumbnail_loc>http://glassgardenfins.com/assets/media/bamboo-shrimp-poster.webp</video:thumbnail_loc>
       <video:title>Bamboo shrimp moving in an aquarium container</video:title>
       <video:description>Bamboo shrimp moving in an aquarium container</video:description>
-      <video:content_loc>https://glassgardenfins.com/assets/media/bamboo-shrimp.mp4</video:content_loc>
+      <video:content_loc>http://glassgardenfins.com/assets/media/bamboo-shrimp.mp4</video:content_loc>
       <video:duration>10</video:duration>
     </video:video>
     <video:video>
-      <video:thumbnail_loc>https://glassgardenfins.com/assets/media/yellow-poso-rabbit-snail-poster.webp</video:thumbnail_loc>
+      <video:thumbnail_loc>http://glassgardenfins.com/assets/media/yellow-poso-rabbit-snail-poster.webp</video:thumbnail_loc>
       <video:title>Yellow Poso rabbit snail moving across aquarium hardscape</video:title>
       <video:description>Yellow Poso rabbit snail moving across aquarium hardscape</video:description>
-      <video:content_loc>https://glassgardenfins.com/assets/media/yellow-poso-rabbit-snail.mp4</video:content_loc>
+      <video:content_loc>http://glassgardenfins.com/assets/media/yellow-poso-rabbit-snail.mp4</video:content_loc>
       <video:duration>12</video:duration>
     </video:video>
     <video:video>
-      <video:thumbnail_loc>https://glassgardenfins.com/assets/media/white-hercules-snail-poster.webp</video:thumbnail_loc>
+      <video:thumbnail_loc>http://glassgardenfins.com/assets/media/white-hercules-snail-poster.webp</video:thumbnail_loc>
       <video:title>White Hercules snail moving across aquarium driftwood</video:title>
       <video:description>White Hercules snail moving across aquarium driftwood</video:description>
-      <video:content_loc>https://glassgardenfins.com/assets/media/white-hercules-snail.mp4</video:content_loc>
+      <video:content_loc>http://glassgardenfins.com/assets/media/white-hercules-snail.mp4</video:content_loc>
       <video:duration>12</video:duration>
     </video:video>
   </url>
   <url>
-    <loc>https://glassgardenfins.com/tank/</loc>
+    <loc>http://glassgardenfins.com/tank/</loc>
     <lastmod>2026-08-15</lastmod>
     <video:video>
-      <video:thumbnail_loc>https://glassgardenfins.com/assets/media/red-bristlenose-pleco-foraging-poster.webp</video:thumbnail_loc>
+      <video:thumbnail_loc>http://glassgardenfins.com/assets/media/red-bristlenose-pleco-foraging-poster.webp</video:thumbnail_loc>
       <video:title>Red bristlenose shortfin pleco foraging near Corydoras</video:title>
       <video:description>Red bristlenose shortfin pleco foraging near Corydoras</video:description>
-      <video:content_loc>https://glassgardenfins.com/assets/media/red-bristlenose-pleco-foraging.mp4</video:content_loc>
+      <video:content_loc>http://glassgardenfins.com/assets/media/red-bristlenose-pleco-foraging.mp4</video:content_loc>
       <video:duration>12</video:duration>
     </video:video>
     <video:video>
-      <video:thumbnail_loc>https://glassgardenfins.com/assets/media/shrimp-open-water-swimming-poster.webp</video:thumbnail_loc>
+      <video:thumbnail_loc>http://glassgardenfins.com/assets/media/shrimp-open-water-swimming-poster.webp</video:thumbnail_loc>
       <video:title>Shrimp swimming through open aquarium water</video:title>
       <video:description>Shrimp swimming through open aquarium water</video:description>
-      <video:content_loc>https://glassgardenfins.com/assets/media/shrimp-open-water-swimming.mp4</video:content_loc>
+      <video:content_loc>http://glassgardenfins.com/assets/media/shrimp-open-water-swimming.mp4</video:content_loc>
       <video:duration>12</video:duration>
     </video:video>
   </url>

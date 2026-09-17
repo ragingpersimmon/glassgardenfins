@@ -136,7 +136,7 @@ if (!fs.existsSync(sitemapPath)) {
 } else {
   const sitemap = fs.readFileSync(sitemapPath, 'utf8');
   for (const route of sitemapRoutes) {
-    const url = `https://glassgardenfins.com${route}`;
+    const url = `${SITE_ORIGIN}${route}`;
     if (!sitemap.includes(`<loc>${url}</loc>`)) {
       failures += 1;
       console.error(`\n❌ sitemap.xml missing ${url}`);
