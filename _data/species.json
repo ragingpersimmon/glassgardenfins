@@ -21,7 +21,12 @@
     "scientificName": "Xiphophorus hellerii",
     "quantity": 3,
     "note": "Two female high-fin swordtails and one male swordtail.",
-    "video": null
+    "video": {
+      "src": "/assets/media/sanke-koi-swordtails.mp4",
+      "poster": "/assets/media/sanke-koi-swordtails-poster.webp",
+      "label": "Sanke koi swordtails swimming through the planted aquarium",
+      "duration": "PT12S"
+    }
   },
   {
     "slug": "red-bristlenose-shortfin-pleco",
@@ -45,7 +50,12 @@
     "scientificName": "Atyopsis moluccensis",
     "quantity": 2,
     "note": "Filter-feeding shrimp that favor steady current and elevated perches.",
-    "video": null
+    "video": {
+      "src": "/assets/media/bamboo-shrimp-filter-feeding.mp4",
+      "poster": "/assets/media/bamboo-shrimp-filter-feeding-poster.webp",
+      "label": "Bamboo shrimp perched on driftwood in the planted aquarium",
+      "duration": "PT12S"
+    }
   },
   {
     "slug": "yellow-poso-rabbit-snail",
@@ -85,6 +95,11 @@
     "scientificName": "Brotia herculea",
     "quantity": 1,
     "note": "A pale, long-shelled snail that spends much of its time near the substrate.",
-    "video": null
+    "video": {
+      "src": "/assets/media/white-hercules-snail.mp4",
+      "poster": "/assets/media/white-hercules-snail-poster.webp",
+      "label": "White Hercules snail moving across aquarium driftwood",
+      "duration": "PT12S"
+    }
   }
 ]

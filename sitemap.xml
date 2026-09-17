@@ -105,6 +105,27 @@
   <url>
     <loc>https://glassgardenfins.com/species/</loc>
     <lastmod>2026-09-15</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://glassgardenfins.com/assets/media/sanke-koi-swordtails-poster.webp</video:thumbnail_loc>
+      <video:title>Sanke koi swordtails swimming through the planted aquarium</video:title>
+      <video:description>Sanke koi swordtails swimming through the planted aquarium</video:description>
+      <video:content_loc>https://glassgardenfins.com/assets/media/sanke-koi-swordtails.mp4</video:content_loc>
+      <video:duration>12</video:duration>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://glassgardenfins.com/assets/media/bamboo-shrimp-filter-feeding-poster.webp</video:thumbnail_loc>
+      <video:title>Bamboo shrimp perched on driftwood in the planted aquarium</video:title>
+      <video:description>Bamboo shrimp perched on driftwood in the planted aquarium</video:description>
+      <video:content_loc>https://glassgardenfins.com/assets/media/bamboo-shrimp-filter-feeding.mp4</video:content_loc>
+      <video:duration>12</video:duration>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://glassgardenfins.com/assets/media/white-hercules-snail-poster.webp</video:thumbnail_loc>
+      <video:title>White Hercules snail moving across aquarium driftwood</video:title>
+      <video:description>White Hercules snail moving across aquarium driftwood</video:description>
+      <video:content_loc>https://glassgardenfins.com/assets/media/white-hercules-snail.mp4</video:content_loc>
+      <video:duration>12</video:duration>
+    </video:video>
   </url>
   <url>
     <loc>https://glassgardenfins.com/tank/</loc>
