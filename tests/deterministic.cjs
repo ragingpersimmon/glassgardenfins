@@ -449,6 +449,25 @@ async function run() {
         0,
         'stocking entry should not reuse the older shrimp clip'
       );
+      const stockingVideoLayout = await page.locator('.entry video').evaluateAll((videos) =>
+        videos.map((video) => {
+          const rect = video.getBoundingClientRect();
+          const style = window.getComputedStyle(video);
+          return {
+            display: style.display,
+            objectFit: style.objectFit,
+            ratio: rect.width / rect.height
+          };
+        })
+      );
+      for (const video of stockingVideoLayout) {
+        assert.strictEqual(video.display, 'block', 'journal videos should not use inline fallback sizing');
+        assert.strictEqual(video.objectFit, 'cover', 'journal videos should fill their media frame');
+        assert.ok(
+          Math.abs(video.ratio - (16 / 9)) < 0.02,
+          `journal video should render at 16:9, received ${video.ratio}`
+        );
+      }
       await page.goto(`${server.baseUrl}/journal/`, { waitUntil: 'domcontentloaded' });
     }
     const desktopJournalLayout = await page.locator('.journal-grid').evaluate((grid) => {
