@@ -176,7 +176,7 @@ function schemaFor(html, file) {
       const name = optionalMatch(attributes, /\baria-label="([^"]+)"/i);
       const thumbnailUrl = optionalMatch(attributes, /\bposter="([^"]+)"/i);
       const duration = optionalMatch(attributes, /\bdata-duration="([^"]+)"/i);
-      const contentUrl = optionalMatch(source, /<source[^>]+src="([^"]+)"/i);
+      const contentUrl = optionalMatch(source, /<source[^>]+(?:src|data-src)="([^"]+)"/i);
       if (name && thumbnailUrl && duration && contentUrl) {
         schema.video = {
           '@type': 'VideoObject',

@@ -74,7 +74,7 @@ for (const page of PAGE_DEFS) {
     }
   }
 
-  for (const match of html.matchAll(/<source\s+src="(\/assets\/media\/[^"]+\.mp4)"/gi)) {
+  for (const match of html.matchAll(/<source\s+(?:src|data-src)="(\/assets\/media\/[^"]+\.mp4)"/gi)) {
     const source = match[1];
     if (videoSources.has(source)) {
       failures += 1;

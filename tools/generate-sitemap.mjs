@@ -42,7 +42,7 @@ function mediaEntries(html) {
       description: caption || attribute(attributes, 'aria-label'),
       poster: attribute(attributes, 'poster'),
       duration: attribute(attributes, 'data-duration'),
-      src: body.match(/<source[^>]+src="([^"]+)"/i)?.[1] || null
+      src: body.match(/<source[^>]+(?:src|data-src)="([^"]+)"/i)?.[1] || null
     }))
     .filter(({ title, poster, src }) => title && poster && src);
   return { images, videos };

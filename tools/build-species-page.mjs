@@ -24,8 +24,8 @@ function renderMedia(species) {
           </div>`;
   }
 
-  return `<video autoplay muted loop playsinline preload="metadata" poster="${escapeHtml(species.video.poster)}" aria-label="${escapeHtml(species.video.label)}" data-duration="${escapeHtml(species.video.duration)}">
-            <source src="${escapeHtml(species.video.src)}" type="video/mp4">
+  return `<video autoplay muted loop playsinline preload="none" poster="${escapeHtml(species.video.poster)}" aria-label="${escapeHtml(species.video.label)}" data-duration="${escapeHtml(species.video.duration)}" data-lazy-video>
+            <source data-src="${escapeHtml(species.video.src)}" type="video/mp4">
             Your browser does not support embedded video.
           </video>`;
 }

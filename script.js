@@ -11,6 +11,54 @@
 })();
 
 (function () {
+  var videos = document.querySelectorAll('video[data-lazy-video]');
+  if (!videos.length) return;
+
+  var reducedMotion = typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function load(video) {
+    var source = video.querySelector('source[data-src]');
+    if (!source) return;
+    source.src = source.getAttribute('data-src');
+    source.removeAttribute('data-src');
+    video.load();
+  }
+
+  function play(video) {
+    if (reducedMotion) return;
+    var attempt = video.play();
+    if (attempt && typeof attempt.catch === 'function') {
+      attempt.catch(function () {});
+    }
+  }
+
+  if (typeof window.IntersectionObserver !== 'function') {
+    Array.prototype.forEach.call(videos, function (video) {
+      load(video);
+      play(video);
+    });
+    return;
+  }
+
+  var observer = new IntersectionObserver(function (records) {
+    Array.prototype.forEach.call(records, function (record) {
+      var video = record.target;
+      if (record.isIntersecting) {
+        load(video);
+        play(video);
+      } else {
+        video.pause();
+      }
+    });
+  }, { threshold: 0.05 });
+
+  Array.prototype.forEach.call(videos, function (video) {
+    observer.observe(video);
+  });
+})();
+
+(function () {
   if (window.top === window.self) return;
 
   try {
