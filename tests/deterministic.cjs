@@ -284,6 +284,24 @@ async function run() {
       7,
       'species videos should autoplay silently without visible playback controls'
     );
+    assert.strictEqual(
+      await page.locator('.species-card video[data-lazy-video][preload="none"] source[data-src]').count(),
+      6,
+      'offscreen species videos should remain deferred'
+    );
+    const firstSpeciesVideo = page.locator('.species-card video[data-lazy-video]').first();
+    await firstSpeciesVideo.scrollIntoViewIfNeeded();
+    await firstSpeciesVideo.waitFor({ state: 'visible' });
+    await page.waitForFunction(
+      () => {
+        const video = document.querySelector('.species-card video[data-lazy-video]');
+        return video && video.currentSrc && video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA;
+      }
+    );
+    assert.ok(
+      await firstSpeciesVideo.evaluate((video) => !video.paused),
+      'a visible species video should load and autoplay'
+    );
     const speciesNames = await page.locator('.species-card__title').allInnerTexts();
     for (const expectedName of [
       'Thai micro spider crab',
