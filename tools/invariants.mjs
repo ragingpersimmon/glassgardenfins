@@ -38,6 +38,9 @@ export function checkPage(html, { route, current }) {
   if (!has(html, /<meta\s+name="theme-color"\s+content="#0A1614">/i)) {
     errors.push('missing or invalid theme-color');
   }
+  if (!has(html, /<link\s+rel="icon"\s+href="\/favicon\.ico"\s+sizes="any">/i)) {
+    errors.push('missing favicon');
+  }
 
   const canonical = firstMatch(
     html,

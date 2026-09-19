@@ -247,6 +247,7 @@ export function enrichPage(html, file, amazonAssociateTag) {
     .replaceAll('https://littlefinswim.net', SITE_ORIGIN)
     .replace(/\s*<meta\s+name="theme-color"[^>]*>/gi, '')
     .replace(/\s*<meta\s+name="robots"[^>]*>/gi, '')
+    .replace(/\s*<link\s+rel="icon"[^>]*>/gi, '')
     .replace(/\s*<meta\s+property="og:site_name"[^>]*>/gi, '')
     .replace(/\s*<meta\s+property="og:image[^>]*>/gi, '')
     .replace(/\s*<meta\s+name="twitter:image[^>]*>/gi, '')
@@ -257,7 +258,7 @@ export function enrichPage(html, file, amazonAssociateTag) {
 
   output = output.replace(
     /(<meta\s+name="viewport"[^>]*>)/i,
-    `$1\n<meta name="theme-color" content="#0A1614">\n<meta name="robots" content="${
+    `$1\n<meta name="theme-color" content="#0A1614">\n<link rel="icon" href="/favicon.ico" sizes="any">\n<meta name="robots" content="${
       file === '404.html'
         ? 'noindex, follow'
         : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
