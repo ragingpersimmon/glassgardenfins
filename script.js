@@ -256,19 +256,19 @@
   if (Number.isNaN(updated.getTime())) return;
 
   var parts = new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'America/Vancouver',
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',
     hour: '2-digit',
     minute: '2-digit',
-    hourCycle: 'h23'
+    hourCycle: 'h23',
+    timeZoneName: 'short'
   }).formatToParts(updated).reduce(function (values, part) {
     values[part.type] = part.value;
     return values;
   }, {});
   var label = parts.year + '-' + parts.month + '-' + parts.day +
-    ' ' + parts.hour + ':' + parts.minute + ' PT';
+    ' ' + parts.hour + ':' + parts.minute + ' ' + parts.timeZoneName;
 
   Array.prototype.forEach.call(timestamps, function (timestamp) {
     timestamp.dateTime = updated.toISOString();

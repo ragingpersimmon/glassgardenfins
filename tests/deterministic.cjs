@@ -57,7 +57,12 @@ async function run() {
   const browser = await chromium.launch({ headless: true });
 
   try {
-    const context = await browser.newContext();
+    const context = await browser.newContext({ timezoneId: 'America/Vancouver' });
+    await context.addInitScript(() => {
+      Object.defineProperty(document, 'lastModified', {
+        value: 'Sun, 20 Sep 2026 16:48:23 GMT'
+      });
+    });
     const page = await context.newPage();
 
     const pageErrors = [];
@@ -585,13 +590,15 @@ async function run() {
       1,
       'footer should show one compact site update timestamp'
     );
+    const pacificTimestampText = await updatedTimestamp.innerText();
+    const updateInstant = await updatedTimestamp.getAttribute('datetime');
     assert.match(
-      await updatedTimestamp.innerText(),
-      /^updated \d{4}-\d{2}-\d{2} \d{2}:\d{2} pt$/i,
-      'footer should render the update timestamp in compact Pacific time'
+      pacificTimestampText,
+      /^updated \d{4}-\d{2}-\d{2} \d{2}:\d{2} p[ds]t$/i,
+      'footer should render the update timestamp in the visitor’s Pacific browser time'
     );
     assert.ok(
-      !Number.isNaN(Date.parse(await updatedTimestamp.getAttribute('datetime'))),
+      !Number.isNaN(Date.parse(updateInstant)),
       'footer update timestamp should expose a machine-readable datetime'
     );
     const undersizedNavigationTargets = await page.locator(
@@ -743,6 +750,32 @@ async function run() {
     assert.ok(allVisibleAfterScroll, 'journal entries should be visible after scroll');
 
     await context.close();
+
+    const easternContext = await browser.newContext({ timezoneId: 'America/Toronto' });
+    await easternContext.addInitScript(() => {
+      Object.defineProperty(document, 'lastModified', {
+        value: 'Sun, 20 Sep 2026 16:48:23 GMT'
+      });
+    });
+    const easternPage = await easternContext.newPage();
+    await easternPage.goto(`${server.baseUrl}/journal/`, { waitUntil: 'domcontentloaded' });
+    const easternTimestamp = easternPage.locator('[data-site-updated]');
+    assert.match(
+      await easternTimestamp.innerText(),
+      /^updated \d{4}-\d{2}-\d{2} \d{2}:\d{2} e[ds]t$/i,
+      'footer should use the visitor’s Eastern browser time outside the Pacific zone'
+    );
+    assert.notStrictEqual(
+      await easternTimestamp.innerText(),
+      pacificTimestampText,
+      'footer should render a different local time in a different browser time zone'
+    );
+    assert.strictEqual(
+      await easternTimestamp.getAttribute('datetime'),
+      updateInstant,
+      'localized footer timestamps should preserve the same machine-readable instant'
+    );
+    await easternContext.close();
 
     const reducedContext = await browser.newContext({ reducedMotion: 'reduce' });
     const reducedPage = await reducedContext.newPage();
