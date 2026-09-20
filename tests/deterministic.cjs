@@ -285,6 +285,11 @@ async function run() {
       'species videos should autoplay silently without visible playback controls'
     );
     assert.strictEqual(
+      await page.locator('.video-playback-toggle, .video-control-host').count(),
+      0,
+      'video playback overlays should not be rendered'
+    );
+    assert.strictEqual(
       await page.locator('.species-card video[data-lazy-video][preload="none"] source[data-src]').count(),
       6,
       'offscreen species videos should remain deferred'
@@ -301,24 +306,6 @@ async function run() {
     assert.ok(
       await firstSpeciesVideo.evaluate((video) => !video.paused),
       'a visible species video should load and autoplay'
-    );
-    assert.strictEqual(
-      await page.locator('.species-card .video-playback-toggle').count(),
-      7,
-      'each species video should have a keyboard-operable playback control'
-    );
-    const firstSpeciesToggle = firstSpeciesVideo.locator('xpath=..').locator('.video-playback-toggle');
-    await firstSpeciesToggle.click();
-    assert.ok(
-      await firstSpeciesVideo.evaluate((video) => video.paused),
-      'the species playback control should pause its video'
-    );
-    await firstSpeciesToggle.click();
-    await page.waitForFunction(
-      () => {
-        const video = document.querySelector('.species-card video[data-lazy-video]');
-        return video && !video.paused;
-      }
     );
     const speciesNames = await page.locator('.species-card__title').allInnerTexts();
     for (const expectedName of [
@@ -753,11 +740,6 @@ async function run() {
       reducedVideoRequests,
       [],
       'reduced motion mode should retain posters without downloading video'
-    );
-    assert.strictEqual(
-      await reducedPage.locator('.video-playback-toggle').count(),
-      7,
-      'reduced-motion users should still be able to start videos manually'
     );
     await reducedPage.goto(`${server.baseUrl}/journal/how-much-fish-food/`, { waitUntil: 'domcontentloaded' });
     await reducedPage.waitForTimeout(200);

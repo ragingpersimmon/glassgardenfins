@@ -16,56 +16,16 @@
   }
 
   function play(video) {
-    if (video.dataset.userPaused === 'true') return;
     var attempt = video.play();
     if (attempt && typeof attempt.catch === 'function') {
       attempt.catch(function () {});
     }
   }
 
-  function updateToggle(video) {
-    if (!video._playbackToggle) return;
-    var paused = video.paused;
-    var label = video.getAttribute('aria-label') || 'video';
-    video._playbackToggle.textContent = paused ? 'Play video' : 'Pause video';
-    video._playbackToggle.setAttribute(
-      'aria-label',
-      (paused ? 'Play ' : 'Pause ') + label
-    );
-    video._playbackToggle.setAttribute('aria-pressed', paused ? 'true' : 'false');
-  }
-
-  Array.prototype.forEach.call(videos, function (video) {
-    if (video.hasAttribute('data-hero-clip')) return;
-    var button = document.createElement('button');
-    var host = document.createElement('div');
-    button.type = 'button';
-    button.className = 'video-playback-toggle';
-    host.className = 'video-control-host';
-    video.parentElement.insertBefore(host, video);
-    host.appendChild(video);
-    host.appendChild(button);
-    video._playbackToggle = button;
-    button.addEventListener('click', function () {
-      if (video.paused) {
-        video.dataset.userPaused = 'false';
-        load(video);
-        play(video);
-      } else {
-        video.dataset.userPaused = 'true';
-        video.pause();
-      }
-    });
-    video.addEventListener('play', function () { updateToggle(video); });
-    video.addEventListener('pause', function () { updateToggle(video); });
-    updateToggle(video);
-  });
-
   if (reducedMotion) {
     Array.prototype.forEach.call(videos, function (video) {
       video.autoplay = false;
       video.pause();
-      updateToggle(video);
     });
     return;
   }
@@ -87,7 +47,6 @@
       } else {
         video.pause();
       }
-      updateToggle(video);
     });
   }, { threshold: 0.05 });
 
