@@ -245,6 +245,7 @@ function schemaFor(html, file) {
 export function enrichPage(html, file, amazonAssociateTag) {
   let output = html
     .replaceAll('https://littlefinswim.net', SITE_ORIGIN)
+    .replace(/https?:\/\/glassgardenfins\.com/g, SITE_ORIGIN)
     .replace(/\s*<meta\s+name="theme-color"[^>]*>/gi, '')
     .replace(/\s*<meta\s+name="robots"[^>]*>/gi, '')
     .replace(/\s*<link\s+rel="icon"[^>]*>/gi, '')
