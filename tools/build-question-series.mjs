@@ -63,7 +63,7 @@ const questions = [
       src: '/assets/media/shrimp-moss-grazing.mp4',
       poster: '/assets/media/shrimp-moss-grazing-poster.webp',
       label: 'Shrimp grazing across aquarium moss',
-      duration: 'PT8.07S',
+      duration: 'PT7.8S',
       caption: 'A shrimp grazing across moss and planted hardscape.'
     },
     paragraphs: [
