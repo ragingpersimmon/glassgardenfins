@@ -13,9 +13,6 @@ const SOCIAL_METADATA = `<meta property="og:image" content="${SOCIAL_IMAGE}">
 <meta name="twitter:image:alt" content="Glass Garden Fins planted aquarium journal">`;
 const FOOTER = `<footer class="site-footer">
   <div class="wrap site-footer__inner">
-    <aside class="ad-slot" aria-label="Advertisement" data-ad-slot>
-      <span>Advertisement</span>
-    </aside>
     <div class="site-footer__row">
       <p>Glass Garden Fins — a planted tank log, updated as the tank changes.</p>
       <div class="site-footer__links">
@@ -253,6 +250,8 @@ export function enrichPage(html, file, amazonAssociateTag) {
     .replace(/\s*<meta\s+name="twitter:image[^>]*>/gi, '')
     .replace(/\s*<script\s+type="application\/ld\+json"\s+data-site-schema>[\s\S]*?<\/script>/gi, '')
     .replace(/\sframe-ancestors\s+[^;"]+;?/gi, '')
+    .replace(/<video\b(?![^>]*\bdata-lazy-video\b)([^>]*)>/gi, '<video$1 data-lazy-video>')
+    .replace(/<source\s+src="([^"]+\.mp4)"([^>]*)>/gi, '<source data-src="$1"$2>')
     .replace(/<footer class="site-footer">[\s\S]*?<\/footer>/i, FOOTER)
     .replace(/<nav class="site-nav" aria-label="Primary">[\s\S]*?<\/nav>/i, primaryNavigation(file));
 

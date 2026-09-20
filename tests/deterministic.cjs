@@ -151,12 +151,12 @@ async function run() {
     assert.strictEqual(homeTheme.textTransform, 'lowercase', 'site theme should render lowercase');
     const homeMontage = page.locator('[data-hero-montage]');
     assert.strictEqual(
-      await homeMontage.locator('video[data-hero-clip] source[src^="/assets/media/"]').count(),
+      await homeMontage.locator('video[data-hero-clip] source:is([src^="/assets/media/"], [data-src^="/assets/media/"])').count(),
       1,
       'homepage should show one locally hosted Corydoras video'
     );
     assert.strictEqual(
-      await homeMontage.locator('source[src^="/assets/media/corydoras-"]').count(),
+      await homeMontage.locator('source:is([src^="/assets/media/corydoras-"], [data-src^="/assets/media/corydoras-"])').count(),
       1,
       'homepage should show only the Corydoras group-foraging clip'
     );
@@ -202,12 +202,12 @@ async function run() {
       'tank page should replace its contextual photographs with video'
     );
     assert.strictEqual(
-      await page.locator('.tank-media-grid video source[src="/assets/media/red-bristlenose-pleco-foraging.mp4"]').count(),
+      await page.locator('.tank-media-grid video source:is([src="/assets/media/red-bristlenose-pleco-foraging.mp4"], [data-src="/assets/media/red-bristlenose-pleco-foraging.mp4"])').count(),
       1,
       'tank page should show the Corydoras and red pleco footage first'
     );
     assert.strictEqual(
-      await page.locator('.tank-media-grid video source[src="/assets/media/shrimp-open-water-swimming.mp4"]').count(),
+      await page.locator('.tank-media-grid video source:is([src="/assets/media/shrimp-open-water-swimming.mp4"], [data-src="/assets/media/shrimp-open-water-swimming.mp4"])').count(),
       1,
       'tank page should show the swimming shrimp footage second'
     );
@@ -302,6 +302,24 @@ async function run() {
       await firstSpeciesVideo.evaluate((video) => !video.paused),
       'a visible species video should load and autoplay'
     );
+    assert.strictEqual(
+      await page.locator('.species-card .video-playback-toggle').count(),
+      7,
+      'each species video should have a keyboard-operable playback control'
+    );
+    const firstSpeciesToggle = firstSpeciesVideo.locator('xpath=..').locator('.video-playback-toggle');
+    await firstSpeciesToggle.click();
+    assert.ok(
+      await firstSpeciesVideo.evaluate((video) => video.paused),
+      'the species playback control should pause its video'
+    );
+    await firstSpeciesToggle.click();
+    await page.waitForFunction(
+      () => {
+        const video = document.querySelector('.species-card video[data-lazy-video]');
+        return video && !video.paused;
+      }
+    );
     const speciesNames = await page.locator('.species-card__title').allInnerTexts();
     for (const expectedName of [
       'Thai micro spider crab',
@@ -389,7 +407,7 @@ async function run() {
       `${SITE_ORIGIN}/journal/first-residents-amano-shrimp/`
     );
     assert.strictEqual(
-      await page.locator('video source[src="/assets/media/amano-shrimp-stabilized.mp4"]').count(),
+      await page.locator('video source:is([src="/assets/media/amano-shrimp-stabilized.mp4"], [data-src="/assets/media/amano-shrimp-stabilized.mp4"])').count(),
       1,
       'Amano entry should include the stabilized shrimp clip'
     );
@@ -647,7 +665,7 @@ async function run() {
       const articleText = await page.locator('.entry > p:not([data-affiliate-disclosure])').allInnerTexts();
       if (route === '/journal/what-happened-to-my-shrimps-skin/') {
         assert.strictEqual(
-          await page.locator('video source[src="/assets/media/shrimp-moss-grazing.mp4"]').count(),
+          await page.locator('video source:is([src="/assets/media/shrimp-moss-grazing.mp4"], [data-src="/assets/media/shrimp-moss-grazing.mp4"])').count(),
           1,
           'shrimp-care entry should show the moss-grazing shrimp clip'
         );
@@ -712,6 +730,10 @@ async function run() {
 
     const reducedContext = await browser.newContext({ reducedMotion: 'reduce' });
     const reducedPage = await reducedContext.newPage();
+    const reducedVideoRequests = [];
+    reducedPage.on('request', (request) => {
+      if (request.url().endsWith('.mp4')) reducedVideoRequests.push(request.url());
+    });
     await reducedPage.goto(`${server.baseUrl}/`, { waitUntil: 'domcontentloaded' });
     await reducedPage.waitForTimeout(200);
     assert.strictEqual(
@@ -724,6 +746,18 @@ async function run() {
         clips.every((clip) => clip.paused)
       ),
       'reduced motion mode should not autoplay homepage videos'
+    );
+    await reducedPage.goto(`${server.baseUrl}/tank/`, { waitUntil: 'networkidle' });
+    await reducedPage.goto(`${server.baseUrl}/species/`, { waitUntil: 'networkidle' });
+    assert.deepStrictEqual(
+      reducedVideoRequests,
+      [],
+      'reduced motion mode should retain posters without downloading video'
+    );
+    assert.strictEqual(
+      await reducedPage.locator('.video-playback-toggle').count(),
+      7,
+      'reduced-motion users should still be able to start videos manually'
     );
     await reducedPage.goto(`${server.baseUrl}/journal/how-much-fish-food/`, { waitUntil: 'domcontentloaded' });
     await reducedPage.waitForTimeout(200);
