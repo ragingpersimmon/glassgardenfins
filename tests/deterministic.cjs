@@ -33,19 +33,23 @@ async function checkPageMeta(page, baseUrl, path, expectedTitle, expectedCanonic
   assert.ok(navCount >= 2, `${path}: expected navigation links`);
 }
 
-async function assertAllVisibleTextOrange(page, label) {
-  const nonOrangeText = await page.locator('body *').evaluateAll((elements) =>
-    elements
-      .filter((element) =>
-        (element.offsetWidth || element.offsetHeight || element.getClientRects().length) &&
-        Array.from(element.childNodes).some((node) =>
-          node.nodeType === Node.TEXT_NODE && node.textContent.trim()
-        )
-      )
-      .filter((element) => window.getComputedStyle(element).color !== 'rgb(240, 163, 74)')
-      .map((element) => element.textContent.trim().slice(0, 60))
+async function assertColorHierarchy(page, label) {
+  const accentColors = await page.locator('.wordmark, .section-title').evaluateAll((elements) =>
+    elements.map((element) => window.getComputedStyle(element).color)
   );
-  assert.deepStrictEqual(nonOrangeText, [], `${label}: every visible text node should be orange`);
+  assert.ok(
+    accentColors.length > 0 && accentColors.every((color) => color === 'rgb(240, 163, 74)'),
+    `${label}: brand and section titles should retain the orange identity`
+  );
+
+  const bodyCopy = page.locator('.entry p:not(.entry__closing), .page-hero__lead').first();
+  if (await bodyCopy.count()) {
+    assert.notStrictEqual(
+      await bodyCopy.evaluate((element) => window.getComputedStyle(element).color),
+      'rgb(240, 163, 74)',
+      `${label}: body copy should remain visually distinct from orange headings`
+    );
+  }
 }
 
 async function run() {
@@ -180,7 +184,7 @@ async function run() {
       0,
       'homepage montage should not show a pause button or caption'
     );
-    await assertAllVisibleTextOrange(page, 'homepage');
+    await assertColorHierarchy(page, 'homepage');
 
     await checkPageMeta(
       page,
@@ -245,7 +249,7 @@ async function run() {
     const currentLivestock = await page.locator('.stocking-plan--current').innerText();
     assert.match(currentLivestock, /1 red bristlenose shortfin pleco/i);
     assert.match(currentLivestock, /6 gold laser Corydoras/i);
-    await assertAllVisibleTextOrange(page, 'tank page');
+    await assertColorHierarchy(page, 'tank page');
 
     await checkPageMeta(
       page,
@@ -351,7 +355,7 @@ async function run() {
         `${slug} should show the current resident count`
       );
     }
-    await assertAllVisibleTextOrange(page, 'species page');
+    await assertColorHierarchy(page, 'species page');
 
     await checkPageMeta(
       page,
@@ -480,7 +484,8 @@ async function run() {
           return {
             display: style.display,
             objectFit: style.objectFit,
-            ratio: rect.width / rect.height
+            ratio: rect.width / rect.height,
+            width: rect.width
           };
         })
       );
@@ -490,6 +495,10 @@ async function run() {
         assert.ok(
           Math.abs(video.ratio - (16 / 9)) < 0.02,
           `journal video should render at 16:9, received ${video.ratio}`
+        );
+        assert.ok(
+          video.width >= 760,
+          `journal video should use the wider desktop article canvas, received ${video.width}px`
         );
       }
       await page.goto(`${server.baseUrl}/journal/`, { waitUntil: 'domcontentloaded' });
@@ -542,7 +551,7 @@ async function run() {
       'none',
       'journal entry should retain its original capitalization'
     );
-    await assertAllVisibleTextOrange(page, 'journal article');
+    await assertColorHierarchy(page, 'journal article');
 
     await page.waitForTimeout(250);
 
@@ -655,6 +664,11 @@ async function run() {
           await page.locator('video source:is([src="/assets/media/shrimp-moss-grazing.mp4"], [data-src="/assets/media/shrimp-moss-grazing.mp4"])').count(),
           1,
           'shrimp-care entry should show the moss-grazing shrimp clip'
+        );
+        assert.strictEqual(
+          await page.locator('video[data-duration="PT7.8S"]').count(),
+          1,
+          'shrimp-care video metadata should match the decoded 7.8-second duration'
         );
       }
       articleWordCounts.push(articleText.join(' ').trim().split(/\s+/).length);
