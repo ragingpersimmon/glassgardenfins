@@ -53,16 +53,14 @@ async function assertColorHierarchy(page, label) {
 }
 
 async function run() {
-  const server = await startServer();
+  const updateInstant = '2026-09-20T16:48:23.000Z';
+  const server = await startServer({
+    lastModified: new Date(updateInstant).toUTCString()
+  });
   const browser = await chromium.launch({ headless: true });
 
   try {
     const context = await browser.newContext({ timezoneId: 'America/Vancouver' });
-    await context.addInitScript(() => {
-      Object.defineProperty(document, 'lastModified', {
-        value: 'Sun, 20 Sep 2026 16:48:23 GMT'
-      });
-    });
     const page = await context.newPage();
 
     const pageErrors = [];
@@ -590,16 +588,20 @@ async function run() {
       1,
       'footer should show one compact site update timestamp'
     );
+    await page.waitForFunction(
+      (expected) => document.querySelector('[data-site-updated]')?.dateTime === expected,
+      updateInstant
+    );
     const pacificTimestampText = await updatedTimestamp.innerText();
-    const updateInstant = await updatedTimestamp.getAttribute('datetime');
     assert.match(
       pacificTimestampText,
       /^updated \d{4}-\d{2}-\d{2} \d{2}:\d{2} p[ds]t$/i,
       'footer should render the update timestamp in the visitor’s Pacific browser time'
     );
-    assert.ok(
-      !Number.isNaN(Date.parse(updateInstant)),
-      'footer update timestamp should expose a machine-readable datetime'
+    assert.strictEqual(
+      await updatedTimestamp.getAttribute('datetime'),
+      updateInstant,
+      'footer update timestamp should expose the server modification instant'
     );
     const undersizedNavigationTargets = await page.locator(
       '.wordmark, .site-nav a, .journal-card__link, .site-footer a'
@@ -752,14 +754,13 @@ async function run() {
     await context.close();
 
     const easternContext = await browser.newContext({ timezoneId: 'America/Toronto' });
-    await easternContext.addInitScript(() => {
-      Object.defineProperty(document, 'lastModified', {
-        value: 'Sun, 20 Sep 2026 16:48:23 GMT'
-      });
-    });
     const easternPage = await easternContext.newPage();
     await easternPage.goto(`${server.baseUrl}/journal/`, { waitUntil: 'domcontentloaded' });
     const easternTimestamp = easternPage.locator('[data-site-updated]');
+    await easternPage.waitForFunction(
+      (expected) => document.querySelector('[data-site-updated]')?.dateTime === expected,
+      updateInstant
+    );
     assert.match(
       await easternTimestamp.innerText(),
       /^updated \d{4}-\d{2}-\d{2} \d{2}:\d{2} e[ds]t$/i,
