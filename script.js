@@ -252,26 +252,37 @@
   var timestamps = document.querySelectorAll('[data-site-updated]');
   if (!timestamps.length) return;
 
-  var updated = new Date(document.lastModified);
-  if (Number.isNaN(updated.getTime())) return;
+  function renderTimestamp(updated) {
+    if (Number.isNaN(updated.getTime())) return;
 
-  var parts = new Intl.DateTimeFormat('en-CA', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    hourCycle: 'h23',
-    timeZoneName: 'short'
-  }).formatToParts(updated).reduce(function (values, part) {
-    values[part.type] = part.value;
-    return values;
-  }, {});
-  var label = parts.year + '-' + parts.month + '-' + parts.day +
-    ' ' + parts.hour + ':' + parts.minute + ' ' + parts.timeZoneName;
+    var parts = new Intl.DateTimeFormat('en-CA', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hourCycle: 'h23',
+      timeZoneName: 'short'
+    }).formatToParts(updated).reduce(function (values, part) {
+      values[part.type] = part.value;
+      return values;
+    }, {});
+    var label = parts.year + '-' + parts.month + '-' + parts.day +
+      ' ' + parts.hour + ':' + parts.minute + ' ' + parts.timeZoneName;
 
-  Array.prototype.forEach.call(timestamps, function (timestamp) {
-    timestamp.dateTime = updated.toISOString();
-    timestamp.textContent = 'Updated ' + label;
+    Array.prototype.forEach.call(timestamps, function (timestamp) {
+      timestamp.dateTime = updated.toISOString();
+      timestamp.textContent = 'Updated ' + label;
+    });
+  }
+
+  renderTimestamp(new Date(document.lastModified));
+
+  if (!window.fetch || window.location.protocol === 'file:') return;
+  window.fetch(window.location.href, { method: 'HEAD' }).then(function (response) {
+    var lastModified = response.headers.get('Last-Modified');
+    if (lastModified) renderTimestamp(new Date(lastModified));
+  }).catch(function (error) {
+    console.warn('Unable to refresh the site update timestamp.', error);
   });
 })();

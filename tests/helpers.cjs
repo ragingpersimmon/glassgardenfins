@@ -27,7 +27,7 @@ function fileForUrl(urlPath) {
   return fullPath;
 }
 
-function startServer() {
+function startServer(options = {}) {
   return new Promise((resolve) => {
     const server = http.createServer((req, res) => {
       const target = fileForUrl(req.url || '/');
@@ -45,7 +45,9 @@ function startServer() {
         }
 
         const ext = path.extname(target).toLowerCase();
-        res.writeHead(200, { 'Content-Type': MIME_TYPES[ext] || 'application/octet-stream' });
+        const headers = { 'Content-Type': MIME_TYPES[ext] || 'application/octet-stream' };
+        if (options.lastModified) headers['Last-Modified'] = options.lastModified;
+        res.writeHead(200, headers);
         res.end(data);
       });
     });
