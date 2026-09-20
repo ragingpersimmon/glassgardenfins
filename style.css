@@ -1354,19 +1354,6 @@ body * {
   gap: var(--space-2);
 }
 
-.ad-slot {
-  display: grid;
-  min-height: 6rem;
-  place-items: center;
-  border: 1px dashed var(--color-border);
-  border-radius: 6px;
-  background: rgba(5, 22, 19, 0.3);
-  color: var(--color-text-faint);
-  font-size: 0.68rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
 .site-footer__links {
   display: flex;
   align-items: center;
@@ -1381,6 +1368,31 @@ body * {
 
 .back-to-top { text-decoration: none; }
 .back-to-top:hover { color: var(--color-surface); }
+
+.video-control-host {
+  position: relative;
+  width: 100%;
+}
+
+.video-playback-toggle {
+  position: absolute;
+  right: 0.65rem;
+  bottom: 0.65rem;
+  z-index: 2;
+  min-height: 44px;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: 4px;
+  background: rgba(5, 22, 19, 0.86);
+  color: #fff;
+  font: 600 0.72rem/1 var(--font-mono);
+  cursor: pointer;
+}
+
+.video-playback-toggle:focus-visible {
+  outline: 3px solid var(--color-orange);
+  outline-offset: 2px;
+}
 
 /* ===================================================================
    Responsive
