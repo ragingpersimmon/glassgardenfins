@@ -1367,6 +1367,18 @@ a:hover { text-decoration-color: currentColor; }
   gap: var(--space-2);
 }
 
+.site-footer__meta {
+  display: grid;
+  justify-items: end;
+}
+
+.site-footer__updated {
+  color: var(--color-text-faint);
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+}
+
 .site-footer a {
   min-height: 44px;
   display: inline-flex;
@@ -1448,6 +1460,7 @@ a:hover { text-decoration-color: currentColor; }
   .journal-card__link::after { right: 1rem; }
   .site-footer__row,
   .site-footer__links { align-items: flex-start; }
+  .site-footer__meta { justify-items: start; }
   .site-footer__links { flex-direction: column; gap: 0; }
 }
 
