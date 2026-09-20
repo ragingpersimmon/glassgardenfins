@@ -587,8 +587,8 @@ async function run() {
     );
     assert.match(
       await updatedTimestamp.innerText(),
-      /^updated \d{4}-\d{2}-\d{2} \d{2}:\d{2} utc$/i,
-      'footer should render the update timestamp in the compact UTC format'
+      /^updated \d{4}-\d{2}-\d{2} \d{2}:\d{2} pt$/i,
+      'footer should render the update timestamp in compact Pacific time'
     );
     assert.ok(
       !Number.isNaN(Date.parse(await updatedTimestamp.getAttribute('datetime'))),

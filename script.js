@@ -255,14 +255,20 @@
   var updated = new Date(document.lastModified);
   if (Number.isNaN(updated.getTime())) return;
 
-  var pad = function (value) {
-    return String(value).padStart(2, '0');
-  };
-  var label = [
-    updated.getUTCFullYear(),
-    pad(updated.getUTCMonth() + 1),
-    pad(updated.getUTCDate())
-  ].join('-') + ' ' + pad(updated.getUTCHours()) + ':' + pad(updated.getUTCMinutes()) + ' UTC';
+  var parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Vancouver',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23'
+  }).formatToParts(updated).reduce(function (values, part) {
+    values[part.type] = part.value;
+    return values;
+  }, {});
+  var label = parts.year + '-' + parts.month + '-' + parts.day +
+    ' ' + parts.hour + ':' + parts.minute + ' PT';
 
   Array.prototype.forEach.call(timestamps, function (timestamp) {
     timestamp.dateTime = updated.toISOString();
