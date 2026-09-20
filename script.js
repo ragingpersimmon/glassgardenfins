@@ -247,3 +247,25 @@
     }
   });
 })();
+
+(function () {
+  var timestamps = document.querySelectorAll('[data-site-updated]');
+  if (!timestamps.length) return;
+
+  var updated = new Date(document.lastModified);
+  if (Number.isNaN(updated.getTime())) return;
+
+  var pad = function (value) {
+    return String(value).padStart(2, '0');
+  };
+  var label = [
+    updated.getUTCFullYear(),
+    pad(updated.getUTCMonth() + 1),
+    pad(updated.getUTCDate())
+  ].join('-') + ' ' + pad(updated.getUTCHours()) + ':' + pad(updated.getUTCMinutes()) + ' UTC';
+
+  Array.prototype.forEach.call(timestamps, function (timestamp) {
+    timestamp.dateTime = updated.toISOString();
+    timestamp.textContent = 'Updated ' + label;
+  });
+})();

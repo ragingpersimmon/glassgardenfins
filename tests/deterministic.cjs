@@ -579,6 +579,21 @@ async function run() {
 
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(`${server.baseUrl}/journal/`, { waitUntil: 'domcontentloaded' });
+    const updatedTimestamp = page.locator('[data-site-updated]');
+    assert.strictEqual(
+      await updatedTimestamp.count(),
+      1,
+      'footer should show one compact site update timestamp'
+    );
+    assert.match(
+      await updatedTimestamp.innerText(),
+      /^updated \d{4}-\d{2}-\d{2} \d{2}:\d{2} utc$/i,
+      'footer should render the update timestamp in the compact UTC format'
+    );
+    assert.ok(
+      !Number.isNaN(Date.parse(await updatedTimestamp.getAttribute('datetime'))),
+      'footer update timestamp should expose a machine-readable datetime'
+    );
     const undersizedNavigationTargets = await page.locator(
       '.wordmark, .site-nav a, .journal-card__link, .site-footer a'
     ).evaluateAll((links) => links
