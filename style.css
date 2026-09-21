@@ -906,6 +906,43 @@ a:hover { text-decoration-color: currentColor; }
   font-size: 0.9rem;
 }
 
+.species-card__overview {
+  margin: var(--space-2) 0 0;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.species-card__profile {
+  display: grid;
+  gap: 0.6rem;
+  margin: var(--space-2) 0 0;
+  font-size: 0.85rem;
+}
+
+.species-card__fact dt {
+  margin-bottom: 0.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-faint);
+}
+
+.species-card__fact dd {
+  margin: 0;
+}
+
+.species-card__sources {
+  margin: var(--space-2) 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-text-faint);
+}
+
+.species-card__sources a {
+  color: var(--color-text-muted);
+}
+
 /* ===================================================================
    Journal section
    =================================================================== */

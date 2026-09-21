@@ -5,7 +5,17 @@
     "scientificName": "Limnopilos naiyanetri",
     "quantity": 5,
     "note": "A tiny freshwater crab group living among the planted hardscape.",
-    "video": null
+    "video": null,
+    "profile": {
+      "overview": "A tiny, fully aquatic freshwater crab whose carapace reaches only about 1 cm, with a hairy (setose) shell and claws that trap detritus as camouflage and food. It entered the hobby in 2008 and remains uncommon in the trade.",
+      "nativeRange": "Endemic to Thailand, confirmed only from the Tha Chin River in Nakhon Pathom province.",
+      "habitat": "Slow-moving, vegetation-rich freshwater; the original specimens were found clinging to the roots of floating water hyacinths.",
+      "behavior": "Nocturnal and very shy, foraging for detritus and biofilm on plants and mosses. Captive breeding has never been documented, so trade stock is wild-caught.",
+      "sources": [
+        { "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Limnopilos_naiyanetri" },
+        { "label": "Shrimp and Snail Breeder", "url": "https://aquariumbreeder.com/thai-micro-crab-detailed-guide-care-diet-and-breeding/" }
+      ]
+    }
   },
   {
     "slug": "rainbow-emperor-tetra",
@@ -18,6 +28,17 @@
       "poster": "/assets/media/rainbow-emperor-tetras-poster.webp",
       "label": "Five rainbow emperor tetras schooling together",
       "duration": "PT12S"
+    },
+    "profile": {
+      "overview": "A small, iridescent characin closely related to the emperor tetra, reaching about 3.6 cm. Described in 1971, it is a much rarer aquarium fish than its better-known congener.",
+      "nativeRange": "Endemic to Colombia, restricted to the San Juan and Calima river basins on the Pacific slope.",
+      "habitat": "Soft, acidic blackwater and clearwater streams and tributaries.",
+      "behavior": "A peaceful schooling mid-water fish best kept in groups. An egg-scatterer that spawns in small batches among fine-leaved plants; adults eat their own eggs if not separated.",
+      "sources": [
+        { "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Nematobrycon_lacortei" },
+        { "label": "Seriously Fish", "url": "https://www.seriouslyfish.com/species/nematobrycon-lacortei/" },
+        { "label": "FishBase", "url": "https://www.fishbase.se/summary/Nematobrycon-lacortei.html" }
+      ]
     }
   },
   {
@@ -31,6 +52,17 @@
       "poster": "/assets/media/sanke-koi-swordtails-poster.webp",
       "label": "Sanke koi swordtails swimming through the planted aquarium",
       "duration": "PT12S"
+    },
+    "profile": {
+      "overview": "A captive-bred color morph of the green swordtail displaying koi-like patches of red, white, and black. Males grow to about 14 cm with the namesake elongated lower caudal sword; females reach 16 cm and lack it.",
+      "nativeRange": "The wild species ranges from Veracruz, Mexico through Guatemala and Belize to northwestern Honduras; the koi patterning is a domesticated strain not found in nature.",
+      "habitat": "Swift-flowing, heavily vegetated rivers and streams, but also warm springs and canals; tolerant of fresh to mildly brackish water.",
+      "behavior": "An omnivorous livebearer eating plant matter plus small crustaceans, insects, and worms. Breeds prolifically, with live fry every 4-6 weeks, and can hybridize with platies.",
+      "sources": [
+        { "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Xiphophorus_hellerii" },
+        { "label": "Seriously Fish", "url": "https://www.seriouslyfish.com/species/xiphophorus-hellerii/" },
+        { "label": "FishBase", "url": "https://www.fishbase.se/summary/Xiphophorus-hellerii.html" }
+      ]
     }
   },
   {
@@ -44,6 +76,16 @@
       "poster": "/assets/media/red-bristlenose-pleco-poster.webp",
       "label": "Red bristlenose shortfin pleco resting on planted hardscape",
       "duration": "PT4S"
+    },
+    "profile": {
+      "overview": "A captive-bred red color form of a common bristlenose catfish, usually staying near 10-12 cm, with bony plates, a ventral suckermouth, and fleshy head tentacles on adult males.",
+      "nativeRange": "Wild Ancistrus species are widespread in tropical South America, especially the Amazon basin, plus Trinidad and Panama; the red shortfin morph is a line-bred aquarium strain.",
+      "habitat": "Bottom-dwelling in flowing rivers and floodplain waters; appreciates current, oxygen-rich water, and caves or wood for shelter.",
+      "behavior": "A mostly nocturnal grazer of algae and aufwuchs. A cave spawner: the male fans and guards the brood alone, and it breeds readily in home aquaria.",
+      "sources": [
+        { "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Ancistrus" },
+        { "label": "Seriously Fish", "url": "https://www.seriouslyfish.com/species/ancistrus-sp/" }
+      ]
     }
   },
   {
@@ -52,7 +94,17 @@
     "scientificName": "Corydoras sp. CW010",
     "quantity": 6,
     "note": "A social bottom-foraging group with a bright gold lateral stripe.",
-    "video": null
+    "video": null,
+    "profile": {
+      "overview": "An undescribed armored catfish known in the hobby by the code CW010, distinguished by a brilliant metallic gold-to-orange stripe along its flank. Thought to be a natural color variant of the bronze cory lineage.",
+      "nativeRange": "Peru: streams and tributaries of the upper Amazon, including the Rio Ucayali system around Pucallpa.",
+      "habitat": "Soft, slightly acidic to neutral waters with sandy substrates, often shaded by dense riverbank vegetation.",
+      "behavior": "A peaceful shoaling bottom-dweller best kept in groups of five or more over soft sand to protect its sensory barbels. Like other corydoras, it gulps atmospheric air at the surface.",
+      "sources": [
+        { "label": "fishkeeper", "url": "https://www.fishkeeper.co.uk/fish/freshwater/catfish/gold-laser-cory-cw010" },
+        { "label": "Corydoras World", "url": "https://www.corydorasworld.com/articles/ian-fuller/Corydoras-sp-Gold-laser" }
+      ]
+    }
   },
   {
     "slug": "amano-shrimp",
@@ -65,6 +117,16 @@
       "poster": "/assets/media/amano-shrimp-driftwood-poster.webp",
       "label": "Amano shrimp exploring aquarium driftwood",
       "duration": "PT12S"
+    },
+    "profile": {
+      "overview": "A freshwater shrimp growing to about 25-35 mm, translucent with broken lines of reddish-brown dots and a pale dorsal stripe. Popularized for algae control by aquascaper Takashi Amano in the early 1980s.",
+      "nativeRange": "Native to Japan, especially southwestern Japan, and Taiwan.",
+      "habitat": "Fast-flowing freshwater streams; the species is amphidromous, with a wide, short rostrum adapted to life in current.",
+      "behavior": "A tireless algae grazer that is extremely sensitive to copper. Larvae must drift downstream to brackish water to develop, so it will not reproduce in a freshwater tank.",
+      "sources": [
+        { "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Caridina_multidentata" },
+        { "label": "Aquatic Arts", "url": "https://aquaticarts.com/products/amano-shrimp" }
+      ]
     }
   },
   {
@@ -78,6 +140,16 @@
       "poster": "/assets/media/bamboo-shrimp-poster.webp",
       "label": "Bamboo shrimp moving in an aquarium container",
       "duration": "PT10S"
+    },
+    "profile": {
+      "overview": "A large, peaceful filter-feeding shrimp reaching 8-10 cm, also sold as fan shrimp or wood shrimp. Its front legs bear feather-like fans used to strain food particles from the water.",
+      "nativeRange": "Widespread across South and Southeast Asia and the Indo-Pacific, from Sri Lanka and India through Indonesia to islands as far east as Samoa.",
+      "habitat": "Flowing freshwater streams and rivers, where it perches on rocks and wood in the current to filter feed.",
+      "behavior": "A passive filter feeder that holds its fans into the current, resorting to picking through the substrate only when food is scarce. Larvae require brackish water, so it will not breed in freshwater aquaria.",
+      "sources": [
+        { "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Bamboo_shrimp" },
+        { "label": "Shrimp and Snail Breeder", "url": "https://aquariumbreeder.com/bamboo-shrimp-detailed-guide-care-diet-and-breeding/" }
+      ]
     }
   },
   {
@@ -91,23 +163,53 @@
       "poster": "/assets/media/yellow-poso-rabbit-snail-poster.webp",
       "label": "Yellow Poso rabbit snail moving across aquarium hardscape",
       "duration": "PT12S"
+    },
+    "profile": {
+      "overview": "A bright yellow form of Tylomelania, a genus of large freshwater snails sold as rabbit snails for their long, drooping, ear-like antennae. Depending on species, they can reach 10-12 cm.",
+      "nativeRange": "Endemic to Sulawesi, Indonesia; the yellow form originates from Lake Poso, one of the island's ancient lake systems.",
+      "habitat": "Warm, alkaline lake water, roughly pH 7.3-8.5 and 25-29 degrees C, over sandy or rocky lake margins.",
+      "behavior": "A peaceful, curious grazer of algae, biofilm, and detritus, active day and night. Ovoviviparous, giving birth to a single fully shelled juvenile at a time, so populations grow slowly.",
+      "sources": [
+        { "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Tylomelania" },
+        { "label": "Shrimp and Snail Breeder", "url": "https://aquariumbreeder.com/rabbit-snail-detailed-guide-care-diet-and-breeding/" }
+      ]
     }
   },
   {
     "slug": "king-koopa-snail",
     "name": "King Koopa snail",
-    "scientificName": null,
+    "scientificName": "Neritona juttingae",
     "quantity": 2,
     "note": "One of five individually tracked snail varieties in the aquarium.",
-    "video": null
+    "video": null,
+    "profile": {
+      "overview": "An aquarium-trade nerite of about 2-2.5 cm whose spiny, horned shell projections evoke the video-game villain it is named after. Sold under the trade-consensus identification Neritona juttingae.",
+      "nativeRange": "An Indo-Pacific freshwater and brackish neritid; hobby specimens are reported from Indonesian waters, though trade locality data is informal.",
+      "habitat": "Freshwater to brackish coastal waters typical of amphidromous nerites, such as lower river reaches and estuaries.",
+      "behavior": "A dedicated grazer of algae and biofilm on glass, wood, and stone. Its planktonic larvae need brackish or marine conditions, so it cannot overpopulate a freshwater aquarium.",
+      "sources": [
+        { "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Neritona_juttingae" },
+        { "label": "Aquatic Arts", "url": "https://aquaticarts.com/products/king-koopa-nerite-snail" }
+      ]
+    }
   },
   {
     "slug": "magenta-apple-snail",
     "name": "Magenta apple snail",
-    "scientificName": "Pomacea sp.",
+    "scientificName": "Pomacea diffusa",
     "quantity": 2,
     "note": "A vivid magenta-shelled member of the cleanup crew.",
-    "video": null
+    "video": null,
+    "profile": {
+      "overview": "A captive-bred deep pink-purple color morph of the spike-topped apple snail, the common mystery snail of the hobby, with a shell reaching about 5-6 cm.",
+      "nativeRange": "The wild species is widespread throughout the Amazon Basin of Brazil, Peru, and Bolivia; magenta is a domesticated color strain.",
+      "habitat": "Warm, slow-moving freshwater such as floodplain lakes, swamps, and quiet river margins.",
+      "behavior": "A peaceful scavenger and grazer that is generally safer with live plants than larger apple snails. Females lay conspicuous egg clutches above the waterline, so reproduction is easy to control.",
+      "sources": [
+        { "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Pomacea_diffusa" },
+        { "label": "Aquatic Arts", "url": "https://aquaticarts.com/products/magenta-mystery-snail" }
+      ]
+    }
   },
   {
     "slug": "red-racer-snail",
@@ -115,7 +217,17 @@
     "scientificName": "Vittina waigiensis",
     "quantity": 2,
     "note": "A patterned algae grazer that travels across glass and hardscape.",
-    "video": null
+    "video": null,
+    "profile": {
+      "overview": "A small nerite of about 3 cm whose shell shows variable bands of red, orange, yellow, black, and white in repeating arrow patterns like racing stripes; one of the rarest nerites in the trade.",
+      "nativeRange": "Native to the Philippines and Indonesia, including Sulawesi and the Maluku Islands.",
+      "habitat": "Amphibious in fresh, brackish, or marine coastal waters with dense vegetation, such as mangrove forests and river deltas.",
+      "behavior": "A highly effective algae and biofilm grazer, relatively long-lived at around 4 years. Its veliger larvae survive only in brackish water, so it cannot reproduce in freshwater aquaria.",
+      "sources": [
+        { "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Vittina_waigiensis" },
+        { "label": "Aquatic Arts", "url": "https://aquaticarts.com/products/red-racer-nerite-snail" }
+      ]
+    }
   },
   {
     "slug": "white-hercules-snail",
@@ -128,6 +240,16 @@
       "poster": "/assets/media/white-hercules-snail-poster.webp",
       "label": "White Hercules snail moving across aquarium driftwood",
       "duration": "PT12S"
+    },
+    "profile": {
+      "overview": "The creamy-white trade form of the giant tower cap snail, a large pachychilid whose thick, turreted shell can reach 8-10 cm and tapers like a unicorn horn.",
+      "nativeRange": "Native to Southeast Asia, occurring in Myanmar and Thailand.",
+      "habitat": "Freshwater rivers, streams, and wetlands; in aquaria it prefers fine sand and moderate-to-hard, non-acidic warm water for shell health.",
+      "behavior": "A slow-moving, peaceful grazer of algae, biofilm, detritus, and leftovers. A livebearer that reproduces only two or three times per year, so there is little risk of overpopulation.",
+      "sources": [
+        { "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Brotia_herculea" },
+        { "label": "Aquadiction World", "url": "https://aquadiction.world/species-spotlight/white-hercules-snail/" }
+      ]
     }
   }
 ]
