@@ -345,6 +345,8 @@ ${renderProducts(question)}
     <nav class="site-nav" aria-label="Primary">
       <a href="/tank/">The Tank</a>
       <a href="/journal/" aria-current="page">Journal</a>
+      <a href="/species/">Species</a>
+      <a href="/gallery/">Gallery</a>
     </nav>
   </div>
 </header>
@@ -436,6 +438,8 @@ function renderSeriesIndex() {
     <nav class="site-nav" aria-label="Primary">
       <a href="/tank/">The Tank</a>
       <a href="/journal/" aria-current="page">Journal</a>
+      <a href="/species/">Species</a>
+      <a href="/gallery/">Gallery</a>
     </nav>
   </div>
 </header>

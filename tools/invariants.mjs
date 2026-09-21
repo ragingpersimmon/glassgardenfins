@@ -12,9 +12,11 @@ export const PAGE_DEFS = discoverPublicPages(process.cwd()).map(({ file, route }
     ? '/tank/'
     : route === '/species/'
       ? '/species/'
-      : route.startsWith('/journal/')
-        ? '/journal/'
-        : null
+      : route === '/gallery/'
+        ? '/gallery/'
+        : route.startsWith('/journal/')
+          ? '/journal/'
+          : null
 }));
 
 function firstMatch(source, regex) {
@@ -186,6 +188,7 @@ export function checkPage(html, { route, current }) {
 
   if (!has(html, /href="\/tank\/"/i) ||
       !has(html, /href="\/species\/"/i) ||
+      !has(html, /href="\/gallery\/"/i) ||
       !has(html, /href="\/journal\/"/i)) {
     errors.push('missing primary nav links');
   }
@@ -196,18 +199,22 @@ export function checkPage(html, { route, current }) {
   const tankCurrent = has(html, /<a\s+href="\/tank\/"[^>]*aria-current="page"/i);
   const speciesCurrent = has(html, /<a\s+href="\/species\/"[^>]*aria-current="page"/i);
   const journalCurrent = has(html, /<a\s+href="\/journal\/"[^>]*aria-current="page"/i);
+  const galleryCurrent = has(html, /<a\s+href="\/gallery\/"[^>]*aria-current="page"/i);
 
   if (current === '/tank/') {
     if (!tankCurrent) errors.push('tank page missing aria-current');
-    if (speciesCurrent || journalCurrent) errors.push('only tank nav should be current on tank page');
+    if (speciesCurrent || journalCurrent || galleryCurrent) errors.push('only tank nav should be current on tank page');
   } else if (current === '/species/') {
     if (!speciesCurrent) errors.push('species page missing aria-current');
-    if (tankCurrent || journalCurrent) errors.push('only species nav should be current on species page');
+    if (tankCurrent || journalCurrent || galleryCurrent) errors.push('only species nav should be current on species page');
+  } else if (current === '/gallery/') {
+    if (!galleryCurrent) errors.push('gallery page missing aria-current');
+    if (tankCurrent || speciesCurrent || journalCurrent) errors.push('only gallery nav should be current on gallery page');
   } else if (current === '/journal/') {
     if (!journalCurrent) errors.push('journal page missing aria-current');
-    if (tankCurrent || speciesCurrent) errors.push('only journal nav should be current on journal page');
+    if (tankCurrent || speciesCurrent || galleryCurrent) errors.push('only journal nav should be current on journal page');
   } else {
-    if (tankCurrent || speciesCurrent || journalCurrent) {
+    if (tankCurrent || speciesCurrent || journalCurrent || galleryCurrent) {
       errors.push('home page should not set aria-current on subpage links');
     }
   }

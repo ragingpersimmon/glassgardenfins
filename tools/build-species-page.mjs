@@ -143,6 +143,7 @@ export function buildSpeciesPage() {
       <a href="/tank/">The Tank</a>
       <a href="/journal/">Journal</a>
       <a href="/species/" aria-current="page">Species</a>
+      <a href="/gallery/">Gallery</a>
     </nav>
   </div>
 </header>

@@ -268,8 +268,8 @@ async function run() {
     );
     assert.deepStrictEqual(
       await page.locator('.site-nav a').allInnerTexts(),
-      ['the tank', 'journal', 'species'],
-      'species should appear to the right of journal in primary navigation'
+      ['the tank', 'journal', 'species', 'gallery'],
+      'gallery should appear to the right of species in primary navigation'
     );
     assert.strictEqual(
       await page.locator('.species-card').count(),
@@ -359,6 +359,23 @@ async function run() {
       );
     }
     await assertColorHierarchy(page, 'species page');
+
+    await checkPageMeta(
+      page,
+      server.baseUrl,
+      '/gallery/',
+      'Gallery — Glass Garden Fins',
+      `${SITE_ORIGIN}/gallery/`
+    );
+    assert.strictEqual(
+      await page.locator('.site-nav a[href="/gallery/"][aria-current="page"]').count(),
+      1,
+      'gallery page should identify its primary navigation item'
+    );
+    assert.ok(
+      await page.locator('.gallery-card img[width][height][alt]').count() >= 1,
+      'gallery should show selected high-resolution photos'
+    );
 
     await checkPageMeta(
       page,

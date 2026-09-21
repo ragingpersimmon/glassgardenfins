@@ -14,6 +14,14 @@
     </video:video>
   </url>
   <url>
+    <loc>https://glassgardenfins.com/gallery/</loc>
+    <lastmod>2026-08-24</lastmod>
+    <image:image>
+      <image:loc>https://glassgardenfins.com/assets/media/gallery/red-bristlenose-pleco.webp</image:loc>
+      <image:caption>Red bristlenose shortfin pleco in the planted aquarium</image:caption>
+    </image:image>
+  </url>
+  <url>
     <loc>https://glassgardenfins.com/journal/</loc>
     <lastmod>2026-09-15</lastmod>
   </url>
@@ -144,10 +152,10 @@
     </video:video>
     <video:video>
       <video:thumbnail_loc>https://glassgardenfins.com/assets/media/red-bristlenose-pleco-poster.webp</video:thumbnail_loc>
-      <video:title>Red bristlenose shortfin pleco resting on planted hardscape</video:title>
-      <video:description>Red bristlenose shortfin pleco resting on planted hardscape</video:description>
+      <video:title>Red bristlenose shortfin pleco grazing in the planted aquarium</video:title>
+      <video:description>Red bristlenose shortfin pleco grazing in the planted aquarium</video:description>
       <video:content_loc>https://glassgardenfins.com/assets/media/red-bristlenose-pleco.mp4</video:content_loc>
-      <video:duration>4</video:duration>
+      <video:duration>12</video:duration>
     </video:video>
     <video:video>
       <video:thumbnail_loc>https://glassgardenfins.com/assets/media/amano-shrimp-driftwood-poster.webp</video:thumbnail_loc>
