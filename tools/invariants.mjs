@@ -35,7 +35,7 @@ export function checkPage(html, { route, current }) {
   if (!has(html, /<meta\s+name="description"\s+content="[^"]+">/i)) {
     errors.push('missing meta description');
   }
-  if (!has(html, /<meta\s+name="theme-color"\s+content="#0F211D">/i)) {
+  if (!has(html, /<meta\s+name="theme-color"\s+content="#142C27">/i)) {
     errors.push('missing or invalid theme-color');
   }
   if (!has(html, /<link\s+rel="icon"\s+href="\/favicon\.ico"\s+sizes="any">/i)) {
