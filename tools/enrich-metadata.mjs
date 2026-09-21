@@ -261,7 +261,7 @@ export function enrichPage(html, file, amazonAssociateTag) {
 
   output = output.replace(
     /(<meta\s+name="viewport"[^>]*>)/i,
-    `$1\n<meta name="theme-color" content="#0F211D">\n<link rel="icon" href="/favicon.ico" sizes="any">\n<meta name="robots" content="${
+    `$1\n<meta name="theme-color" content="#142C27">\n<link rel="icon" href="/favicon.ico" sizes="any">\n<meta name="robots" content="${
       file === '404.html'
         ? 'noindex, follow'
         : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
