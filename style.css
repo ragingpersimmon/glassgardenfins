@@ -5,12 +5,12 @@
    =================================================================== */
 
 :root {
-  --color-bg:          #0A1614;   /* deep tank water */
-  --color-bg-alt:      #0F2320;   /* slightly lifted water panel */
-  --color-bg-panel:    #16110C;   /* substrate — dark warm brown-black */
+  --color-bg:          #0F211D;   /* deep tank water */
+  --color-bg-alt:      #17312C;   /* slightly lifted water panel */
+  --color-bg-panel:    #1F1810;   /* substrate — dark warm brown-black */
   --color-text:        #E7EEEC;
   --color-text-muted:  #93A8A3;
-  --color-text-faint:  #7A8B87;
+  --color-text-faint:  #8A9B95;
 
   --color-amber:       #C68A4B;   /* tannin / driftwood */
   --color-amber-soft:  #8C6238;
@@ -141,13 +141,13 @@ a:hover { text-decoration-color: currentColor; }
   position: sticky;
   top: 0;
   z-index: 10;
-  background: #0A1614;
+  background: #0F211D;
   border-bottom: 1px solid var(--color-border-soft);
 }
 
 @supports (backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px)) {
   .site-header {
-    background: rgba(10, 22, 20, 0.82);
+    background: rgba(15, 33, 29, 0.82);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
   }
