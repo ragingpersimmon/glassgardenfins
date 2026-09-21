@@ -30,6 +30,27 @@ function renderMedia(species) {
           </video>`;
 }
 
+function renderProfile(profile) {
+  if (!profile) return '';
+
+  const facts = [
+    ['Native range', profile.nativeRange],
+    ['Habitat', profile.habitat],
+    ['Behavior', profile.behavior]
+  ].map(([term, text]) =>
+    `<div class="species-card__fact"><dt>${term}</dt><dd>${escapeHtml(text)}</dd></div>`
+  ).join('\n            ');
+  const sources = profile.sources.map((source) =>
+    `<a href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(source.label)}</a>`
+  ).join(', ');
+
+  return `<p class="species-card__overview">${escapeHtml(profile.overview)}</p>
+          <dl class="species-card__profile">
+            ${facts}
+          </dl>
+          <p class="species-card__sources">Sources: ${sources}</p>`;
+}
+
 function validateSpecies(species) {
   const slugs = new Set();
   const videos = new Set();
@@ -41,12 +62,28 @@ function validateSpecies(species) {
     if (slugs.has(entry.slug)) throw new Error(`Duplicate species slug: ${entry.slug}`);
     slugs.add(entry.slug);
 
-    if (!entry.video) continue;
-    for (const field of ['src', 'poster', 'label', 'duration']) {
-      if (!entry.video[field]) throw new Error(`${entry.slug}: video.${field} is required`);
+    if (entry.video) {
+      for (const field of ['src', 'poster', 'label', 'duration']) {
+        if (!entry.video[field]) throw new Error(`${entry.slug}: video.${field} is required`);
+      }
+      if (videos.has(entry.video.src)) throw new Error(`Duplicate species video: ${entry.video.src}`);
+      videos.add(entry.video.src);
     }
-    if (videos.has(entry.video.src)) throw new Error(`Duplicate species video: ${entry.video.src}`);
-    videos.add(entry.video.src);
+
+    if (!entry.profile) continue;
+    for (const field of ['overview', 'nativeRange', 'habitat', 'behavior']) {
+      if (typeof entry.profile[field] !== 'string' || !entry.profile[field]) {
+        throw new Error(`${entry.slug}: profile.${field} is required`);
+      }
+    }
+    if (!Array.isArray(entry.profile.sources) || !entry.profile.sources.length) {
+      throw new Error(`${entry.slug}: profile.sources must list at least one citation`);
+    }
+    for (const source of entry.profile.sources) {
+      if (!source.label || !/^https:\/\//i.test(source.url || '')) {
+        throw new Error(`${entry.slug}: each source needs a label and an https URL`);
+      }
+    }
   }
 }
 
@@ -65,6 +102,7 @@ function renderCard(species) {
           <h2 class="species-card__title">${escapeHtml(species.name)}</h2>
           ${scientificName}
           <p class="species-card__note">${escapeHtml(species.note)}</p>
+          ${renderProfile(species.profile)}
         </div>
       </article>`;
 }
@@ -113,7 +151,7 @@ export function buildSpeciesPage() {
     <div class="wrap">
       <p class="eyebrow">Current residents</p>
       <h1 class="section-title section-title--compact">Species</h1>
-      <p class="page-hero__lead">The fish, shrimp, crabs, and snails living in the 70L planted aquarium. Each resident will receive its own original video as the library grows.</p>
+      <p class="page-hero__lead">The fish, shrimp, crabs, and snails living in the 70L planted aquarium — where each species comes from, how it lives in the wild, and original tank footage as the library grows.</p>
     </div>
   </section>
   <section class="species" aria-labelledby="species-list-title">

@@ -1,7 +1,7 @@
 const assert = require('assert');
 const { chromium } = require('playwright');
 const { startServer } = require('./helpers.cjs');
-const { siteOrigin: SITE_ORIGIN } = require('../site-config.json');
+const { siteOrigin: SITE_ORIGIN, amazonAssociateTag: AMAZON_TAG } = require('../site-config.json');
 
 const QUESTION_ENTRIES = [
   ['/journal/how-much-fish-food/', 'How Much Fish Food Is the Right Amount? — Glass Garden Fins'],
@@ -367,11 +367,20 @@ async function run() {
       'Privacy & Disclosure — Glass Garden Fins',
       `${SITE_ORIGIN}/privacy/`
     );
-    assert.match(
-      await page.locator('[data-affiliate-status]').innerText(),
-      /does not currently earn a commission/i,
-      'privacy page should describe the current untagged affiliate state'
-    );
+    const affiliateStatus = await page.locator('[data-affiliate-status]').innerText();
+    if (AMAZON_TAG) {
+      assert.match(
+        affiliateStatus,
+        /sponsored affiliate links/i,
+        'privacy page should describe the tagged affiliate state'
+      );
+    } else {
+      assert.match(
+        affiliateStatus,
+        /does not currently earn a commission/i,
+        'privacy page should describe the current untagged affiliate state'
+      );
+    }
 
     await checkPageMeta(
       page,
@@ -565,20 +574,31 @@ async function run() {
       0,
       'journal product links should not show placeholder artwork'
     );
-    const untaggedLinks = await productLinks.evaluateAll((links) =>
+    const amazonLinkTags = await productLinks.evaluateAll((links) =>
       links.map((link) => ({
         host: new URL(link.href).hostname,
         tag: new URL(link.href).searchParams.get('tag')
       }))
     );
-    assert.ok(
-      untaggedLinks.every(({ host, tag }) => host === 'www.amazon.ca' && tag === null),
-      'Amazon links should remain untagged until a real Associates ID is configured'
-    );
-    assert.ok(
-      await page.locator('[data-affiliate-disclosure]').isHidden(),
-      'affiliate disclosure should remain hidden while monetization is disabled'
-    );
+    if (AMAZON_TAG) {
+      assert.ok(
+        amazonLinkTags.every(({ host, tag }) => host === 'www.amazon.ca' && tag === AMAZON_TAG),
+        'Amazon links should carry the configured Associates tag'
+      );
+      assert.ok(
+        await page.locator('[data-affiliate-disclosure]').isVisible(),
+        'affiliate disclosure should be visible while monetization is enabled'
+      );
+    } else {
+      assert.ok(
+        amazonLinkTags.every(({ host, tag }) => host === 'www.amazon.ca' && tag === null),
+        'Amazon links should remain untagged until a real Associates ID is configured'
+      );
+      assert.ok(
+        await page.locator('[data-affiliate-disclosure]').isHidden(),
+        'affiliate disclosure should remain hidden while monetization is disabled'
+      );
+    }
 
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(`${server.baseUrl}/journal/`, { waitUntil: 'domcontentloaded' });
@@ -719,7 +739,7 @@ async function run() {
     await page.route(latestQuestionUrl, async (route) => {
       const response = await route.fetch();
       const body = (await response.text()).replace(
-        'name="amazon-associate-tag" content=""',
+        /name="amazon-associate-tag" content="[^"]*"/,
         'name="amazon-associate-tag" content="littlefinswim-20"'
       );
       await route.fulfill({ response, body });
