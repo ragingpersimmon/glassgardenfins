@@ -35,7 +35,8 @@ function primaryNavigation(file) {
       'Journal',
       normalized.startsWith('journal/')
     ],
-    ['/species/', 'Species', normalized === 'species/index.html']
+    ['/species/', 'Species', normalized === 'species/index.html'],
+    ['/gallery/', 'Gallery', normalized === 'gallery/index.html']
   ];
   return `<nav class="site-nav" aria-label="Primary">
       ${links.map(([href, label, current]) =>
