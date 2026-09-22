@@ -7,6 +7,19 @@ const repoRoot = process.cwd();
 const speciesPath = path.join(repoRoot, '_data', 'species.json');
 const outputPath = path.join(repoRoot, 'species', 'index.html');
 
+const PROPER_NOUNS = [
+  'Takashi Amano', 'South America', 'Southeast Asia', 'Maluku Islands',
+  'Malay Peninsula', 'Nakhon Pathom', 'Rio Ucayali', 'Amazon Basin',
+  'Indo-Pacific', 'Lake Poso', 'Corydoras', 'Tha Chin', 'Colombia',
+  'San Juan', 'Guatemala', 'Honduras', 'Trinidad', 'Pucallpa',
+  'Sri Lanka', 'Indonesia', 'Indonesian', 'Moluccas', 'Sulawesi',
+  'Australia', 'Malaysian', 'Philippines', 'Myanmar', 'Bolivia',
+  'Pacific', 'Ecuador', 'Veracruz', 'Thailand', 'Vietnam', 'Panama',
+  'Brazil', 'Mexico', 'Belize', 'Taiwan', 'Amano', 'India', 'Japan',
+  'Samoa', 'Poso', 'Peru', 'Koopa', 'Hercules', 'Thai', 'Asia',
+  'Africa', 'Malili', 'Calima', 'Amazon'
+].sort((a, b) => b.length - a.length);
+
 function escapeHtml(value) {
   return String(value)
     .replaceAll('&', '&amp;')
@@ -14,6 +27,14 @@ function escapeHtml(value) {
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#39;');
+}
+
+function withProperNouns(value) {
+  let out = escapeHtml(value);
+  for (const noun of PROPER_NOUNS) {
+    out = out.replaceAll(noun, `<span class="preserve-case">${noun}</span>`);
+  }
+  return out;
 }
 
 function renderMedia(species) {
@@ -38,26 +59,36 @@ function renderProfile(profile) {
     ['Habitat', profile.habitat],
     ['Behavior', profile.behavior]
   ].map(([term, text]) =>
-    `<div class="species-card__fact"><dt>${term}</dt><dd>${escapeHtml(text)}</dd></div>`
+    `<div class="species-card__fact"><dt>${term}</dt><dd>${withProperNouns(text)}</dd></div>`
   ).join('\n            ');
   const sources = profile.sources.map((source) =>
-    `<a href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(source.label)}</a>`
+    `<a href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer"><span class="preserve-case">${escapeHtml(source.label)}</span></a>`
   ).join(', ');
 
-  return `<p class="species-card__overview">${escapeHtml(profile.overview)}</p>
+  return `<p class="species-card__overview">${withProperNouns(profile.overview)}</p>
           <dl class="species-card__profile">
             ${facts}
           </dl>
           <p class="species-card__sources">Sources: ${sources}</p>`;
 }
 
+const CATEGORIES = [
+  ['fish', 'Fish'],
+  ['invertebrate', 'Invertebrates'],
+  ['snail', 'Snails']
+];
+
 function validateSpecies(species) {
   const slugs = new Set();
   const videos = new Set();
+  const categoryKeys = new Set(CATEGORIES.map(([key]) => key));
 
   for (const entry of species) {
     if (!entry.slug || !entry.name || !Number.isInteger(entry.quantity) || entry.quantity < 1) {
       throw new Error(`Invalid species record: ${JSON.stringify(entry)}`);
+    }
+    if (!categoryKeys.has(entry.category)) {
+      throw new Error(`${entry.slug}: category must be one of ${[...categoryKeys].join(', ')}`);
     }
     if (slugs.has(entry.slug)) throw new Error(`Duplicate species slug: ${entry.slug}`);
     slugs.add(entry.slug);
@@ -99,9 +130,8 @@ function renderCard(species) {
         </div>
         <div class="species-card__body">
           <p class="species-card__count">${countLabel}</p>
-          <h2 class="species-card__title">${escapeHtml(species.name)}</h2>
+          <h3 class="species-card__title">${withProperNouns(species.name)}</h3>
           ${scientificName}
-          <p class="species-card__note">${escapeHtml(species.note)}</p>
           ${renderProfile(species.profile)}
         </div>
       </article>`;
@@ -110,7 +140,20 @@ function renderCard(species) {
 export function buildSpeciesPage() {
   const species = JSON.parse(fs.readFileSync(speciesPath, 'utf8'));
   validateSpecies(species);
-  const cards = species.map(renderCard).join('\n');
+  const groups = CATEGORIES.map(([key, label]) => {
+    const members = species.filter((entry) => entry.category === key);
+    if (!members.length) return '';
+    const label2 = members.length === 1 ? '1 species' : `${members.length} species`;
+    return `      <details class="species-group" open>
+        <summary class="species-group__summary">
+          <h2 class="species-group__title">${label}</h2>
+          <span class="species-group__count">${label2}</span>
+        </summary>
+        <div class="species-grid">
+${members.map(renderCard).join('\n')}
+        </div>
+      </details>`;
+  }).filter(Boolean).join('\n');
   const csp = "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'";
   const html = `<!DOCTYPE html>
 <html lang="en">
@@ -158,9 +201,7 @@ export function buildSpeciesPage() {
   <section class="species" aria-labelledby="species-list-title">
     <div class="wrap">
       <h2 id="species-list-title" class="visually-hidden">Current aquarium species</h2>
-      <div class="species-grid">
-${cards}
-      </div>
+${groups}
     </div>
   </section>
   <nav class="page-nav page-nav--subpage" aria-label="Explore more">

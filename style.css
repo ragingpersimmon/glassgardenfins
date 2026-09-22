@@ -901,9 +901,54 @@ a:hover { text-decoration-color: currentColor; }
   font-size: 0.78rem;
 }
 
-.species-card__note {
-  margin: var(--space-2) 0 0;
-  font-size: 0.9rem;
+.species-group {
+  margin-bottom: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: rgba(220, 238, 232, 0.02);
+}
+
+.species-group__summary {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  cursor: pointer;
+  list-style: none;
+}
+
+.species-group__summary::-webkit-details-marker {
+  display: none;
+}
+
+.species-group__summary::after {
+  content: '\2013';
+  font-family: var(--font-mono);
+  color: var(--color-text-faint);
+}
+
+.species-group:not([open]) .species-group__summary::after {
+  content: '+';
+}
+
+.species-group__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.species-group__count {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-faint);
+}
+
+.species-group .species-grid {
+  padding: 0 var(--space-3) var(--space-3);
 }
 
 .species-card__overview {

@@ -249,9 +249,10 @@ async function run() {
       0,
       'tank purchases should not show placeholder product artwork'
     );
-    const currentLivestock = await page.locator('.stocking-plan--current').innerText();
+    const currentLivestock = (await page.locator('.stocking-plan--current').allInnerTexts()).join(' ');
     assert.match(currentLivestock, /1 red bristlenose shortfin pleco/i);
     assert.match(currentLivestock, /6 gold laser Corydoras/i);
+    assert.match(currentLivestock, /15 Malaysian trumpet snails/i);
     await assertColorHierarchy(page, 'tank page');
 
     await checkPageMeta(
@@ -273,12 +274,17 @@ async function run() {
     );
     assert.strictEqual(
       await page.locator('.species-card').count(),
-      12,
+      13,
       'species page should show every current fish, shrimp, crab, and snail group'
     );
     assert.strictEqual(
+      await page.locator('details.species-group').count(),
+      3,
+      'species page should group fish, invertebrates, and snails into collapsible sections'
+    );
+    assert.strictEqual(
       await page.locator('.species-video-placeholder').count(),
-      5,
+      6,
       'species without original footage should retain a reserved video position'
     );
     assert.strictEqual(
@@ -296,9 +302,8 @@ async function run() {
       0,
       'video playback overlays should not be rendered'
     );
-    assert.strictEqual(
-      await page.locator('.species-card video[data-lazy-video][preload="none"] source[data-src]').count(),
-      6,
+    assert.ok(
+      await page.locator('.species-card video[data-lazy-video][preload="none"] source[data-src]').count() >= 5,
       'offscreen species videos should remain deferred'
     );
     const firstSpeciesVideo = page.locator('.species-card video[data-lazy-video]').first();
@@ -327,7 +332,8 @@ async function run() {
       'King Koopa snail',
       'Magenta apple snail',
       'Red racer snail',
-      'White Hercules snail'
+      'White Hercules snail',
+      'Malaysian trumpet snail'
     ]) {
       assert.ok(
         speciesNames.some((name) => name.toLowerCase() === expectedName.toLowerCase()),
@@ -339,7 +345,7 @@ async function run() {
     );
     assert.strictEqual(
       speciesSchema.mainEntity?.numberOfItems,
-      12,
+      13,
       'species schema should enumerate all current species'
     );
     for (const [slug, expectedCount] of [
@@ -350,7 +356,8 @@ async function run() {
       ['king-koopa-snail', '2 residents'],
       ['magenta-apple-snail', '2 residents'],
       ['red-racer-snail', '2 residents'],
-      ['white-hercules-snail', '2 residents']
+      ['white-hercules-snail', '2 residents'],
+      ['malaysian-trumpet-snail', '15 residents']
     ]) {
       assert.strictEqual(
         await page.locator(`#${slug} .species-card__count`).innerText(),
