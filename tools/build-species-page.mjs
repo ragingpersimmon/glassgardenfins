@@ -10,15 +10,21 @@ const outputPath = path.join(repoRoot, 'species', 'index.html');
 const PROPER_NOUNS = [
   'Takashi Amano', 'South America', 'Southeast Asia', 'Maluku Islands',
   'Malay Peninsula', 'Nakhon Pathom', 'Rio Ucayali', 'Amazon Basin',
-  'Indo-Pacific', 'Lake Poso', 'Corydoras', 'Tha Chin', 'Colombia',
+  'Indo-Pacific', 'Lake Poso', 'White Hercules', 'King Koopa',
+  'Red Racer', 'Corydoras', 'Tha Chin', 'Colombia',
   'San Juan', 'Guatemala', 'Honduras', 'Trinidad', 'Pucallpa',
   'Sri Lanka', 'Indonesia', 'Indonesian', 'Moluccas', 'Sulawesi',
   'Australia', 'Malaysian', 'Philippines', 'Myanmar', 'Bolivia',
   'Pacific', 'Ecuador', 'Veracruz', 'Thailand', 'Vietnam', 'Panama',
   'Brazil', 'Mexico', 'Belize', 'Taiwan', 'Amano', 'India', 'Japan',
-  'Samoa', 'Poso', 'Peru', 'Koopa', 'Hercules', 'Thai', 'Asia',
+  'Samoa', 'Poso', 'Peru', 'Koopa', 'Hercules', 'Sanke', 'Thai', 'Asia',
   'Africa', 'Malili', 'Calima', 'Amazon'
 ].sort((a, b) => b.length - a.length);
+
+const PROPER_NOUN_PATTERN = new RegExp(
+  PROPER_NOUNS.map((noun) => noun.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'),
+  'g'
+);
 
 function escapeHtml(value) {
   return String(value)
@@ -30,11 +36,10 @@ function escapeHtml(value) {
 }
 
 function withProperNouns(value) {
-  let out = escapeHtml(value);
-  for (const noun of PROPER_NOUNS) {
-    out = out.replaceAll(noun, `<span class="preserve-case">${noun}</span>`);
-  }
-  return out;
+  return escapeHtml(value).replace(
+    PROPER_NOUN_PATTERN,
+    (noun) => `<span class="preserve-case">${noun}</span>`
+  );
 }
 
 function renderMedia(species) {
@@ -61,15 +66,10 @@ function renderProfile(profile) {
   ].map(([term, text]) =>
     `<div class="species-card__fact"><dt>${term}</dt><dd>${withProperNouns(text)}</dd></div>`
   ).join('\n            ');
-  const sources = profile.sources.map((source) =>
-    `<a href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer"><span class="preserve-case">${escapeHtml(source.label)}</span></a>`
-  ).join(', ');
-
   return `<p class="species-card__overview">${withProperNouns(profile.overview)}</p>
           <dl class="species-card__profile">
             ${facts}
-          </dl>
-          <p class="species-card__sources">Sources: ${sources}</p>`;
+          </dl>`;
 }
 
 const CATEGORIES = [
@@ -154,6 +154,24 @@ ${members.map(renderCard).join('\n')}
         </div>
       </details>`;
   }).filter(Boolean).join('\n');
+  const uniqueSources = new Map();
+  for (const entry of species) {
+    for (const source of entry.profile?.sources ?? []) {
+      if (!uniqueSources.has(source.url)) uniqueSources.set(source.url, source.label);
+    }
+  }
+  const sourceItems = [...uniqueSources].map(([url, label]) =>
+    `        <li><a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer"><span class="preserve-case">${escapeHtml(label)}</span></a></li>`
+  ).join('\n');
+  const sourcesSection = `  <section class="species-sources" aria-labelledby="species-sources-title">
+    <div class="wrap">
+      <h2 id="species-sources-title" class="species-sources__title">Sources</h2>
+      <p class="species-sources__lead">Species profiles draw on the following references.</p>
+      <ul class="species-sources__list">
+${sourceItems}
+      </ul>
+    </div>
+  </section>`;
   const csp = "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'";
   const html = `<!DOCTYPE html>
 <html lang="en">
@@ -204,6 +222,7 @@ ${members.map(renderCard).join('\n')}
 ${groups}
     </div>
   </section>
+${sourcesSection}
   <nav class="page-nav page-nav--subpage" aria-label="Explore more">
     <div class="wrap">
       <ul class="page-nav__list">
