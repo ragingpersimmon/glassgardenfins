@@ -977,14 +977,30 @@ a:hover { text-decoration-color: currentColor; }
   margin: 0;
 }
 
-.species-card__sources {
-  margin: var(--space-2) 0 0;
+.species-sources {
+  padding-block: 0 var(--space-5);
+}
+
+.species-sources__title {
+  margin: 0 0 var(--space-2);
+  font-size: 1.1rem;
+}
+
+.species-sources__lead {
+  margin: 0 0 var(--space-2);
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.species-sources__list {
+  margin: 0;
+  padding-left: 1.2rem;
   font-family: var(--font-mono);
   font-size: 0.72rem;
   color: var(--color-text-faint);
 }
 
-.species-card__sources a {
+.species-sources__list a {
   color: var(--color-text-muted);
 }
 
