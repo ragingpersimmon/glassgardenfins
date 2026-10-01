@@ -245,7 +245,7 @@ function schemaFor(html, file) {
 
 export function enrichPage(html, file, amazonAssociateTag, cloudflareAnalyticsToken = '') {
   const analyticsScript = cloudflareAnalyticsToken
-    ? `\n<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "${cloudflareAnalyticsToken}"}'></script>`
+    ? `\n<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "${cloudflareAnalyticsToken}"}'></script>`
     : '';
   let output = html
     .replaceAll('https://littlefinswim.net', SITE_ORIGIN)
@@ -257,7 +257,7 @@ export function enrichPage(html, file, amazonAssociateTag, cloudflareAnalyticsTo
     .replace(/\s*<meta\s+property="og:image[^>]*>/gi, '')
     .replace(/\s*<meta\s+name="twitter:image[^>]*>/gi, '')
     .replace(/\s*<script\s+type="application\/ld\+json"\s+data-site-schema>[\s\S]*?<\/script>/gi, '')
-    .replace(/\s*<script\s+defer\s+src="https:\/\/static\.cloudflareinsights\.com\/beacon\.min\.js"[^>]*><\/script>/gi, '')
+    .replace(/\s*<script\s+(?:type="module"|defer)\s+src="https:\/\/static\.cloudflareinsights\.com\/beacon\.min\.js"[^>]*><\/script>/gi, '')
     .replace(/\s*<meta\s+name="cloudflare-web-analytics-token"[^>]*>/gi, '')
     .replace(/\sframe-ancestors\s+[^;"]+;?/gi, '')
     .replace(/<video\b(?![^>]*\bdata-lazy-video\b)([^>]*)>/gi, '<video$1 data-lazy-video>')
