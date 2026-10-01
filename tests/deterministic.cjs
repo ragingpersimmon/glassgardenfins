@@ -1,7 +1,7 @@
 const assert = require('assert');
 const { chromium } = require('playwright');
 const { startServer } = require('./helpers.cjs');
-const { siteOrigin: SITE_ORIGIN, amazonAssociateTag: AMAZON_TAG } = require('../site-config.json');
+const { siteOrigin: SITE_ORIGIN, amazonAssociateTag: AMAZON_TAG, cloudflareAnalyticsToken: CF_TOKEN } = require('../site-config.json');
 
 const QUESTION_ENTRIES = [
   ['/journal/how-much-fish-food/', 'How Much Fish Food Is the Right Amount? — Glass Garden Fins'],
@@ -403,6 +403,30 @@ async function run() {
         affiliateStatus,
         /does not currently earn a commission/i,
         'privacy page should describe the current untagged affiliate state'
+      );
+    }
+    const analyticsStatus = await page.locator('[data-analytics-status]').innerText();
+    if (CF_TOKEN) {
+      assert.match(
+        analyticsStatus,
+        /Cloudflare Web Analytics is active/i,
+        'privacy page should describe the active analytics state'
+      );
+      const beacon = await page.locator('script[src="https://static.cloudflareinsights.com/beacon.min.js"]').getAttribute('data-cf-beacon');
+      assert.ok(
+        beacon && beacon.includes(CF_TOKEN),
+        'pages should load the Cloudflare beacon with the configured token'
+      );
+    } else {
+      assert.match(
+        analyticsStatus,
+        /No analytics service is currently active/i,
+        'privacy page should describe the inactive analytics state'
+      );
+      assert.strictEqual(
+        await page.locator('script[src*="cloudflareinsights"]').count(),
+        0,
+        'no Cloudflare beacon should load before a token is configured'
       );
     }
 

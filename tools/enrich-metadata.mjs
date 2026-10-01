@@ -243,7 +243,10 @@ function schemaFor(html, file) {
   return schema;
 }
 
-export function enrichPage(html, file, amazonAssociateTag) {
+export function enrichPage(html, file, amazonAssociateTag, cloudflareAnalyticsToken = '') {
+  const analyticsScript = cloudflareAnalyticsToken
+    ? `\n<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "${cloudflareAnalyticsToken}"}'></script>`
+    : '';
   let output = html
     .replaceAll('https://littlefinswim.net', SITE_ORIGIN)
     .replace(/https?:\/\/glassgardenfins\.com/g, SITE_ORIGIN)
@@ -254,6 +257,8 @@ export function enrichPage(html, file, amazonAssociateTag) {
     .replace(/\s*<meta\s+property="og:image[^>]*>/gi, '')
     .replace(/\s*<meta\s+name="twitter:image[^>]*>/gi, '')
     .replace(/\s*<script\s+type="application\/ld\+json"\s+data-site-schema>[\s\S]*?<\/script>/gi, '')
+    .replace(/\s*<script\s+defer\s+src="https:\/\/static\.cloudflareinsights\.com\/beacon\.min\.js"[^>]*><\/script>/gi, '')
+    .replace(/\s*<meta\s+name="cloudflare-web-analytics-token"[^>]*>/gi, '')
     .replace(/\sframe-ancestors\s+[^;"]+;?/gi, '')
     .replace(/<video\b(?![^>]*\bdata-lazy-video\b)([^>]*)>/gi, '<video$1 data-lazy-video>')
     .replace(/<source\s+src="([^"]+\.mp4)"([^>]*)>/gi, '<source data-src="$1"$2>')
@@ -266,7 +271,19 @@ export function enrichPage(html, file, amazonAssociateTag) {
       file === '404.html'
         ? 'noindex, follow'
         : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
-    }">`
+    }">${cloudflareAnalyticsToken ? `\n<meta name="cloudflare-web-analytics-token" content="${cloudflareAnalyticsToken}">` : ''}`
+  );
+  output = output.replace(
+    /(<meta\s+http-equiv="Content-Security-Policy"\s+content=")([^"]+)(")/i,
+    (_, prefix, directives, suffix) => {
+      const openScript = /script-src[^;]*static\.cloudflareinsights\.com/.test(directives);
+      const openConnect = /connect-src[^;]*cloudflareinsights\.com/.test(directives);
+      if (openScript && openConnect) return `${prefix}${directives}${suffix}`;
+      const patched = directives
+        .replace(/script-src 'self'/, "script-src 'self' https://static.cloudflareinsights.com")
+        .replace(/connect-src '(?:self|none)'/, "connect-src 'self' https://cloudflareinsights.com");
+      return `${prefix}${patched}${suffix}`;
+    }
   );
   output = output.replace(
     /(<meta\s+property="og:type"[^>]*>)/i,
@@ -309,9 +326,16 @@ export function enrichPage(html, file, amazonAssociateTag) {
       /<p data-affiliate-status>[\s\S]*?<\/p>/i,
       `<p data-affiliate-status>${status}</p>`
     );
+    const analyticsStatus = cloudflareAnalyticsToken
+      ? 'Cloudflare Web Analytics is active on this site. It counts page views and referrers without cookies and does not collect personal information or identify individual visitors. Cloudflare processes this data under its own privacy policy.'
+      : 'No analytics service is currently active on this site. When enabled, Cloudflare Web Analytics will count page views and referrers without cookies or personal information.';
+    output = output.replace(
+      /<p data-analytics-status>[\s\S]*?<\/p>/i,
+      `<p data-analytics-status>${analyticsStatus}</p>`
+    );
   }
 
-  return `${output.trim()}\n`;
+  return `${output.trim()}${analyticsScript}\n`;
 }
 
 export function enrichSite(repoRoot) {
@@ -322,7 +346,7 @@ export function enrichSite(repoRoot) {
     const absolute = path.join(repoRoot, file);
     if (!fs.existsSync(absolute)) continue;
     const html = fs.readFileSync(absolute, 'utf8');
-    const updated = enrichPage(html, file, config.amazonAssociateTag || '');
+    const updated = enrichPage(html, file, config.amazonAssociateTag || '', config.cloudflareAnalyticsToken || '');
     const temporary = `${absolute}.tmp`;
     fs.writeFileSync(temporary, updated);
     fs.renameSync(temporary, absolute);
