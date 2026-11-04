@@ -58,7 +58,10 @@ can merge.
 
 `npm run build:artifact` copies only public files into `_site/`: the README,
 package files, tools, tests, `_data/`, and site configuration are never
-published. It stamps every footer with the commit time (override with
+published. Root-level files are published only if their extension is listed in
+`ROOT_FILE_EXTENSIONS` in `tools/build-pages-artifact.mjs`; HTML, XML, and text
+files are already included, which covers search-engine verification files. The
+build stamps every footer with the commit time (override with
 `SITE_UPDATED_AT`) and fails if any internal link, asset, or sitemap URL does not
 resolve inside the artifact.
 
@@ -70,6 +73,13 @@ branch directly:
 ```bash
 gh api -X PUT repos/ragingpersimmon/glassgardenfins/pages -f build_type=legacy -f "source[branch]=main" -f "source[path]=/"
 ```
+
+The former domain, littlefinswim.net, is served by the separate
+[littlefinswim-redirect](https://github.com/ragingpersimmon/littlefinswim-redirect)
+Pages site. It forwards every old URL, with its query string and anchor, to the
+same path on glassgardenfins.com. If you retire that domain, delete its DNS
+records before deleting the redirect repository: while the records still point
+at GitHub Pages, another GitHub account could publish a site on the domain.
 
 Dependabot proposes grouped monthly updates for GitHub Actions and npm.
 
