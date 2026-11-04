@@ -171,6 +171,18 @@ async function run() {
           `${route} at ${viewport.width}px: spacing should mirror above and below the header line`
         );
       }
+      await page.goto(`${server.baseUrl}/journal/how-much-fish-food/`, { waitUntil: 'domcontentloaded' });
+      const productBoxGaps = await page.locator('.entry .product-box').evaluate((box) => {
+        const bounds = box.getBoundingClientRect();
+        return {
+          above: bounds.top - box.previousElementSibling.getBoundingClientRect().bottom,
+          below: box.nextElementSibling.getBoundingClientRect().top - bounds.bottom
+        };
+      });
+      assert.ok(
+        productBoxGaps.above >= 16 && Math.abs(productBoxGaps.above - productBoxGaps.below) <= 1,
+        `${viewport.width}px: product box should sit evenly spaced between article paragraphs (${JSON.stringify(productBoxGaps)})`
+      );
     }
     await page.setViewportSize({ width: 1280, height: 720 });
 
