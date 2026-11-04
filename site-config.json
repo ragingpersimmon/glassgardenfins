@@ -1,5 +1,12 @@
 {
   "siteOrigin": "https://glassgardenfins.com",
   "amazonAssociateTag": "lfs59-20",
-  "cloudflareAnalyticsToken": "023272d7174c4608a255c5de30a8d1c8"
+  "cloudflareAnalyticsToken": "023272d7174c4608a255c5de30a8d1c8",
+  "indexNowKey": "993d71a6acaaeb7548107f7fccf29e91",
+  "newsletter": {
+    "provider": "",
+    "formAction": "",
+    "emailField": "email",
+    "hiddenFields": {}
+  }
 }

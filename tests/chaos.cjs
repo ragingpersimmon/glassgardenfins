@@ -6,6 +6,8 @@ const ROUTES = [
   '/',
   '/404.html',
   '/tank/',
+  '/species/',
+  '/gallery/',
   '/privacy/',
   '/journal/',
   '/journal/10-aquarium-questions/',
@@ -21,7 +23,8 @@ const ROUTES = [
   '/journal/why-are-my-aquarium-plants-turning-brown/',
   '/journal/first-residents-amano-shrimp/',
   '/journal/detritus-worms/',
-  '/journal/dialing-in-before-stocking/'
+  '/journal/dialing-in-before-stocking/',
+  '/journal/september-15-stocking-update/'
 ];
 const VIEWPORTS = [
   { width: 320, height: 640 },

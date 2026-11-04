@@ -1,7 +1,34 @@
 const assert = require('assert');
+const path = require('path');
+const { pathToFileURL } = require('url');
 const { chromium } = require('playwright');
 const { startServer } = require('./helpers.cjs');
 const { siteOrigin: SITE_ORIGIN, amazonAssociateTag: AMAZON_TAG, cloudflareAnalyticsToken: CF_TOKEN } = require('../site-config.json');
+
+const FOOTER_STAMP = /<time class="site-footer__updated" data-site-updated(?: datetime="[^"]*")?>/g;
+
+// Serves url with the footer build stamp set to instant, or with no stamp when
+// instant is null, so both timestamp paths are covered in checkout and
+// artifact mode. Non-GET requests (the timestamp HEAD fallback) pass through.
+async function routeFooterStamp(page, url, instant) {
+  await page.route(url, async (route) => {
+    if (route.request().method() !== 'GET') {
+      await route.continue();
+      return;
+    }
+    const response = await route.fetch();
+    const attribute = instant ? ` datetime="${instant}"` : '';
+    const body = (await response.text()).replace(
+      FOOTER_STAMP,
+      `<time class="site-footer__updated" data-site-updated${attribute}>`
+    );
+    await route.fulfill({ response, body });
+  });
+}
+
+function importTool(name) {
+  return import(pathToFileURL(path.join(__dirname, '..', 'tools', name)).href);
+}
 
 const QUESTION_ENTRIES = [
   ['/journal/how-much-fish-food/', 'How Much Fish Food Is the Right Amount? — Glass Garden Fins'],
@@ -53,9 +80,13 @@ async function assertColorHierarchy(page, label) {
 }
 
 async function run() {
+  // updateInstant is the build stamp in the markup; headerInstant is the server
+  // Last-Modified header, used only when a page carries no build stamp.
   const updateInstant = '2026-09-20T16:48:23.000Z';
+  const buildStamp = updateInstant.replace('.000Z', 'Z');
+  const headerInstant = '2026-09-18T09:15:00.000Z';
   const server = await startServer({
-    lastModified: new Date(updateInstant).toUTCString()
+    lastModified: new Date(headerInstant).toUTCString()
   });
   const browser = await chromium.launch({ headless: true });
 
@@ -649,7 +680,14 @@ async function run() {
     }
 
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto(`${server.baseUrl}/journal/`, { waitUntil: 'domcontentloaded' });
+    const journalUrl = `${server.baseUrl}/journal/`;
+    const timestampHeadRequests = [];
+    const recordHeadRequest = (request) => {
+      if (request.method() === 'HEAD') timestampHeadRequests.push(request.url());
+    };
+    page.on('request', recordHeadRequest);
+    await routeFooterStamp(page, journalUrl, buildStamp);
+    await page.goto(journalUrl, { waitUntil: 'domcontentloaded' });
     const updatedTimestamp = page.locator('[data-site-updated]');
     assert.strictEqual(
       await updatedTimestamp.count(),
@@ -669,8 +707,16 @@ async function run() {
     assert.strictEqual(
       await updatedTimestamp.getAttribute('datetime'),
       updateInstant,
-      'footer update timestamp should expose the server modification instant'
+      'footer update timestamp should expose the build instant'
     );
+    await page.waitForTimeout(200);
+    assert.deepStrictEqual(
+      timestampHeadRequests,
+      [],
+      'a build-stamped footer should not request response headers'
+    );
+    page.off('request', recordHeadRequest);
+    await page.unroute(journalUrl);
     const undersizedNavigationTargets = await page.locator(
       '.wordmark, .site-nav a, .journal-card__link, .site-footer a'
     ).evaluateAll((links) => links
@@ -823,7 +869,9 @@ async function run() {
 
     const easternContext = await browser.newContext({ timezoneId: 'America/Toronto' });
     const easternPage = await easternContext.newPage();
-    await easternPage.goto(`${server.baseUrl}/journal/`, { waitUntil: 'domcontentloaded' });
+    const easternJournalUrl = `${server.baseUrl}/journal/`;
+    await routeFooterStamp(easternPage, easternJournalUrl, buildStamp);
+    await easternPage.goto(easternJournalUrl, { waitUntil: 'domcontentloaded' });
     const easternTimestamp = easternPage.locator('[data-site-updated]');
     await easternPage.waitForFunction(
       (expected) => document.querySelector('[data-site-updated]')?.dateTime === expected,
@@ -844,6 +892,25 @@ async function run() {
       updateInstant,
       'localized footer timestamps should preserve the same machine-readable instant'
     );
+    await easternPage.unroute(easternJournalUrl);
+
+    await routeFooterStamp(easternPage, easternJournalUrl, null);
+    await Promise.all([
+      easternPage.waitForRequest((request) =>
+        request.method() === 'HEAD' && request.url() === easternJournalUrl
+      ),
+      easternPage.goto(easternJournalUrl, { waitUntil: 'domcontentloaded' })
+    ]);
+    await easternPage.waitForFunction(
+      (expected) => document.querySelector('[data-site-updated]')?.dateTime === expected,
+      headerInstant
+    );
+    assert.strictEqual(
+      await easternTimestamp.textContent(),
+      'Updated 2026-09-18 05:15 EDT',
+      'an unstamped footer should fall back to the server Last-Modified header'
+    );
+    await easternPage.unroute(easternJournalUrl);
     await easternContext.close();
 
     const reducedContext = await browser.newContext({ reducedMotion: 'reduce' });
@@ -896,6 +963,151 @@ async function run() {
       'mobile viewports should autoplay the homepage video'
     );
     await mobileContext.close();
+
+    const saveDataContext = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    await saveDataContext.addInitScript(() => {
+      Object.defineProperty(navigator, 'connection', {
+        configurable: true,
+        value: { saveData: true, effectiveType: '4g' }
+      });
+    });
+    const saveDataPage = await saveDataContext.newPage();
+    const saveDataVideoRequests = [];
+    saveDataPage.on('request', (request) => {
+      if (new URL(request.url()).pathname.endsWith('.mp4')) saveDataVideoRequests.push(request.url());
+    });
+    await saveDataPage.goto(`${server.baseUrl}/`, { waitUntil: 'domcontentloaded' });
+    await saveDataPage.waitForTimeout(200);
+    assert.ok(
+      await saveDataPage.evaluate(() => document.documentElement.hasAttribute('data-reduced-data')),
+      'Save-Data visitors should be detected'
+    );
+    assert.strictEqual(
+      await saveDataPage.locator('[data-hero-toggle]').getAttribute('aria-pressed'),
+      'true',
+      'Save-Data should start the homepage montage paused'
+    );
+    for (const route of ['/tank/', '/species/']) {
+      await saveDataPage.goto(`${server.baseUrl}${route}`, { waitUntil: 'load' });
+      await saveDataPage.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+      await saveDataPage.waitForTimeout(500);
+      const videoStates = await saveDataPage.locator('video[data-lazy-video]').evaluateAll((videos) =>
+        videos.map((video) => ({
+          controls: video.controls,
+          autoplay: video.autoplay,
+          paused: video.paused,
+          preload: video.preload,
+          playable: /\.mp4$/.test(video.getAttribute('src') || '')
+        }))
+      );
+      assert.ok(videoStates.length > 0, `${route}: expected lazy videos`);
+      assert.ok(
+        videoStates.every((state) =>
+          state.controls && !state.autoplay && state.paused && state.preload === 'none' && state.playable
+        ),
+        `${route}: Save-Data videos should wait for the visitor behind native controls: ${JSON.stringify(videoStates)}`
+      );
+    }
+    assert.deepStrictEqual(
+      saveDataVideoRequests,
+      [],
+      'Save-Data visitors should not download video until they press play'
+    );
+    await Promise.all([
+      saveDataPage.waitForRequest((request) => new URL(request.url()).pathname.endsWith('.mp4')),
+      saveDataPage.locator('video[data-lazy-video]').first().evaluate((video) => video.play())
+    ]);
+    await saveDataPage.goto(`${server.baseUrl}/`, { waitUntil: 'domcontentloaded' });
+    await Promise.all([
+      saveDataPage.waitForRequest((request) => new URL(request.url()).pathname.endsWith('.mp4')),
+      saveDataPage.locator('[data-hero-toggle]').click()
+    ]);
+    assert.strictEqual(
+      await saveDataPage.locator('[data-hero-toggle]').getAttribute('aria-pressed'),
+      'false',
+      'pressing play should start the homepage montage on demand'
+    );
+    await saveDataContext.close();
+
+    const { enrichPage } = await importTool('enrich-metadata.mjs');
+    const { newsletterSettings } = await importTool('newsletter.mjs');
+    const newsletter = newsletterSettings({
+      newsletter: {
+        provider: 'Buttondown',
+        formAction: 'https://buttondown.com/api/emails/embed-subscribe/glassgardenfins-test',
+        emailField: 'email',
+        hiddenFields: { embed: '1' }
+      }
+    });
+    const newsletterContext = await browser.newContext({ viewport: { width: 320, height: 640 } });
+    const newsletterPage = await newsletterContext.newPage();
+    const newsletterArticleUrl = `${server.baseUrl}/journal/how-much-fish-food/`;
+    await newsletterPage.route(newsletterArticleUrl, async (route) => {
+      if (route.request().method() !== 'GET') {
+        await route.continue();
+        return;
+      }
+      const response = await route.fetch();
+      const body = enrichPage(
+        await response.text(),
+        'journal/how-much-fish-food/index.html',
+        AMAZON_TAG,
+        CF_TOKEN,
+        { newsletter }
+      );
+      await route.fulfill({ response, body });
+    });
+    const newsletterSubmissions = [];
+    await newsletterContext.route('https://buttondown.com/**', async (route) => {
+      newsletterSubmissions.push({
+        method: route.request().method(),
+        body: route.request().postData() || ''
+      });
+      await route.fulfill({
+        status: 200,
+        contentType: 'text/html; charset=utf-8',
+        body: '<!doctype html><title>Subscribed</title><p>Check your inbox.</p>'
+      });
+    });
+    await newsletterPage.goto(newsletterArticleUrl, { waitUntil: 'domcontentloaded' });
+    assert.strictEqual(
+      await newsletterPage.locator('[data-newsletter]').count(),
+      1,
+      'a configured newsletter should render one signup form'
+    );
+    const signupLayout = await newsletterPage.evaluate(() => {
+      const size = (selector) => {
+        const rect = document.querySelector(selector).getBoundingClientRect();
+        return { width: rect.width, height: rect.height };
+      };
+      return {
+        overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
+        input: size('.newsletter__input'),
+        button: size('.newsletter__button'),
+        csp: document.querySelector('meta[http-equiv="Content-Security-Policy"]').content
+      };
+    });
+    assert.strictEqual(signupLayout.overflow, false, 'newsletter signup must not overflow at 320px');
+    assert.ok(
+      signupLayout.input.height >= 44 && signupLayout.button.height >= 44 && signupLayout.button.width >= 44,
+      `newsletter controls should be at least 44px touch targets: ${JSON.stringify(signupLayout)}`
+    );
+    assert.match(
+      signupLayout.csp,
+      /(?:^|;)\s*form-action https:\/\/buttondown\.com\s*(?:;|$)/,
+      'the page CSP should allow form submissions only to the newsletter provider'
+    );
+    await newsletterPage.locator('.newsletter__input').fill('reader@example.com');
+    await Promise.all([
+      newsletterPage.waitForURL('https://buttondown.com/**'),
+      newsletterPage.locator('.newsletter__button').click()
+    ]);
+    assert.strictEqual(newsletterSubmissions.length, 1, 'the signup should submit exactly once');
+    assert.strictEqual(newsletterSubmissions[0].method, 'POST', 'the signup should POST to the provider');
+    const submittedFields = new URLSearchParams(newsletterSubmissions[0].body);
+    assert.strictEqual(submittedFields.get('email'), 'reader@example.com', 'the signup should send the email address');
+    assert.strictEqual(submittedFields.get('embed'), '1', 'the signup should send the provider hidden fields');
+    await newsletterContext.close();
 
     const noObserverContext = await browser.newContext();
     await noObserverContext.addInitScript(() => {

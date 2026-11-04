@@ -2,13 +2,14 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const repoRoot = process.cwd();
+const SKIPPED_DIRECTORIES = new Set(['.git', 'node_modules', '_site', 'test-results', 'playwright-report']);
 let failures = 0;
 let warnings = 0;
 
 function walkFiles(directory, relative = '') {
   const files = [];
   for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
-    if (entry.name === '.git' || entry.name === 'node_modules') continue;
+    if (SKIPPED_DIRECTORIES.has(entry.name)) continue;
     const relativePath = path.join(relative, entry.name);
     const absolutePath = path.join(directory, entry.name);
     if (entry.isDirectory()) {

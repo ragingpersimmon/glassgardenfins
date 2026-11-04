@@ -1,0 +1,15 @@
+# Dependencies are installed with `npm ci` from package-lock.json.
+node_modules/
+
+# Generated deployment artifact (npm run build:artifact).
+_site/
+
+# Test and tool output.
+test-results/
+playwright-report/
+*.tmp
+
+# Operating system and editor files.
+.DS_Store
+Thumbs.db
+desktop.ini

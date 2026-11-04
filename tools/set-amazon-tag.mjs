@@ -1,6 +1,4 @@
-import fs from 'node:fs';
-import path from 'node:path';
-import { enrichSite } from './enrich-metadata.mjs';
+import { applySiteConfigChange } from './site-config-change.mjs';
 
 const argument = process.argv[2];
 if (!argument) {
@@ -12,21 +10,7 @@ if (tag && !/^[a-z0-9-]{1,64}$/i.test(tag)) {
   throw new Error('Amazon Associates tag must match [a-z0-9-]{1,64}.');
 }
 
-const repoRoot = process.cwd();
-const configPath = path.join(repoRoot, 'site-config.json');
-const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-const previousTag = config.amazonAssociateTag || '';
-config.amazonAssociateTag = tag;
-const temporaryConfigPath = `${configPath}.tmp`;
-fs.writeFileSync(temporaryConfigPath, `${JSON.stringify(config, null, 2)}\n`);
-fs.renameSync(temporaryConfigPath, configPath);
-try {
-  enrichSite(repoRoot);
-} catch (error) {
-  config.amazonAssociateTag = previousTag;
-  fs.writeFileSync(temporaryConfigPath, `${JSON.stringify(config, null, 2)}\n`);
-  fs.renameSync(temporaryConfigPath, configPath);
-  enrichSite(repoRoot);
-  throw error;
-}
+applySiteConfigChange(process.cwd(), (config) => {
+  config.amazonAssociateTag = tag;
+});
 console.log(tag ? 'Configured Amazon Associates tag on product pages.' : 'Cleared Amazon Associates tag.');

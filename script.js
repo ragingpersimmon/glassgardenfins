@@ -1,11 +1,21 @@
 // Glass Garden Fins - minimal, restrained interaction only.
 
+// Save-Data or a slow connection: no video downloads until the visitor asks.
+(function () {
+  var connection = navigator.connection;
+  if (!connection) return;
+  if (connection.saveData === true || /^(?:slow-2g|2g|3g)$/.test(connection.effectiveType || '')) {
+    document.documentElement.setAttribute('data-reduced-data', '');
+  }
+})();
+
 (function () {
   var videos = document.querySelectorAll('video[data-lazy-video]');
   if (!videos.length) return;
 
   var reducedMotion = typeof window.matchMedia === 'function' &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reducedData = document.documentElement.hasAttribute('data-reduced-data');
 
   function load(video) {
     var source = video.querySelector('source[data-src]');
@@ -20,6 +30,21 @@
     if (attempt && typeof attempt.catch === 'function') {
       attempt.catch(function () {});
     }
+  }
+
+  if (reducedData) {
+    Array.prototype.forEach.call(videos, function (video) {
+      video.autoplay = false;
+      video.preload = 'none';
+      // The hero montage keeps its own play toggle and starts paused.
+      if (video.hasAttribute('data-hero-clip')) return;
+      video.controls = true;
+      // Assigning src keeps preload="none" in effect; calling load() would make
+      // browsers fetch metadata. Nothing downloads until the visitor presses play.
+      var source = video.querySelector('source[data-src]');
+      if (source) video.src = source.getAttribute('data-src');
+    });
+    return;
   }
 
   if (reducedMotion) {
@@ -144,6 +169,7 @@
     : montage.querySelector('[data-hero-toggle]');
   var prefersReducedMotion = typeof window.matchMedia === 'function' &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reducedData = document.documentElement.hasAttribute('data-reduced-data');
   var activeIndex = 0;
   var timer = null;
   var userPaused = false;
@@ -223,7 +249,18 @@
   });
   toggle.hidden = false;
 
-  if (prefersReducedMotion) {
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) {
+      window.clearInterval(timer);
+      pauseClips();
+    } else if (!userPaused) {
+      playClip(clips[activeIndex], false).then(function (playing) {
+        if (playing) startTimer();
+      });
+    }
+  });
+
+  if (prefersReducedMotion || reducedData) {
     setPaused(true);
     return;
   }
@@ -233,17 +270,6 @@
       startTimer();
     } else {
       setPaused(true);
-    }
-  });
-
-  document.addEventListener('visibilitychange', function () {
-    if (document.hidden) {
-      window.clearInterval(timer);
-      pauseClips();
-    } else if (!userPaused) {
-      playClip(clips[activeIndex], false).then(function (playing) {
-        if (playing) startTimer();
-      });
     }
   });
 })();
@@ -274,6 +300,14 @@
       timestamp.dateTime = updated.toISOString();
       timestamp.textContent = 'Updated ' + label;
     });
+  }
+
+  // Published builds stamp the deploy time into the markup; the response
+  // headers are only a fallback for unbuilt checkouts.
+  var builtAt = timestamps[0].getAttribute('datetime');
+  if (builtAt) {
+    renderTimestamp(new Date(builtAt));
+    return;
   }
 
   renderTimestamp(new Date(document.lastModified));
