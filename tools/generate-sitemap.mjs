@@ -1,13 +1,18 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { effectiveLastmod, resolveContentDates } from './content-dates.mjs';
 import { SITE_ORIGIN } from './site-config.mjs';
 
-const EXCLUDED_DIRECTORIES = new Set([
+// Dot- and underscore-prefixed directories (data, the _site build output) are
+// never public routes either.
+export const EXCLUDED_DIRECTORIES = new Set([
   '.git',
   '.github',
   'assets',
   'node_modules',
+  'playwright-report',
+  'test-results',
   'tests',
   'tools'
 ]);
@@ -72,7 +77,7 @@ export function discoverPublicPages(repoRoot) {
 
   function visit(directory, relativeDirectory = '') {
     for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
-      if (entry.name.startsWith('.') || EXCLUDED_DIRECTORIES.has(entry.name)) continue;
+      if (/^[._]/.test(entry.name) || EXCLUDED_DIRECTORIES.has(entry.name)) continue;
       const absolute = path.join(directory, entry.name);
       const relative = path.join(relativeDirectory, entry.name);
 
@@ -97,23 +102,20 @@ export function discoverPublicPages(repoRoot) {
 }
 
 export function generateSitemap(repoRoot) {
-  const pages = discoverPublicPages(repoRoot).filter(({ sitemap }) => sitemap !== false);
+  const publicPages = discoverPublicPages(repoRoot);
+  const contentDates = resolveContentDates(repoRoot, publicPages);
+  const pages = publicPages.filter(({ sitemap }) => sitemap !== false);
   const datedPages = pages.map((page) => {
     const html = fs.readFileSync(path.join(repoRoot, page.file), 'utf8');
-    const date = html.match(/<time[^>]+datetime="(\d{4}-\d{2}-\d{2})"/i)?.[1] || null;
-    return { ...page, date, media: mediaEntries(html) };
+    const lastmod = effectiveLastmod(html, contentDates.get(page.route));
+    return { ...page, lastmod, media: mediaEntries(html) };
   });
-  const latestContentDate = datedPages
-    .map(({ date }) => date)
-    .filter(Boolean)
-    .sort()
-    .at(-1);
   const urls = datedPages
-    .map(({ route, date, media }) => {
+    .map(({ route, lastmod, media }) => {
       const renderedMedia = renderMedia(media);
       return `  <url>
     <loc>${SITE_ORIGIN}${route}</loc>
-    <lastmod>${date || latestContentDate}</lastmod>${renderedMedia ? `\n${renderedMedia}` : ''}
+    <lastmod>${lastmod}</lastmod>${renderedMedia ? `\n${renderedMedia}` : ''}
   </url>`;
     })
     .join('\n');

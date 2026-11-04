@@ -2,7 +2,8 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const ROOT = path.resolve(__dirname, '..');
+// SITE_ROOT serves a built Pages artifact (for example _site) instead of the checkout.
+const ROOT = path.resolve(process.env.SITE_ROOT || path.resolve(__dirname, '..'));
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -10,20 +11,29 @@ const MIME_TYPES = {
   '.js': 'application/javascript; charset=utf-8',
   '.txt': 'text/plain; charset=utf-8',
   '.json': 'application/json; charset=utf-8',
+  '.xml': 'application/xml; charset=utf-8',
+  '.webmanifest': 'application/manifest+json',
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
   '.jpeg': 'image/jpeg',
+  '.webp': 'image/webp',
   '.svg': 'image/svg+xml',
-  '.ico': 'image/x-icon'
+  '.ico': 'image/x-icon',
+  '.mp4': 'video/mp4'
 };
 
 function fileForUrl(urlPath) {
-  const clean = decodeURIComponent(urlPath.split('?')[0]);
+  let clean;
+  try {
+    clean = decodeURIComponent(urlPath.split('?')[0]);
+  } catch {
+    return null;
+  }
   const normalized = clean.endsWith('/') ? `${clean}index.html` : clean;
   const relative = normalized.replace(/^\//, '');
   const fullPath = path.resolve(ROOT, relative);
 
-  if (!fullPath.startsWith(ROOT)) return null;
+  if (fullPath !== ROOT && !fullPath.startsWith(`${ROOT}${path.sep}`)) return null;
   return fullPath;
 }
 

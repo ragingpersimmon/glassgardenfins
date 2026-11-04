@@ -2,8 +2,23 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { PAGE_DEFS, SITE_ORIGIN, checkPage, readProjectPage } from './invariants.mjs';
 import { discoverPublicPages } from './generate-sitemap.mjs';
+import {
+  articlePublishedDate,
+  contentFingerprint,
+  effectiveLastmod,
+  readContentDates
+} from './content-dates.mjs';
+import { FEED_LINK } from './enrich-metadata.mjs';
+import { FEED_FILE, feedEntries, renderFeed } from './generate-feed.mjs';
+import {
+  newsletterApplies,
+  newsletterMarkup,
+  newsletterPrivacyStatus,
+  newsletterSettings
+} from './newsletter.mjs';
 
 const repoRoot = process.cwd();
+const today = new Date().toISOString().slice(0, 10);
 let failures = 0;
 
 for (const page of PAGE_DEFS) {
@@ -129,6 +144,46 @@ for (const agent of [
   }
 }
 
+// Every sitemap route is dated by the committed content-date record; a stale
+// record means content changed without `npm run build:site`.
+const contentDates = readContentDates(repoRoot);
+const expectedLastmods = new Map();
+for (const { file, route, sitemap } of publicPages) {
+  if (sitemap === false) continue;
+  const html = readProjectPage(repoRoot, file);
+  const entry = contentDates[route];
+  if (!entry ||
+      entry.fingerprint !== contentFingerprint(html) ||
+      !/^\d{4}-\d{2}-\d{2}$/.test(entry.lastmod ?? '') ||
+      entry.lastmod > today) {
+    failures += 1;
+    console.error(`\n❌ _data/content-dates.json is stale for ${route}; run npm run build:site`);
+    continue;
+  }
+  expectedLastmods.set(route, effectiveLastmod(html, entry.lastmod));
+  if (articlePublishedDate(html)) {
+    const schemaText = html.match(
+      /<script type="application\/ld\+json" data-site-schema>([\s\S]*?)<\/script>/i
+    )?.[1];
+    let dateModified = null;
+    try {
+      dateModified = JSON.parse(schemaText ?? 'null')?.dateModified ?? null;
+    } catch {
+      // Reported below as a mismatch; check:integrity reports the JSON-LD error.
+    }
+    if (dateModified !== expectedLastmods.get(route)) {
+      failures += 1;
+      console.error(`\n❌ ${file} dateModified is ${dateModified}, expected ${expectedLastmods.get(route)}`);
+    }
+  }
+}
+for (const route of Object.keys(contentDates)) {
+  if (!sitemapRoutes.has(route)) {
+    failures += 1;
+    console.error(`\n❌ _data/content-dates.json lists a route that no longer exists: ${route}`);
+  }
+}
+
 const sitemapPath = path.join(repoRoot, 'sitemap.xml');
 if (!fs.existsSync(sitemapPath)) {
   failures += 1;
@@ -155,9 +210,19 @@ if (!fs.existsSync(sitemapPath)) {
     console.error('\n❌ sitemap.xml contains stale or duplicate routes');
   }
   if (sitemapDates.length !== sitemapRoutes.size ||
-      sitemapDates.some((date) => date > new Date().toISOString().slice(0, 10))) {
+      sitemapDates.some((date) => date > today)) {
     failures += 1;
     console.error('\n❌ sitemap.xml requires one non-future lastmod per route');
+  }
+  for (const [, url, lastmod] of sitemap.matchAll(
+    /<url>\s*<loc>([^<]+)<\/loc>\s*<lastmod>([^<]+)<\/lastmod>/g
+  )) {
+    const route = url.startsWith(SITE_ORIGIN) ? url.slice(SITE_ORIGIN.length) : url;
+    const expected = expectedLastmods.get(route);
+    if (expected && lastmod !== expected) {
+      failures += 1;
+      console.error(`\n❌ sitemap.xml lastmod for ${route} is ${lastmod}, expected ${expected}; run npm run build:site`);
+    }
   }
   const expectedSitemapMedia = [
     '/assets/media/amano-shrimp-poster.webp',
@@ -203,6 +268,62 @@ if (config.amazonAssociateTag &&
     !/^[a-z0-9-]{1,64}$/i.test(config.amazonAssociateTag)) {
   failures += 1;
   console.error('\n❌ configured Amazon Associates tag is invalid');
+}
+
+const feedPath = path.join(repoRoot, FEED_FILE);
+let expectedFeed = null;
+try {
+  expectedFeed = renderFeed(feedEntries(repoRoot, {
+    contentDates: new Map(Object.entries(contentDates).map(([route, { lastmod }]) => [route, lastmod]))
+  }));
+} catch (error) {
+  failures += 1;
+  console.error(`\n❌ unable to render the journal feed: ${error.message}`);
+}
+if (expectedFeed !== null &&
+    (!fs.existsSync(feedPath) || fs.readFileSync(feedPath, 'utf8') !== expectedFeed)) {
+  failures += 1;
+  console.error(`\n❌ ${FEED_FILE} is missing or stale; run npm run build:site`);
+}
+
+let newsletter = null;
+try {
+  newsletter = newsletterSettings(config);
+} catch (error) {
+  failures += 1;
+  console.error(`\n❌ ${error.message}`);
+}
+for (const page of PAGE_DEFS) {
+  const html = readProjectPage(repoRoot, page.file);
+  if (!html.includes(FEED_LINK)) {
+    failures += 1;
+    console.error(`\n❌ ${page.file} does not advertise the journal feed`);
+  }
+  const signup = newsletter && newsletterApplies(page.file) ? newsletter : null;
+  const signupCount = html.match(/<aside class="newsletter"/g)?.length ?? 0;
+  const formAction = html.match(
+    /<meta\s+http-equiv="Content-Security-Policy"\s+content="[^"]*\bform-action\s+([^;"]+)/i
+  )?.[1]?.trim();
+  if (signupCount !== (signup ? 1 : 0) ||
+      (signup && !html.includes(newsletterMarkup(signup))) ||
+      formAction !== (signup ? signup.origin : "'none'")) {
+    failures += 1;
+    console.error(`\n❌ ${page.file} newsletter signup or CSP form-action does not match site-config.json; run npm run build:site`);
+  }
+}
+const privacyHtml = readProjectPage(repoRoot, 'privacy/index.html');
+if (!privacyHtml.includes(`<p data-newsletter-status>${newsletterPrivacyStatus(newsletter)}</p>`)) {
+  failures += 1;
+  console.error('\n❌ /privacy/ newsletter status does not match site-config.json; run npm run build:site');
+}
+
+if (config.indexNowKey) {
+  const key = String(config.indexNowKey);
+  const keyFile = /^[A-Za-z0-9-]{8,128}$/.test(key) ? path.join(repoRoot, `${key}.txt`) : null;
+  if (!keyFile || !fs.existsSync(keyFile) || fs.readFileSync(keyFile, 'utf8').trim() !== key) {
+    failures += 1;
+    console.error('\n❌ IndexNow key is invalid or its <key>.txt verification file is missing');
+  }
 }
 
 function relativeLuminance(hex) {

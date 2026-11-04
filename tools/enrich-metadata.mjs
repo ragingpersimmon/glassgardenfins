@@ -1,9 +1,17 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { effectiveLastmod, resolveContentDates } from './content-dates.mjs';
 import { discoverPublicPages } from './generate-sitemap.mjs';
+import {
+  newsletterApplies,
+  newsletterMarkup,
+  newsletterPrivacyStatus,
+  newsletterSettings
+} from './newsletter.mjs';
 import { SITE_ORIGIN } from './site-config.mjs';
 
+export const FEED_LINK = '<link rel="alternate" type="application/atom+xml" title="Glass Garden Fins journal" href="/feed.xml">';
 const SOCIAL_IMAGE = `${SITE_ORIGIN}/assets/social-card.png`;
 const SOCIAL_METADATA = `<meta property="og:image" content="${SOCIAL_IMAGE}">
 <meta property="og:image:width" content="1200">
@@ -19,6 +27,7 @@ const FOOTER = `<footer class="site-footer">
         <time class="site-footer__updated" data-site-updated>Updated recently</time>
         <div class="site-footer__links">
           <a href="/privacy/">Privacy &amp; disclosure</a>
+          <a href="/feed.xml" type="application/atom+xml">Journal feed</a>
           <a href="#top" class="back-to-top">Back to top ↑</a>
         </div>
       </div>
@@ -96,7 +105,7 @@ function articleTopics(title, description, section) {
   return topics.slice(0, 6);
 }
 
-function schemaFor(html, file) {
+function schemaFor(html, file, { contentDate } = {}) {
   const title = firstMatch(html, /<title>([\s\S]*?)<\/title>/i, 'title', file);
   const description = firstMatch(
     html,
@@ -152,7 +161,7 @@ function schemaFor(html, file) {
       headline: title.replace(/ — Glass Garden Fins$/, ''),
       description,
       datePublished,
-      dateModified: datePublished,
+      dateModified: effectiveLastmod(html, contentDate) ?? datePublished,
       mainEntityOfPage: url,
       url,
       image: absoluteUrl(contentImage) || SOCIAL_IMAGE,
@@ -243,7 +252,23 @@ function schemaFor(html, file) {
   return schema;
 }
 
-export function enrichPage(html, file, amazonAssociateTag, cloudflareAnalyticsToken = '') {
+function withFormAction(directives, source) {
+  return /(?:^|;)\s*form-action\b/i.test(directives)
+    ? directives.replace(/form-action\s+[^;]+/i, `form-action ${source}`)
+    : `${directives}; form-action ${source}`;
+}
+
+// options.contentDate: the page's last significant change (content-dates record).
+// options.newsletter: normalized settings from newsletterSettings(), or null.
+export function enrichPage(
+  html,
+  file,
+  amazonAssociateTag,
+  cloudflareAnalyticsToken = '',
+  { contentDate, newsletter = null } = {}
+) {
+  const normalizedFile = file.replaceAll('\\', '/');
+  const signup = newsletter && newsletterApplies(normalizedFile) ? newsletter : null;
   const analyticsScript = cloudflareAnalyticsToken
     ? `\n<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "${cloudflareAnalyticsToken}"}'></script>`
     : '';
@@ -253,6 +278,7 @@ export function enrichPage(html, file, amazonAssociateTag, cloudflareAnalyticsTo
     .replace(/\s*<meta\s+name="theme-color"[^>]*>/gi, '')
     .replace(/\s*<meta\s+name="robots"[^>]*>/gi, '')
     .replace(/\s*<link\s+rel="icon"[^>]*>/gi, '')
+    .replace(/\s*<link\s+rel="alternate"\s+type="application\/atom\+xml"[^>]*>/gi, '')
     .replace(/\s*<meta\s+property="og:site_name"[^>]*>/gi, '')
     .replace(/\s*<meta\s+property="og:image[^>]*>/gi, '')
     .replace(/\s*<meta\s+name="twitter:image[^>]*>/gi, '')
@@ -260,14 +286,19 @@ export function enrichPage(html, file, amazonAssociateTag, cloudflareAnalyticsTo
     .replace(/\s*<script\s+(?:type="module"|defer)\s+src="https:\/\/static\.cloudflareinsights\.com\/beacon\.min\.js"[^>]*><\/script>/gi, '')
     .replace(/\s*<meta\s+name="cloudflare-web-analytics-token"[^>]*>/gi, '')
     .replace(/\sframe-ancestors\s+[^;"]+;?/gi, '')
+    .replace(/\s*<aside class="newsletter"[\s\S]*?<\/aside>/gi, '')
     .replace(/<video\b(?![^>]*\bdata-lazy-video\b)([^>]*)>/gi, '<video$1 data-lazy-video>')
     .replace(/<source\s+src="([^"]+\.mp4)"([^>]*)>/gi, '<source data-src="$1"$2>')
     .replace(/<footer class="site-footer">[\s\S]*?<\/footer>/i, FOOTER)
     .replace(/<nav class="site-nav" aria-label="Primary">[\s\S]*?<\/nav>/i, primaryNavigation(file));
 
+  if (signup) {
+    output = output.replace(/<\/main>/i, `</main>\n${newsletterMarkup(signup)}`);
+  }
+
   output = output.replace(
     /(<meta\s+name="viewport"[^>]*>)/i,
-    `$1\n<meta name="theme-color" content="#142C27">\n<link rel="icon" href="/favicon.ico" sizes="any">\n<meta name="robots" content="${
+    `$1\n<meta name="theme-color" content="#142C27">\n<link rel="icon" href="/favicon.ico" sizes="any">\n${FEED_LINK}\n<meta name="robots" content="${
       file === '404.html'
         ? 'noindex, follow'
         : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
@@ -278,11 +309,13 @@ export function enrichPage(html, file, amazonAssociateTag, cloudflareAnalyticsTo
     (_, prefix, directives, suffix) => {
       const openScript = /script-src[^;]*static\.cloudflareinsights\.com/.test(directives);
       const openConnect = /connect-src[^;]*cloudflareinsights\.com/.test(directives);
-      if (openScript && openConnect) return `${prefix}${directives}${suffix}`;
-      const patched = directives
-        .replace(/script-src 'self'/, "script-src 'self' https://static.cloudflareinsights.com")
-        .replace(/connect-src '(?:self|none)'/, "connect-src 'self' https://cloudflareinsights.com");
-      return `${prefix}${patched}${suffix}`;
+      const patched = openScript && openConnect
+        ? directives
+        : directives
+          .replace(/script-src 'self'/, "script-src 'self' https://static.cloudflareinsights.com")
+          .replace(/connect-src '(?:self|none)'/, "connect-src 'self' https://cloudflareinsights.com");
+      // Pages may only submit to the configured newsletter provider, if any.
+      return `${prefix}${withFormAction(patched, signup ? signup.origin : "'none'")}${suffix}`;
     }
   );
   output = output.replace(
@@ -298,7 +331,7 @@ export function enrichPage(html, file, amazonAssociateTag, cloudflareAnalyticsTo
     `$1\n${SOCIAL_METADATA}`
   );
 
-  const schema = JSON.stringify(schemaFor(output, file), null, 2).replace(/</g, '\\u003c');
+  const schema = JSON.stringify(schemaFor(output, file, { contentDate }), null, 2).replace(/</g, '\\u003c');
   output = output.replace(
     /(<link\s+rel="preconnect"\s+href="https:\/\/fonts\.googleapis\.com">)/i,
     `<script type="application/ld+json" data-site-schema>\n${schema}\n</script>\n$1`
@@ -318,9 +351,9 @@ export function enrichPage(html, file, amazonAssociateTag, cloudflareAnalyticsTo
     }
   }
 
-  if (file.replaceAll('\\', '/') === 'privacy/index.html') {
+  if (normalizedFile === 'privacy/index.html') {
     const status = amazonAssociateTag
-      ? 'Amazon product links are configured as sponsored affiliate links. Glass Garden Fins may earn from qualifying purchases at no extra cost to the visitor.'
+      ? 'Amazon product links on this site are sponsored affiliate links. As an Amazon Associate, Glass Garden Fins earns from qualifying purchases. Buying through these links costs you nothing extra, and every page that contains them repeats this disclosure near the links.'
       : 'Amazon product links are currently ordinary, untagged links. Glass Garden Fins does not currently earn a commission from them.';
     output = output.replace(
       /<p data-affiliate-status>[\s\S]*?<\/p>/i,
@@ -333,6 +366,10 @@ export function enrichPage(html, file, amazonAssociateTag, cloudflareAnalyticsTo
       /<p data-analytics-status>[\s\S]*?<\/p>/i,
       `<p data-analytics-status>${analyticsStatus}</p>`
     );
+    output = output.replace(
+      /<p data-newsletter-status>[\s\S]*?<\/p>/i,
+      `<p data-newsletter-status>${newsletterPrivacyStatus(newsletter)}</p>`
+    );
   }
 
   return `${output.trim()}${analyticsScript}\n`;
@@ -340,13 +377,33 @@ export function enrichPage(html, file, amazonAssociateTag, cloudflareAnalyticsTo
 
 export function enrichSite(repoRoot) {
   const config = JSON.parse(fs.readFileSync(path.join(repoRoot, 'site-config.json'), 'utf8'));
-  const publicPages = discoverPublicPages(repoRoot);
+  const newsletter = newsletterSettings(config);
+  const publicPages = discoverPublicPages(repoRoot).filter(({ file }) =>
+    fs.existsSync(path.join(repoRoot, file))
+  );
+  const enrich = (html, file, contentDate) => enrichPage(
+    html,
+    file,
+    config.amazonAssociateTag || '',
+    config.cloudflareAnalyticsToken || '',
+    { contentDate, newsletter }
+  );
+  const sources = new Map(publicPages.map(({ file }) => [
+    file,
+    fs.readFileSync(path.join(repoRoot, file), 'utf8')
+  ]));
+  // Date pages by their enriched output so config-driven content changes are
+  // dated in the same build that publishes them.
+  const drafts = new Map(publicPages.map(({ file }) => [file, enrich(sources.get(file), file)]));
+  const contentDates = resolveContentDates(repoRoot, publicPages, {
+    readPage: (file) => drafts.get(file)
+  });
 
-  for (const { file } of publicPages) {
+  for (const { file, route } of publicPages) {
     const absolute = path.join(repoRoot, file);
-    if (!fs.existsSync(absolute)) continue;
-    const html = fs.readFileSync(absolute, 'utf8');
-    const updated = enrichPage(html, file, config.amazonAssociateTag || '', config.cloudflareAnalyticsToken || '');
+    const html = sources.get(file);
+    const updated = enrich(html, file, contentDates.get(route));
+    if (updated === html) continue;
     const temporary = `${absolute}.tmp`;
     fs.writeFileSync(temporary, updated);
     fs.renameSync(temporary, absolute);

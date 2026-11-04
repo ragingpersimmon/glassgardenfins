@@ -2,13 +2,21 @@
   "name": "glass-garden-fins",
   "version": "1.0.0",
   "private": true,
-  "description": "Glass Garden Fins static site validation and backtesting",
+  "description": "Glass Garden Fins: a static planted-aquarium journal with build tooling, validation, and browser backtests",
+  "homepage": "https://glassgardenfins.com/",
   "main": "script.js",
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
-    "build:questions": "node ./tools/build-question-series.mjs && node ./tools/build-species-page.mjs && node ./tools/build-gallery.mjs && node ./tools/enrich-metadata.mjs && node ./tools/generate-sitemap.mjs",
+    "build:questions": "node ./tools/build-question-series.mjs && node ./tools/build-species-page.mjs && node ./tools/build-gallery.mjs && node ./tools/enrich-metadata.mjs && node ./tools/generate-feed.mjs && node ./tools/generate-sitemap.mjs",
     "build:site": "npm run build:questions",
+    "build:artifact": "node ./tools/build-pages-artifact.mjs",
     "set:amazon-tag": "node ./tools/set-amazon-tag.mjs",
+    "set:newsletter": "node ./tools/set-newsletter.mjs",
+    "seed:content-dates": "node ./tools/update-content-dates.mjs --seed-from-git",
+    "indexnow:plan": "node ./tools/indexnow.mjs plan",
     "check:integrity": "node ./tools/check-integrity.mjs",
     "test": "npm run test:setup && npm run validate:site && npm run check:integrity && npm run test:mutations && npm run test:deterministic && npm run test:chaos",
     "validate:site": "node ./tools/validate-site.mjs",
@@ -19,7 +27,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ragingpersimmon/littlefinswim"
+    "url": "https://github.com/ragingpersimmon/glassgardenfins"
   },
   "keywords": [],
   "author": "",

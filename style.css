@@ -1480,6 +1480,86 @@ a:hover { text-decoration-color: currentColor; }
 }
 
 /* ===================================================================
+   Newsletter (rendered only when site-config.json configures one)
+   =================================================================== */
+
+.newsletter {
+  border-top: 1px solid var(--color-border-soft);
+  padding-block: var(--space-4);
+  background: var(--color-bg-alt);
+}
+
+.newsletter__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  align-items: end;
+  gap: var(--space-3);
+}
+
+.newsletter__title {
+  margin: 0 0 var(--space-1);
+  color: var(--color-surface);
+  font-size: 1.35rem;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.newsletter__lead {
+  max-width: 60ch;
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+}
+
+.newsletter__form {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.newsletter__label {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+}
+
+.newsletter__controls {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.newsletter__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 0.85rem;
+  border: 1px solid var(--color-text-muted);
+  border-radius: 4px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 1rem;
+  text-transform: none !important;
+}
+
+.newsletter__button {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 0 1.1rem;
+  border: 1px solid var(--color-home-orange);
+  border-radius: 4px;
+  background: var(--color-home-orange);
+  color: var(--color-bg);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+}
+
+.newsletter__button:hover {
+  border-color: var(--color-surface);
+  background: var(--color-surface);
+}
+
+/* ===================================================================
    Footer
    =================================================================== */
 
@@ -1571,6 +1651,8 @@ a:hover { text-decoration-color: currentColor; }
   .readout { gap: var(--space-3); }
 
   .spec-list__row { grid-template-columns: 1fr; gap: 0.25rem; }
+
+  .newsletter__inner { grid-template-columns: 1fr; align-items: start; }
 }
 
 @media (max-width: 420px) {
@@ -1605,6 +1687,7 @@ a:hover { text-decoration-color: currentColor; }
   .site-footer__links { align-items: flex-start; }
   .site-footer__meta { justify-items: start; }
   .site-footer__links { flex-direction: column; gap: 0; }
+  .newsletter__controls { flex-direction: column; }
 }
 
 /* ===================================================================
