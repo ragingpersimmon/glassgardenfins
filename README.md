@@ -36,7 +36,7 @@ from git history with `npm run seed:content-dates`.
 
 ## Test suites
 
-- `npm run validate:site`: static checks for canonical, Open Graph, and Twitter URL consistency, navigation integrity, `aria-current`, required scripts and landmarks, baseline CSP directives, content dates and sitemap `lastmod`, the Atom feed, newsletter configuration, and the IndexNow key file.
+- `npm run validate:site`: static checks for canonical, Open Graph, and Twitter URL consistency, navigation integrity, `aria-current`, required scripts and landmarks, baseline CSP directives, content dates and sitemap `lastmod`, the Atom feed, newsletter configuration, the IndexNow key file, and links to the stood-down littlefinswim.net domain.
 - `npm run check:integrity`: whole-site checks for broken file references, malformed JSON-LD, unsafe autoplay attributes, leaked local URLs, and unreferenced assets.
 - `npm run test:mutations`: verifies fault detection under deterministic and seeded randomized mutations.
 - `npm run test:deterministic`: browser checks for page metadata, canonical URLs, navigation, reduced-motion and Save-Data fallbacks, footer update times, the newsletter form, comparable question-entry lengths, and at least two contextual product links per question.
@@ -74,12 +74,20 @@ branch directly:
 gh api -X PUT repos/ragingpersimmon/glassgardenfins/pages -f build_type=legacy -f "source[branch]=main" -f "source[path]=/"
 ```
 
-The former domain, littlefinswim.net, is served by the separate
+The former domain, littlefinswim.net, was stood down on 2026-11-04 and will not
+be renewed; keep auto-renew off for it in Namecheap. Until its registration ends
+on 2027-08-19, the separate
 [littlefinswim-redirect](https://github.com/ragingpersimmon/littlefinswim-redirect)
-Pages site. It forwards every old URL, with its query string and anchor, to the
-same path on glassgardenfins.com. If you retire that domain, delete its DNS
-records before deleting the redirect repository: while the records still point
-at GitHub Pages, another GitHub account could publish a site on the domain.
+Pages site forwards every old URL, with its query string and anchor, to the same
+path on glassgardenfins.com. Site pages must not link to the old domain;
+`npm run validate:site` fails if one does. The domain's Namecheap email
+forwarding ends with the registration, so move any account that still uses a
+littlefinswim.net address before then.
+
+To finish the retirement, delete the domain's DNS records in Namecheap on or just
+before 2027-08-19. Once it no longer resolves to GitHub Pages, archive or delete
+the redirect repository. Never remove that repository while the records still
+point at GitHub Pages: another GitHub account could publish a site on the domain.
 
 Dependabot proposes grouped monthly updates for GitHub Actions and npm.
 

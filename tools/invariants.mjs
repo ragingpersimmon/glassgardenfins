@@ -173,6 +173,9 @@ export function checkPage(html, { route, current }) {
   if (has(html, /\bdata-ad-slot\b/i)) {
     errors.push('inactive advertisement space should not be rendered');
   }
+  if (has(html, /\/\/(?:www\.)?littlefinswim\.net\b/i)) {
+    errors.push('links to the stood-down littlefinswim.net domain');
+  }
   for (const match of html.matchAll(/<script[^>]+\ssrc="([^"]+)"/gi)) {
     if (!match[1].startsWith('/') && match[1] !== 'https://static.cloudflareinsights.com/beacon.min.js') {
       errors.push(`external script is not CSP-aligned: ${match[1]}`);
