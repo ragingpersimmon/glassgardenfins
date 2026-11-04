@@ -23,6 +23,11 @@ const deterministicFaults = [
     name: 'remove CSP',
     mutate: (html) => html.replace(/<meta\s+http-equiv="Content-Security-Policy"[^>]*>\n?/i, ''),
     expect: /Content-Security-Policy/
+  },
+  {
+    name: 'link stood-down domain',
+    mutate: (html) => html.replace(/<\/main>/i, '<a href="https://www.littlefinswim.net/tank/">Old tank log</a></main>'),
+    expect: /littlefinswim\.net/
   }
 ];
 

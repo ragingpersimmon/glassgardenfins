@@ -834,7 +834,7 @@ async function run() {
       const response = await route.fetch();
       const body = (await response.text()).replace(
         /name="amazon-associate-tag" content="[^"]*"/,
-        'name="amazon-associate-tag" content="littlefinswim-20"'
+        'name="amazon-associate-tag" content="override-test-20"'
       );
       await route.fulfill({ response, body });
     });
@@ -846,7 +846,7 @@ async function run() {
       }))
     );
     assert.ok(
-      taggedLinks.every(({ tag, sponsored }) => tag === 'littlefinswim-20' && sponsored),
+      taggedLinks.every(({ tag, sponsored }) => tag === 'override-test-20' && sponsored),
       'configured Amazon links should include the Associates ID and sponsored relationship'
     );
     assert.ok(
