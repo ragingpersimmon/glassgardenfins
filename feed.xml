@@ -5,7 +5,7 @@
   <link rel="self" type="application/atom+xml" href="https://glassgardenfins.com/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://glassgardenfins.com/journal/"/>
   <id>https://glassgardenfins.com/feed.xml</id>
-  <updated>2026-09-17T12:00:00Z</updated>
+  <updated>2026-11-05T12:00:00Z</updated>
   <author>
     <name>Glass Garden Fins</name>
     <uri>https://glassgardenfins.com/</uri>
@@ -26,7 +26,7 @@
     <link rel="alternate" type="text/html" href="https://glassgardenfins.com/journal/how-much-fish-food/"/>
     <id>https://glassgardenfins.com/journal/how-much-fish-food/</id>
     <published>2026-08-21T12:00:00Z</published>
-    <updated>2026-09-15T12:00:00Z</updated>
+    <updated>2026-11-05T12:00:00Z</updated>
     <category term="Feeding"/>
     <summary>A practical guide to aquarium feeding portions, schedules, body condition, and food for bottom-feeding fish.</summary>
   </entry>
@@ -35,7 +35,7 @@
     <link rel="alternate" type="text/html" href="https://glassgardenfins.com/journal/how-much-sun-do-fish-need/"/>
     <id>https://glassgardenfins.com/journal/how-much-sun-do-fish-need/</id>
     <published>2026-08-20T12:00:00Z</published>
-    <updated>2026-09-15T12:00:00Z</updated>
+    <updated>2026-11-05T12:00:00Z</updated>
     <category term="Lighting"/>
     <summary>Why aquarium fish need a consistent day-night rhythm rather than direct sunlight, plus a practical lighting schedule.</summary>
   </entry>
@@ -44,7 +44,7 @@
     <link rel="alternate" type="text/html" href="https://glassgardenfins.com/journal/what-happened-to-my-shrimps-skin/"/>
     <id>https://glassgardenfins.com/journal/what-happened-to-my-shrimps-skin/</id>
     <published>2026-08-19T12:00:00Z</published>
-    <updated>2026-09-15T12:00:00Z</updated>
+    <updated>2026-11-05T12:00:00Z</updated>
     <category term="Shrimp care"/>
     <summary>How to recognize a normal shrimp molt, understand the vulnerable period afterward, and investigate repeated molt trouble.</summary>
   </entry>
@@ -53,7 +53,7 @@
     <link rel="alternate" type="text/html" href="https://glassgardenfins.com/journal/why-is-my-fish-staying-at-the-bottom/"/>
     <id>https://glassgardenfins.com/journal/why-is-my-fish-staying-at-the-bottom/</id>
     <published>2026-08-18T12:00:00Z</published>
-    <updated>2026-09-15T12:00:00Z</updated>
+    <updated>2026-11-05T12:00:00Z</updated>
     <category term="Troubleshooting"/>
     <summary>A step-by-step way to tell normal bottom-dwelling behavior from water-quality, temperature, oxygen, or health trouble.</summary>
   </entry>
@@ -62,7 +62,7 @@
     <link rel="alternate" type="text/html" href="https://glassgardenfins.com/journal/why-is-my-fish-swimming-at-the-top/"/>
     <id>https://glassgardenfins.com/journal/why-is-my-fish-swimming-at-the-top/</id>
     <published>2026-08-17T12:00:00Z</published>
-    <updated>2026-09-15T12:00:00Z</updated>
+    <updated>2026-11-05T12:00:00Z</updated>
     <category term="Aeration"/>
     <summary>How to distinguish normal surface behavior from gasping and respond to oxygen, temperature, water-quality, or equipment problems.</summary>
   </entry>
@@ -71,7 +71,7 @@
     <link rel="alternate" type="text/html" href="https://glassgardenfins.com/journal/how-often-should-you-change-aquarium-water/"/>
     <id>https://glassgardenfins.com/journal/how-often-should-you-change-aquarium-water/</id>
     <published>2026-08-16T12:00:00Z</published>
-    <updated>2026-09-15T12:00:00Z</updated>
+    <updated>2026-11-05T12:00:00Z</updated>
     <category term="Maintenance"/>
     <summary>How to set a water-change schedule from nitrate trends, stocking, feeding, plants, and the sensitivity of aquarium inhabitants.</summary>
   </entry>
@@ -80,7 +80,7 @@
     <link rel="alternate" type="text/html" href="https://glassgardenfins.com/journal/why-is-my-aquarium-water-cloudy/"/>
     <id>https://glassgardenfins.com/journal/why-is-my-aquarium-water-cloudy/</id>
     <published>2026-08-15T12:00:00Z</published>
-    <updated>2026-09-15T12:00:00Z</updated>
+    <updated>2026-11-05T12:00:00Z</updated>
     <category term="Water quality"/>
     <summary>How to distinguish bacterial blooms, green water, tannins, and suspended substrate before choosing a response.</summary>
   </entry>
@@ -89,7 +89,7 @@
     <link rel="alternate" type="text/html" href="https://glassgardenfins.com/journal/is-my-aquarium-filter-big-enough/"/>
     <id>https://glassgardenfins.com/journal/is-my-aquarium-filter-big-enough/</id>
     <published>2026-08-14T12:00:00Z</published>
-    <updated>2026-09-15T12:00:00Z</updated>
+    <updated>2026-11-05T12:00:00Z</updated>
     <category term="Filtration"/>
     <summary>How to judge aquarium filtration by biological capacity, real-world flow, debris, stocking, and the needs of fish and shrimp.</summary>
   </entry>
@@ -98,7 +98,7 @@
     <link rel="alternate" type="text/html" href="https://glassgardenfins.com/journal/how-many-fish-can-i-put-in-my-aquarium/"/>
     <id>https://glassgardenfins.com/journal/how-many-fish-can-i-put-in-my-aquarium/</id>
     <published>2026-08-13T12:00:00Z</published>
-    <updated>2026-09-15T12:00:00Z</updated>
+    <updated>2026-11-05T12:00:00Z</updated>
     <category term="Stocking"/>
     <summary>A better aquarium stocking method based on adult size, social groups, territory, swimming space, waste, and filtration.</summary>
   </entry>
@@ -107,7 +107,7 @@
     <link rel="alternate" type="text/html" href="https://glassgardenfins.com/journal/why-are-my-aquarium-plants-turning-brown/"/>
     <id>https://glassgardenfins.com/journal/why-are-my-aquarium-plants-turning-brown/</id>
     <published>2026-08-12T12:00:00Z</published>
-    <updated>2026-09-15T12:00:00Z</updated>
+    <updated>2026-11-05T12:00:00Z</updated>
     <category term="Plants"/>
     <summary>How to separate normal plant transition from algae, nutrient, light, substrate, or carbon problems in a planted aquarium.</summary>
   </entry>

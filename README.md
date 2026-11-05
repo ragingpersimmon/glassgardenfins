@@ -36,25 +36,47 @@ from git history with `npm run seed:content-dates`.
 
 ## Test suites
 
-- `npm run validate:site`: static checks for canonical, Open Graph, and Twitter URL consistency, navigation integrity, `aria-current`, required scripts and landmarks, baseline CSP directives, content dates and sitemap `lastmod`, the Atom feed, newsletter configuration, the IndexNow key file, and links to the stood-down littlefinswim.net domain.
+- `npm run validate:site`: static checks for canonical, Open Graph, and Twitter URL consistency, navigation integrity, `aria-current`, required scripts and landmarks, baseline CSP directives, content dates and sitemap `lastmod`, the Atom feed, newsletter configuration, the IndexNow key file, links to the stood-down littlefinswim.net domain, and eyebrows that repeat an entry's category label.
 - `npm run check:integrity`: whole-site checks for broken file references, malformed JSON-LD, unsafe autoplay attributes, leaked local URLs, and unreferenced assets.
 - `npm run test:mutations`: verifies fault detection under deterministic and seeded randomized mutations.
-- `npm run test:deterministic`: browser checks for page metadata, canonical URLs, navigation, reduced-motion and Save-Data fallbacks, footer update times, the newsletter form, comparable question-entry lengths, and at least two contextual product links per question.
+- `npm run test:deterministic`: browser checks for page metadata, canonical URLs, navigation, reduced-motion and Save-Data fallbacks, footer update times, the newsletter form, comparable question-entry lengths, at least two contextual product links per question, the muted affiliate disclosure, and Google Fonts loading only on pages that render a web font (articles, privacy, and species use them; the Arial pages must not request them).
 - `npm run test:chaos`: seeded (`1337`) browser backtests across every public route, random viewports, reduced-motion modes, and resource fault injection (font blocking, script delay/block).
+- `npm run test:visual`: Playwright screenshot comparisons of the home hero, a full article (desktop and mobile), the guide series index, and the 404 page against baselines in `tests/visual/`. Renders are hermetic (only the local site loads, so system fallback fonts stand in for Google Fonts), pin the footer update time and the home water readings, and mask the hero video.
 - `npm run build:site`: regenerates the question series, species catalog, gallery, social metadata and JSON-LD, normalized footers, `feed.xml`, and `sitemap.xml`.
 - `npm run build:artifact`: builds the deployable `_site/` directory (see below).
 
 The browser suites serve the repository root by default. Set `SITE_ROOT=_site`
 to test the built artifact instead, as CI does.
 
+### Visual baselines
+
+Screenshot baselines are rendered on the CI runner (`ubuntu-26.04`, Chromium
+from the locked Playwright version), so `test:visual` skips on other platforms;
+set `VISUAL_ANY_PLATFORM=1` to experiment locally (those baselines are
+git-ignored). When a design change is intended, or after a Playwright upgrade
+changes rendering, refresh the baselines from CI:
+
+1. Push the change; the failing `validate` run uploads a `visual-test-results`
+   artifact containing each new render as `*-actual.png` (plus `*-diff.png`
+   for changed pages).
+2. Download it with `gh run download <run-id> -n visual-test-results`.
+3. Review the renders, copy each `<name>-actual.png` over
+   `tests/visual/<name>-linux.png`, and commit.
+
+Keep an installed, named font ahead of each generic family in the `style.css`
+font stacks (`Consolas`/`Liberation Mono`, `Times New Roman`, `Arial`).
+Chromium can change what a generic family resolves to partway through a session
+(a full-page capture switches `monospace` from Consolas to Courier New), which
+reflows fallback text and makes screenshots unstable.
+
 ## Deployment
 
 `.github/workflows/ci.yml` runs on pull requests, pushes to `main`, and manual
 dispatch. The `validate` job rebuilds the site, checks for uncommitted generated
-files, runs the static and mutation suites, builds the artifact, and runs both
-browser suites against it. Pushes to `main` then deploy the artifact to GitHub
-Pages and notify IndexNow. The `validate` check must pass before a pull request
-can merge.
+files, runs the static and mutation suites, builds the artifact, and runs the
+deterministic, chaos, and visual browser suites against it. Pushes to `main`
+then deploy the artifact to GitHub Pages and notify IndexNow. The `validate`
+check must pass before a pull request can merge.
 
 `npm run build:artifact` copies only public files into `_site/`: the README,
 package files, tools, tests, `_data/`, and site configuration are never

@@ -28,6 +28,14 @@ const deterministicFaults = [
     name: 'link stood-down domain',
     mutate: (html) => html.replace(/<\/main>/i, '<a href="https://www.littlefinswim.net/tank/">Old tank log</a></main>'),
     expect: /littlefinswim\.net/
+  },
+  {
+    name: 'repeat entry category in eyebrow',
+    mutate: (html) => html.replace(
+      /<\/main>/i,
+      '<p class="eyebrow"><a class="eyebrow__link" href="/journal/">Journal</a> · Water quality</p><span class="entry__tag">Water quality</span></main>'
+    ),
+    expect: /eyebrow repeats/
   }
 ];
 

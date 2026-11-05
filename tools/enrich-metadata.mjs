@@ -332,8 +332,10 @@ export function enrichPage(
   );
 
   const schema = JSON.stringify(schemaFor(output, file, { contentDate }), null, 2).replace(/</g, '\\u003c');
+  // Pages that render only system fonts omit the Google Fonts links, so the
+  // schema anchors on whichever of the font preconnect or site stylesheet comes first.
   output = output.replace(
-    /(<link\s+rel="preconnect"\s+href="https:\/\/fonts\.googleapis\.com">)/i,
+    /(<link\s+rel="preconnect"\s+href="https:\/\/fonts\.googleapis\.com">|<link\s+rel="stylesheet"\s+href="\/style\.css">)/i,
     `<script type="application/ld+json" data-site-schema>\n${schema}\n</script>\n$1`
   );
 

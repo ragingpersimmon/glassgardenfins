@@ -68,9 +68,6 @@ export function buildGalleryPage() {
 <meta name="twitter:url" content="${SITE_ORIGIN}/gallery/">
 <meta name="twitter:title" content="Gallery — Glass Garden Fins">
 <meta name="twitter:description" content="High-resolution photos from the planted aquarium.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,500&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;1,7..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css">
 </head>
 <body class="gallery-page">
