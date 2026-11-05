@@ -680,6 +680,19 @@ async function run() {
         await page.locator('[data-affiliate-disclosure]').isVisible(),
         'affiliate disclosure should be visible while monetization is enabled'
       );
+      const disclosureStyle = await page.locator('[data-affiliate-disclosure]').evaluate((element) => {
+        const style = window.getComputedStyle(element);
+        return { color: style.color, fontSize: Number.parseFloat(style.fontSize) };
+      });
+      assert.strictEqual(
+        disclosureStyle.color,
+        'rgb(147, 168, 163)',
+        'affiliate disclosure should use the muted body colour, not the orange heading accent'
+      );
+      assert.ok(
+        disclosureStyle.fontSize >= 13,
+        `affiliate disclosure should remain legible: ${disclosureStyle.fontSize}px`
+      );
     } else {
       assert.ok(
         amazonLinkTags.every(({ host, tag }) => host === 'www.amazon.ca' && tag === null),
@@ -1141,6 +1154,56 @@ async function run() {
     );
     assert.ok(noObserverVisible, 'entries should remain visible without IntersectionObserver');
     await noObserverContext.close();
+
+    // Google Fonts load only on pages that render a web font (the editorial
+    // .entry typography and the species catalogue's mono detail); the rest of
+    // the site uses system Arial and should not pay for the font requests.
+    const { discoverPublicPages } = await importTool('generate-sitemap.mjs');
+    const WEB_FONT_FAMILIES = /^(?:Fraunces|Literata|IBM Plex Mono)$/i;
+    const fontContext = await browser.newContext();
+    await fontContext.route('**/*', (route) => {
+      const url = route.request().url();
+      if (url.startsWith(`${server.baseUrl}/`) && !url.endsWith('.mp4')) return route.continue();
+      if (url.startsWith('https://fonts.googleapis.com/')) {
+        return route.fulfill({ status: 200, contentType: 'text/css', body: '' });
+      }
+      return route.abort();
+    });
+    const fontPage = await fontContext.newPage();
+    fontPage.on('pageerror', (err) => pageErrors.push(err));
+    for (const { route } of discoverPublicPages(path.join(__dirname, '..'))) {
+      await fontPage.goto(`${server.baseUrl}${route}`, { waitUntil: 'load' });
+      const fontUsage = await fontPage.evaluate(() => {
+        const families = new Set();
+        const primaryFamily = (style) => style.fontFamily.split(',')[0].trim().replace(/^["']|["']$/g, '');
+        for (const element of document.body.querySelectorAll('*')) {
+          if (['SCRIPT', 'STYLE', 'NOSCRIPT', 'TEMPLATE'].includes(element.tagName)) continue;
+          const hasText = Array.from(element.childNodes).some(
+            (node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim()
+          );
+          if (hasText) families.add(primaryFamily(window.getComputedStyle(element)));
+          for (const pseudo of ['::before', '::after']) {
+            const style = window.getComputedStyle(element, pseudo);
+            if (!['none', 'normal', '""', "''"].includes(style.content)) families.add(primaryFamily(style));
+          }
+        }
+        return {
+          families: Array.from(families),
+          stylesheet: document.querySelectorAll('link[rel="stylesheet"][href^="https://fonts.googleapis.com/"]').length,
+          preconnects: document.querySelectorAll('link[rel="preconnect"][href^="https://fonts.g"]').length
+        };
+      });
+      const usesWebFont = fontUsage.families.some((family) => WEB_FONT_FAMILIES.test(family));
+      assert.strictEqual(
+        fontUsage.stylesheet,
+        usesWebFont ? 1 : 0,
+        `${route}: load Google Fonts exactly when a web font renders (families: ${fontUsage.families.join(', ')})`
+      );
+      if (!usesWebFont) {
+        assert.strictEqual(fontUsage.preconnects, 0, `${route}: drop font preconnects when no web font renders`);
+      }
+    }
+    await fontContext.close();
 
     assert.strictEqual(pageErrors.length, 0, `expected no page errors, got: ${pageErrors.map(String).join('; ')}`);
 

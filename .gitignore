@@ -9,6 +9,10 @@ test-results/
 playwright-report/
 *.tmp
 
+# Local screenshot baselines; committed baselines are rendered on Linux CI.
+tests/visual/*-win32.png
+tests/visual/*-darwin.png
+
 # Operating system and editor files.
 .DS_Store
 Thumbs.db

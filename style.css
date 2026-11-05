@@ -22,9 +22,12 @@
   --color-border:      rgba(220, 238, 232, 0.12);
   --color-border-soft: rgba(220, 238, 232, 0.07);
 
-  --font-display: 'Fraunces', 'Iowan Old Style', serif;
-  --font-body:    'Literata', Georgia, serif;
-  --font-mono:    'IBM Plex Mono', 'SFMono-Regular', Menlo, monospace;
+  /* Installed fallbacks come before each generic family: Chromium can change its
+     generic defaults mid-session (a full-page screenshot switches monospace from
+     Consolas to Courier New), which reflows fallback text. */
+  --font-display: 'Fraunces', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
+  --font-body:    'Literata', Georgia, 'Times New Roman', serif;
+  --font-mono:    'IBM Plex Mono', 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
 
   --wrap-width: 1080px;
   --space-1: 0.5rem;
@@ -1306,12 +1309,12 @@ a:hover { text-decoration-color: currentColor; }
 }
 
 .affiliate-disclosure {
-  margin-top: var(--space-3) !important;
-  padding: var(--space-2);
+  margin-block: var(--space-3) !important;
+  padding: 0.15rem 0 0.15rem var(--space-2);
   border-left: 2px solid var(--color-amber-soft);
-  color: var(--color-home-orange) !important;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
+  color: var(--color-text-muted) !important;
+  font-size: 0.875rem;
+  line-height: 1.6;
 }
 
 .product-box {

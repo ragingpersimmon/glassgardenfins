@@ -18,11 +18,12 @@
     "seed:content-dates": "node ./tools/update-content-dates.mjs --seed-from-git",
     "indexnow:plan": "node ./tools/indexnow.mjs plan",
     "check:integrity": "node ./tools/check-integrity.mjs",
-    "test": "npm run test:setup && npm run validate:site && npm run check:integrity && npm run test:mutations && npm run test:deterministic && npm run test:chaos",
+    "test": "npm run test:setup && npm run validate:site && npm run check:integrity && npm run test:mutations && npm run test:deterministic && npm run test:chaos && npm run test:visual",
     "validate:site": "node ./tools/validate-site.mjs",
     "test:mutations": "node ./tools/chaos-test.mjs",
     "test:deterministic": "node tests/deterministic.cjs",
     "test:chaos": "node tests/chaos.cjs",
+    "test:visual": "node ./node_modules/playwright/cli.js test -c tests/visual.config.cjs",
     "test:setup": "node ./node_modules/playwright/cli.js install chromium"
   },
   "repository": {

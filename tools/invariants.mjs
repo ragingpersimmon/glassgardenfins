@@ -28,6 +28,16 @@ function has(source, regex) {
   return regex.test(source);
 }
 
+function plainText(fragment) {
+  return fragment
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;|&#160;/gi, ' ')
+    .replace(/&middot;|&#183;|&#xb7;/gi, '·')
+    .replace(/&amp;/gi, '&')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 export function checkPage(html, { route, current }) {
   const errors = [];
   const expectedCanonical = `${SITE_ORIGIN}${route === '/' ? '/' : route}`;
@@ -175,6 +185,26 @@ export function checkPage(html, { route, current }) {
   }
   if (has(html, /\/\/(?:www\.)?littlefinswim\.net\b/i)) {
     errors.push('links to the stood-down littlefinswim.net domain');
+  }
+  // The eyebrow locates a page within the site; an entry's category already
+  // appears beside its date, so repeating it in the eyebrow is redundant.
+  const eyebrowSegments = new Set(
+    Array.from(
+      html.matchAll(/<p\b[^>]*\sclass="(?:[^"]*\s)?eyebrow(?:\s[^"]*)?"[^>]*>([\s\S]*?)<\/p>/gi),
+      (match) => plainText(match[1])
+    )
+      .flatMap((text) => text.split('·'))
+      .map((segment) => segment.trim().toLowerCase())
+      .filter(Boolean)
+  );
+  const repeatedTags = new Set(
+    Array.from(
+      html.matchAll(/<span\b[^>]*\sclass="(?:[^"]*\s)?entry__tag(?:\s[^"]*)?"[^>]*>([\s\S]*?)<\/span>/gi),
+      (match) => plainText(match[1])
+    ).filter((tag) => eyebrowSegments.has(tag.toLowerCase()))
+  );
+  for (const tag of repeatedTags) {
+    errors.push(`eyebrow repeats the entry category "${tag}"`);
   }
   for (const match of html.matchAll(/<script[^>]+\ssrc="([^"]+)"/gi)) {
     if (!match[1].startsWith('/') && match[1] !== 'https://static.cloudflareinsights.com/beacon.min.js') {

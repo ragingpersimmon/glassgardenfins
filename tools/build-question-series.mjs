@@ -353,7 +353,7 @@ ${renderProducts(question)}
 <main id="top" class="page-main">
   <section class="page-hero">
     <div class="wrap">
-      <p class="eyebrow"><a class="eyebrow__link" href="/journal/">Journal</a> · ${question.tag}</p>
+      <p class="eyebrow"><a class="eyebrow__link" href="/journal/">Journal</a></p>
       <h1 class="section-title section-title--compact">${question.title}</h1>
       <p class="page-hero__lead">${question.description}</p>
     </div>
@@ -425,9 +425,6 @@ function renderSeriesIndex() {
 <meta name="twitter:url" content="${canonical}">
 <meta name="twitter:title" content="10 Aquarium Questions — Glass Garden Fins">
 <meta name="twitter:description" content="Ten practical aquarium questions, each answered in its own focused journal entry.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="${fonts}" rel="stylesheet">
 <link rel="stylesheet" href="/style.css">
 </head>
 <body>
