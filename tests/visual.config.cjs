@@ -10,8 +10,9 @@ module.exports = defineConfig({
   workers: 1,
   retries: process.env.CI ? 1 : 0,
   forbidOnly: Boolean(process.env.CI),
-  // CI never writes baselines, so a retry cannot pass against a render it just saved.
-  updateSnapshots: process.env.CI ? 'none' : 'missing',
+  // updateSnapshots stays at Playwright's default: a missing baseline fails its
+  // test without a retry and saves the render as *-actual.png (CI uploads these;
+  // see README), and a changed render fails without overwriting the baseline.
   reporter: process.env.CI ? [['list'], ['github']] : 'list',
   use: {
     reducedMotion: 'reduce',
